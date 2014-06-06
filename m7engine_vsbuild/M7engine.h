@@ -1,3 +1,11 @@
+/*
+* Copyright 2014 David Houchin
+* This file is part of m7engine, which is free software you probably
+* don't even want.. It is made available to you under the terms of
+* the GNU General Public License as published by the Free Software Foundation.
+* For more information, see COPYING.
+*/
+
 /*   _      _    ____  _____    ______    ______
 /\`\   / \  /  __\/\  __`\ /\  ___\  /\____ \
 \ \ `\|   \/\ \_/\\ \ \ \ \\ \ \__/  \/___/\ \
