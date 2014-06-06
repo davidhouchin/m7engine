@@ -64,11 +64,11 @@ namespace M7engine
 
 	void FontManager::drawTextF(float x, float y, Font *font, const char *text, ...)
 	{
-		//char buffer[strlen(text)];
+		char buffer[99];
 		va_list args;
 		va_start(args, text);
-		//vsprintf(buffer, text, args);
-		//al_draw_text(font->getFont(), font->getColor(), x, y, font->getJustification(), buffer);
+		vsprintf(buffer, text, args);
+		al_draw_text(font->getFont(), font->getColor(), x, y, font->getJustification(), buffer);
 		va_end(args);
 
 	}
