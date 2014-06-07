@@ -14,6 +14,7 @@ namespace M7engine
 	{
 		frameRate = 30;
 		frameCount = 0;
+		fps = 0;
 
 		this->setScreenWidth(640);
 		this->setScreenHeight(480);
@@ -70,6 +71,8 @@ namespace M7engine
 			al_set_new_display_flags(ALLEGRO_FULLSCREEN);
 		}
 
+		al_set_new_display_flags(ALLEGRO_OPENGL);
+
 		display = al_create_display(width, height);
 		if (!display)
 		{
@@ -94,14 +97,22 @@ namespace M7engine
 		al_flip_display();
 
 		al_start_timer(timer);
+
+		oldTime = al_get_time();
+
 		return true;
 	}
 
 	bool Engine::update()
 	{
+		//Get current FPS
+		double gameTime = al_get_time();
+		fps = 1.0f / (gameTime - oldTime);
+		oldTime = gameTime;
+		frameCount++;
+
 		inputManager->update();
 
-		frameCount++;
 		this->updateEntities();
 		this->updateCollisions();
 		ALLEGRO_EVENT ev;

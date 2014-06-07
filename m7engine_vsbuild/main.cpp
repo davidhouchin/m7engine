@@ -126,7 +126,7 @@ public:
 		if (isOpen)
 		{
 			m7_engine.primitives->drawFilledRectangle(0, 0, m7_engine.getScreenWidth(), 256, al_map_rgba(0, 0, 0, 50));
-			m7_engine.fontManager->drawTextF(20, 20, consoleFont, "Frames: %i", m7_engine.getFrameCount());
+			m7_engine.fontManager->drawTextF(20, 20, consoleFont, "Frames: %f", m7_engine.getFPS());
 			m7_engine.fontManager->drawTextF(20, 30, consoleFont, "X: %i", m7_engine.inputManager->getMouseX());
 			m7_engine.fontManager->drawTextF(20, 40, consoleFont, "Y: %i", m7_engine.inputManager->getMouseY());
 		}

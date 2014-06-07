@@ -57,6 +57,8 @@ namespace M7engine
 	private:
 		bool fullScreen, redraw;
 		int screenWidth, screenHeight, colorDepth, frameRate, frameCount;
+		double oldTime;
+		float fps;
 		std::list<Entity*> entities;
 		ALLEGRO_DISPLAY *display;
 		ALLEGRO_EVENT_QUEUE *eventQueue;
@@ -84,6 +86,7 @@ namespace M7engine
 
 		int getFrameRate() { return this->frameRate; }
 		int getFrameCount() { return this->frameCount; }
+		float getFPS() { return this->fps; }
 		int getScreenWidth() { return this->screenWidth; }
 		void setScreenWidth(int value) { this->screenWidth = value; }
 		int getScreenHeight() { return this->screenHeight; }
