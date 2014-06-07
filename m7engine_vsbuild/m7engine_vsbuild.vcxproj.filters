@@ -89,13 +89,13 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="pirulen.ttf">
-      <Filter>Resource Files</Filter>
-    </Font>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="COPYING.txt">
       <Filter>Header Files</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="linear.otf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>

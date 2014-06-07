@@ -111,7 +111,7 @@ public:
 	{
 		isOpen = false;
 		consoleFont = new Font;
-		consoleFont->loadFont("pirulen.ttf", 10);
+		consoleFont->loadFont("linear.otf", 10);
 		consoleFont->setColor(al_map_rgb(255, 255, 255));
 		consoleFont->setJustification(0);
 	}
@@ -200,7 +200,7 @@ int main(int argc, char **argv)
 	Temitter->setLength(800);
 
 	Tfont = new Font;
-	Tfont->loadFont("pirulen.ttf", 20);
+	Tfont->loadFont("linear.otf", 20);
 	Tfont->setColor(al_map_rgb(0, 200, 200));
 	Tfont->setJustification(1);
 

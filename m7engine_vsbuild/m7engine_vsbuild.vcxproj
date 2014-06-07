@@ -101,10 +101,10 @@
     <Image Include="particle16.png" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="pirulen.ttf" />
+    <Text Include="COPYING.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="COPYING.txt" />
+    <Font Include="linear.otf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
