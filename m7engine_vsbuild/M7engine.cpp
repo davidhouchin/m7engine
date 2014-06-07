@@ -25,9 +25,9 @@ namespace M7engine
 	Engine::~Engine()
 	{
 		std::cout << "Cleaning up resources...\n";
-		al_destroy_timer(this->timer);
-		al_destroy_display(this->display);
-		al_destroy_event_queue(this->eventQueue);
+		//al_destroy_timer(this->timer);
+		//al_destroy_display(this->display);
+		//al_destroy_event_queue(this->eventQueue);
 	}
 
 	bool Engine::init(int width, int height, bool fullscreen)
