@@ -49,6 +49,7 @@ namespace M7engine
 		void setVelocity(double arg){ velocity = arg; }
 		void setScale(double arg){ scale = arg; }
 		bool loadImage(const char* filename);
+		bool reloadImage();
 		void draw();
 		void update();
 		void add();
@@ -60,6 +61,7 @@ namespace M7engine
 		Vector2 position;
 		double direction, length, velocity, scale;
 		int max, alphaMin, alphaMax, minR, minG, minB, maxR, maxG, maxB, spread;
+		const char *bitmapFilename;
 
 	};
 }

@@ -19,7 +19,8 @@ namespace M7engine
 		this->setScreenWidth(640);
 		this->setScreenHeight(480);
 		this->setColorDepth(32);
-		this->setFullScreen(false);
+		this->windowMode = 0;
+		this->displayContext = 0;
 	}
 
 	Engine::~Engine()
@@ -30,7 +31,7 @@ namespace M7engine
 		//al_destroy_event_queue(this->eventQueue);
 	}
 
-	bool Engine::init(int width, int height, bool fullscreen)
+	bool Engine::init(int width, int height, int mode)
 	{
 		this->setScreenWidth(width);
 		this->setScreenHeight(height);
@@ -66,12 +67,11 @@ namespace M7engine
 			return false;
 		}
 
-		if (fullscreen)
+		switch (mode)
 		{
-			al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+		case 1: al_set_new_display_flags(ALLEGRO_FULLSCREEN); this->windowMode = 1; break;
+		case 2: al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW); this->windowMode = 2; break;
 		}
-
-		al_set_new_display_flags(ALLEGRO_OPENGL);
 
 		display = al_create_display(width, height);
 		if (!display)
@@ -203,6 +203,11 @@ namespace M7engine
 		id++;
 	}
 
+	void Engine::addParticleEmitter(ParticleEmitter *particleEmitter)
+	{
+		particleEmitters.push_back(particleEmitter);
+	}
+
 	Entity* Engine::findEntity(int id)
 	{
 		std::list<Entity*>::iterator iter;
@@ -249,4 +254,104 @@ namespace M7engine
 		}
 	}
 
+	bool Engine::setWindowMode(int value)
+	{
+		switch (displayContext)
+		{
+		case 0: al_set_new_display_flags(ALLEGRO_DIRECT3D); break;
+		case 1: al_set_new_display_flags(ALLEGRO_OPENGL); break;
+		}
+
+		switch (value)
+		{
+		case 0:
+			std::cout << "Changing to windowed mode...\n";
+			al_destroy_display(this->display);
+			display = al_create_display(getScreenWidth(), getScreenHeight());
+			if (!display) { fprintf(stderr, "Failed to change to windowed mode!\n"); return 1; }
+			this->windowMode = 0;
+			break;
+		case 1:
+			std::cout << "Changing to fullscreen...\n";
+			al_destroy_display(this->display);
+			al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+			display = al_create_display(getScreenWidth(), getScreenHeight());
+			if (!display) { fprintf(stderr, "Failed to change to fullscreen mode!\n"); return 1; }
+			this->windowMode = 1;
+			break;
+		case 2:
+			std::cout << "Changing to fullscreen windowed...\n";
+			al_destroy_display(this->display);
+			al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+			display = al_create_display(getScreenWidth(), getScreenHeight());
+			if (!display) { fprintf(stderr, "Failed to change to fullscreen windowed mode!\n"); return 1; }
+			this->windowMode = 2;
+			break;
+		}
+
+		this->reloadBitmaps();
+
+		return 0;
+	}
+
+	bool Engine::setDisplayContext(int value)
+	{
+		switch (windowMode)
+		{
+		case 1: al_set_new_display_flags(ALLEGRO_FULLSCREEN); break;
+		case 2: al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW); break;
+		}
+
+		switch (value)
+		{
+		case 0:
+			std::cout << "Changing to Direct3D context...\n";
+			al_destroy_display(this->display);
+			al_set_new_display_flags(ALLEGRO_DIRECT3D);
+			display = al_create_display(getScreenWidth(), getScreenHeight());
+			if (!display) { fprintf(stderr, "Failed to change to Direct3D context!\n"); return 1; }
+			this->displayContext = 0;
+			break;
+		case 1:
+			std::cout << "Changing to OpenGL context...\n";
+			al_destroy_display(this->display);
+			al_set_new_display_flags(ALLEGRO_OPENGL);
+			display = al_create_display(getScreenWidth(), getScreenHeight());
+			if (!display) { fprintf(stderr, "Failed to change to OpenGL context!\n"); return 1; }
+			this->displayContext = 1;
+			break;
+		}
+
+		this->reloadBitmaps();
+
+		return 0;
+	}
+
+	void Engine::reloadBitmaps()
+	{
+		std::list<Entity*>::iterator iter;
+		Entity *entity;
+		iter = entities.begin();
+
+		while (iter != entities.end())
+		{
+			entity = *iter;
+			if (entity->getActive())
+			{
+				entity->reloadImage();
+			}
+			iter++;
+		}
+
+		std::list<ParticleEmitter*>::iterator pIter;
+		ParticleEmitter *emitter;
+		pIter = particleEmitters.begin();
+
+		while (pIter != particleEmitters.end())
+		{
+			emitter = *pIter;
+			emitter->reloadImage();
+			pIter++;
+		}
+	}
 };

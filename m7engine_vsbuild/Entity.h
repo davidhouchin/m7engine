@@ -23,6 +23,7 @@ namespace M7engine
 
 		bool loadImage(const char *filename);
 		void setImage(ALLEGRO_BITMAP *image);
+		bool reloadImage();
 		virtual void update() = 0;
 		virtual void collision(Entity *other) = 0;
 		void move();
@@ -74,6 +75,7 @@ namespace M7engine
 		Vector2 position, velocity;
 		ALLEGRO_BITMAP *image;
 		ALLEGRO_COLOR color;
+		const char *bitmapFilename;
 	};
 }
 

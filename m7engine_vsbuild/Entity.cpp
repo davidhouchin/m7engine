@@ -48,6 +48,7 @@ namespace M7engine
 		}
 		else
 		{
+			this->bitmapFilename = filename;
 			this->setSize(al_get_bitmap_width(image), al_get_bitmap_height(image));
 			return true;
 		}
@@ -58,6 +59,25 @@ namespace M7engine
 	{
 		this->image = image;
 		this->setSize(al_get_bitmap_width(image), al_get_bitmap_height(image));
+	}
+
+	bool Entity::reloadImage()
+	{
+		if (image != NULL)
+		{
+			al_destroy_bitmap(image);
+			image = al_load_bitmap(this->bitmapFilename);
+			if (!image)
+			{
+				fprintf(stderr, "Failed to reload bitmap: '%s'\n", bitmapFilename);
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	void Entity::draw()

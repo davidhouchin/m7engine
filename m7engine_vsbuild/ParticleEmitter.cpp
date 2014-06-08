@@ -51,7 +51,27 @@ namespace M7engine
 			return false;
 		}
 
+		this->bitmapFilename = filename;
 		return true;
+	}
+
+	bool ParticleEmitter::reloadImage()
+	{
+		if (image != NULL)
+		{
+			al_destroy_bitmap(image);
+			image = al_load_bitmap(this->bitmapFilename);
+			if (!image)
+			{
+				fprintf(stderr, "Failed to reload bitmap: '%s'\n", bitmapFilename);
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	void ParticleEmitter::add()

@@ -155,6 +155,7 @@ int main(int argc, char **argv)
 	Console *console;
 	//////////
 
+	//Print working directory (debug)
 	TCHAR pwd[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, pwd);
 	fprintf(stderr, pwd);
@@ -178,15 +179,7 @@ int main(int argc, char **argv)
 	Tentity3->setColor(al_map_rgb(0, 0, 255));
 	Tentity3->setPosition(256, 128);
 	Tentity3->setSizeToImageScale();
-
-	m7_engine.addEntity(Tentity);
-	m7_engine.addEntity(Tentity2);
-	m7_engine.addEntity(Tentity3);
-	m7_engine.addEntity(console);
-
-	Tsample = new Sample();
-	Tsample->loadSample("explode2.wav");
-
+	
 	Temitter = new ParticleEmitter();
 	Temitter->loadImage("particle16.png");
 	Temitter->setPosition(128, 128);
@@ -198,6 +191,17 @@ int main(int argc, char **argv)
 	Temitter->setSpread(40);
 	Temitter->setVelocity(8);
 	Temitter->setLength(800);
+
+	m7_engine.addEntity(Tentity);
+	m7_engine.addEntity(Tentity2);
+	m7_engine.addEntity(Tentity3);
+	m7_engine.addEntity(console);
+	m7_engine.addParticleEmitter(Temitter);
+
+	Tsample = new Sample();
+	Tsample->loadSample("explode2.wav");
+
+	
 
 	Tfont = new Font;
 	Tfont->loadFont("linear.otf", 20);
@@ -226,6 +230,23 @@ int main(int argc, char **argv)
 		if (m7_engine.inputManager->getKeyReleased(ALLEGRO_KEY_SPACE))
 		{
 			m7_engine.soundManager->playSample(Tsample);
+		}
+		if (m7_engine.inputManager->getKeyReleased(ALLEGRO_KEY_BACKSPACE))
+		{
+			switch (m7_engine.getWindowMode())
+			{
+			case 0: m7_engine.setWindowMode(1); break;
+			case 1: m7_engine.setWindowMode(2); break;
+			case 2: m7_engine.setWindowMode(0); break;
+			}
+		}
+		if (m7_engine.inputManager->getKeyReleased(ALLEGRO_KEY_TAB))
+		{
+			switch (m7_engine.getDisplayContext())
+			{
+			case 0: m7_engine.setDisplayContext(1); break;
+			case 1: m7_engine.setDisplayContext(0); break;
+			}
 		}
 
 		Temitter->draw();

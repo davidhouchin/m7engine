@@ -37,6 +37,8 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_direct3d.h>
+#include <allegro5/allegro_opengl.h>
 #include "Entity.h"
 #include "InputManager.h"
 #include "SoundManager.h"
@@ -55,11 +57,12 @@ namespace M7engine
 	class Engine
 	{
 	private:
-		bool fullScreen, redraw;
-		int screenWidth, screenHeight, colorDepth, frameRate, frameCount;
+		bool redraw;
+		int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext;
 		double oldTime;
 		float fps;
 		std::list<Entity*> entities;
+		std::list<ParticleEmitter*> particleEmitters;
 		ALLEGRO_DISPLAY *display;
 		ALLEGRO_EVENT_QUEUE *eventQueue;
 		ALLEGRO_TIMER *timer;
@@ -67,7 +70,7 @@ namespace M7engine
 	public:
 		Engine();
 		virtual ~Engine();
-		bool init(int width, int height, bool fullscreen);
+		bool init(int width, int height, int mode);
 		void close();
 		bool update();
 
@@ -75,9 +78,12 @@ namespace M7engine
 		void drawEntities();
 		void cleanEntities();
 		void addEntity(Entity *entity);
+		void addParticleEmitter(ParticleEmitter *particleEmitter);
 		Entity *findEntity(int id);
 		std::list<Entity*> getEntityList() { return entities; }
+		std::list<ParticleEmitter*> getParticleEmitterList() { return particleEmitters; }
 		long getEntityCount() { return (long)entities.size(); }
+		void reloadBitmaps();
 
 		void updateCollisions();
 
@@ -93,8 +99,10 @@ namespace M7engine
 		void setScreenHeight(int value) { this->screenHeight = value; }
 		int getColorDepth() { return this->colorDepth; }
 		void setColorDepth(int value) { this->colorDepth = value; }
-		bool getFullScreen() { return this->fullScreen; }
-		void setFullScreen(bool value) { this->fullScreen = value; }
+		int getWindowMode() { return this->windowMode; }
+		bool setWindowMode(int value);
+		int getDisplayContext() { return this->displayContext; }
+		bool setDisplayContext(int value);
 
 		InputManager *inputManager;
 		SoundManager *soundManager;
