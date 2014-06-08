@@ -68,6 +68,10 @@ namespace M7engine
 			}
 			else
 			{
+				for (iter i = particles.begin(); i != particles.end(); ++i)
+				{
+					(*i)->setImage(this->image);
+				}
 				return true;
 			}
 		}
@@ -114,6 +118,7 @@ namespace M7engine
 		{
 			add();
 		}
+		fprintf(stderr, "%i \n", particles.size());
 
 		for (iter i = particles.begin(); i != particles.end(); ++i)
 		{

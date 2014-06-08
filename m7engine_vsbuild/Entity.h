@@ -21,13 +21,13 @@ namespace M7engine
 		Entity();
 		virtual ~Entity();
 
-		bool loadImage(const char *filename);
+		virtual bool loadImage(const char *filename);
 		void setImage(ALLEGRO_BITMAP *image);
-		bool reloadImage();
+		virtual bool reloadImage();
 		virtual void update() = 0;
 		virtual void collision(Entity *other) = 0;
 		void move();
-		void draw();
+		virtual void draw();
 
 		Vector2 getPosition() { return position; }
 		void setPosition(Vector2 arg) { this->position = arg; }

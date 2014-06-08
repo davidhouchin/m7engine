@@ -342,16 +342,5 @@ namespace M7engine
 			}
 			iter++;
 		}
-
-		std::list<ParticleEmitter*>::iterator pIter;
-		ParticleEmitter *emitter;
-		pIter = particleEmitters.begin();
-
-		while (pIter != particleEmitters.end())
-		{
-			emitter = *pIter;
-			emitter->reloadImage();
-			pIter++;
-		}
 	}
 };

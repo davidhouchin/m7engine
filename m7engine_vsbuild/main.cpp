@@ -196,12 +196,10 @@ int main(int argc, char **argv)
 	m7_engine.addEntity(Tentity2);
 	m7_engine.addEntity(Tentity3);
 	m7_engine.addEntity(console);
-	m7_engine.addParticleEmitter(Temitter);
+	m7_engine.addEntity(Temitter);
 
 	Tsample = new Sample();
 	Tsample->loadSample("explode2.wav");
-
-	
 
 	Tfont = new Font;
 	Tfont->loadFont("linear.otf", 20);
@@ -221,7 +219,6 @@ int main(int argc, char **argv)
 		}
 
 		Temitter->setPosition(Tentity->getX(), Tentity->getY());
-		Temitter->update();
 
 		if (m7_engine.inputManager->getKeyReleased(ALLEGRO_KEY_ESCAPE))
 		{
@@ -248,8 +245,6 @@ int main(int argc, char **argv)
 			case 1: m7_engine.setDisplayContext(0); break;
 			}
 		}
-
-		Temitter->draw();
 
 		if (m7_engine.collisionManager->getCollisionBBox(Tentity, Tentity2))
 		{

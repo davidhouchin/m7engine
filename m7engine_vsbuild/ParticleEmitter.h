@@ -28,7 +28,7 @@ namespace M7engine
 		}
 	};
 
-	class ParticleEmitter
+	class ParticleEmitter : public Entity
 	{
 	public:
 		ParticleEmitter();
@@ -53,6 +53,9 @@ namespace M7engine
 		void draw();
 		void update();
 		void add();
+		void collision(Entity *other)
+		{
+		}
 
 	private:
 		typedef std::vector<Entity*>::iterator iter;
