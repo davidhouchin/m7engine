@@ -111,7 +111,7 @@ public:
 	{
 		isOpen = false;
 		consoleFont = new Font;
-		consoleFont->loadFont("linear.otf", 10);
+		consoleFont->loadFont("linear.otf", 20);
 		consoleFont->setColor(al_map_rgb(255, 255, 255));
 		consoleFont->setJustification(0);
 	}
@@ -126,9 +126,9 @@ public:
 		if (isOpen)
 		{
 			m7_engine.primitives->drawFilledRectangle(0, 0, m7_engine.getScreenWidth(), 256, al_map_rgba(0, 0, 0, 50));
-			m7_engine.fontManager->drawTextF(20, 20, consoleFont, "Frames: %f", m7_engine.getFPS());
-			m7_engine.fontManager->drawTextF(20, 30, consoleFont, "X: %i", m7_engine.inputManager->getMouseX());
-			m7_engine.fontManager->drawTextF(20, 40, consoleFont, "Y: %i", m7_engine.inputManager->getMouseY());
+			m7_engine.fontManager->drawTextF(20, 20, consoleFont, "Frames: %g", (std::round(m7_engine.getFPS())));
+			m7_engine.fontManager->drawTextF(20, 40, consoleFont, "X: %i", m7_engine.inputManager->getMouseX());
+			m7_engine.fontManager->drawTextF(20, 60, consoleFont, "Y: %i", m7_engine.inputManager->getMouseY());
 		}
 	}
 

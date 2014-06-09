@@ -107,8 +107,11 @@ namespace M7engine
 	{
 		//Get current FPS
 		double gameTime = al_get_time();
-		fps = 1.0f / (gameTime - oldTime);
-		oldTime = gameTime;
+		if (gameTime - oldTime >= 1.0)
+		{
+			fps = this->getFrameRate() / (gameTime - oldTime);
+			oldTime = gameTime;
+		}
 		frameCount++;
 
 		inputManager->update();
