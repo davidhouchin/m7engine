@@ -99,6 +99,8 @@ namespace M7engine
 		ALLEGRO_EVENT k_ev;
 		al_get_next_event(keyboardQueue, &k_ev);
 
+		keyLast = k_ev.keyboard.keycode;
+
 		for (int i = 1; i < getMouseKeyNum(); ++i)
 		{
 			oldMouseKeys[i] = mouseKeys[i];
@@ -122,6 +124,9 @@ namespace M7engine
 			mouseX = m_ev.mouse.x;
 			mouseY = m_ev.mouse.y;
 			mouseZ = m_ev.mouse.z;
+			mouseDX = m_ev.mouse.dx;
+			mouseDY = m_ev.mouse.dy;
+			mouseDZ = m_ev.mouse.dz;
 			break;
 		}
 	}

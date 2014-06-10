@@ -26,9 +26,17 @@ namespace M7engine
 	Engine::~Engine()
 	{
 		std::cout << "Cleaning up resources...\n";
-		//al_destroy_timer(this->timer);
-		//al_destroy_display(this->display);
-		//al_destroy_event_queue(this->eventQueue);
+		//Comment out for now because it causes a crash on exit
+		/*delete inputManager;
+		delete soundManager;
+		delete fontManager;
+		delete primitives;
+		delete collisionManager;
+
+		al_destroy_bitmap(this->icon);
+		al_destroy_timer(this->timer);
+		al_destroy_display(this->display);
+		al_destroy_event_queue(this->eventQueue);*/
 	}
 
 	bool Engine::init(int width, int height, int mode)
@@ -92,6 +100,7 @@ namespace M7engine
 
 		al_register_event_source(eventQueue, al_get_display_event_source(display));
 		al_register_event_source(eventQueue, al_get_timer_event_source(timer));
+		al_register_event_source(eventQueue, al_get_mouse_event_source());
 
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 		al_flip_display();
@@ -105,20 +114,12 @@ namespace M7engine
 
 	bool Engine::update()
 	{
-		//Get current FPS
-		double gameTime = al_get_time();
-		if (gameTime - oldTime >= 1.0)
-		{
-			fps = this->getFrameRate() / (gameTime - oldTime);
-			oldTime = gameTime;
-		}
-		frameCount++;
 		fprintf(stdout, "Engine update cycle: %i\n", frameCount);
 
 		inputManager->update();
+		
+		frameCount++;
 
-		this->updateEntities();
-		this->updateCollisions();
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(eventQueue, &ev);
 
@@ -127,20 +128,33 @@ namespace M7engine
 		case ALLEGRO_EVENT_TIMER:
 			redraw = true;
 			break;
-		case ALLEGRO_EVENT_DISPLAY_CLOSE: return false; break;
+		case ALLEGRO_EVENT_DISPLAY_CLOSE: 
+			return false;
+			break;
 		}
 
 		if (redraw && al_is_event_queue_empty(eventQueue))
 		{
 			redraw = false;
 
-			this->drawEntities();
+			double gameTime = al_get_time();
+
+			updateCollisions();
+			updateEntities();
+			drawEntities();
 
 			al_flip_display();
-			al_clear_to_color(al_map_rgb(0, 0, 0));
+			al_clear_to_color(al_map_rgb(0, 255, 255));
+
+			if (gameTime - oldTime >= 1.0)
+			{
+				fps = this->getFrameRate() / (gameTime - oldTime);
+				oldTime = gameTime;
+			}
 		}
 
 		this->cleanEntities();
+
 		fprintf(stdout, "Engine update cycle complete.\n");
 		return true;
 	}

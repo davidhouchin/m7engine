@@ -48,6 +48,9 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConfigReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="M7engine.h">
@@ -80,6 +83,9 @@
     <ClInclude Include="Sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ConfigReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="explode2.wav">
@@ -91,6 +97,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="particle16.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="m7.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

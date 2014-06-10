@@ -7,13 +7,27 @@
 */
 
 /*
- _      _    ____  _____    ______    ______
-/\`\   / \  /  __\/\  __`\ /\  ___\  /\____ \
-\ \ `\|   \/\ \_/\\ \ \ \ \\ \ \__/  \/___/\ \
- \ \    /\ \ \ \\ \\ \ \ \ \\ \  __\      \ \ \
-  \ \ \`\ \ \ \ \\_\\ \ \_\ \\ \ \_/_      \ \ \
-   \ \ \ \ \_\ \____/\ \____, \ \_____\     \ \_\
-    \/_/  \/_/\/___/  \/___/   \/_____/      \/_/
+          _____                   _______                   _____                    _____            ____
+         /\    \                 /::\    \                 /\    \                  /\    \          /\   \
+        /::\____\               /::::\    \               /::\    \                /::\    \        /::\   \
+       /::::|   |              /::::::\    \             /::::\    \              /::::\    \       \:::\   \
+      /:::::|   |             /::::::::\    \           /::::::\    \            /::::::\    \       \:::\   \
+     /::::::|   |            /:::/--\:::\    \         /:::/\:::\    \          /:::/\:::\    \       \:::\   \
+    /:::/|::|   |           /:::/    \:::\    \       /:::/  \:::\    \        /:::/__\:::\    \       \:::\   \
+   /:::/ |::|   |          /:::/    / \:::\    \     /:::/    \:::\    \      /::::\   \:::\    \       \:::\   \
+  /:::/  |::|___|______   /:::/____/   \:::\____\   /:::/    / \:::\    \    /::::::\   \:::\    \       \:::\   \
+ /:::/   |::::::::\    \ |:::|    |     |:::|    | /:::/    /   \:::\ ___\  /:::/\:::\   \:::\    \       \:::\   \
+/:::/    |:::::::::\____\|:::|____|     |:::|    |/:::/____/     \:::|    |/:::/__\:::\   \:::\____\       \:::\___\
+\::/    / -----/:::/    / \:::\    \   /:::/    / \:::\    \     /:::|____|\:::\   \:::\   \::/    /       /:::/   /
+ \/____/      /:::/    /   \:::\    \ /:::/    /   \:::\    \   /:::/    /  \:::\   \:::\   \/____/       /:::/   /
+             /:::/    /     \:::\    /:::/    /     \:::\    \ /:::/    /    \:::\   \:::\    \          /:::/   /
+            /:::/    /       \:::\__/:::/    /       \:::\    /:::/    /      \:::\   \:::\____\        /:::/   /
+           /:::/    /         \::::::::/    /         \:::\  /:::/    /        \:::\   \::/    /       /:::/   /
+          /:::/    /           \::::::/    /           \:::\/:::/    /          \:::\   \/____/       /:::/   /
+         /:::/    /             \::::/    /             \::::::/    /            \:::\    \          /:::/   /
+        /:::/    /               \::/____/               \::::/    /              \:::\____\        /:::/   /
+        \::/    /                 --                      \::/____/                \::/    /        \::/   /
+         \/____/                                           --                       \/____/          \/___/
 */
 
 ///////THINGS TO DO///////
@@ -34,12 +48,13 @@
 #include <stdlib.h>
 #include <list>
 #include <math.h>
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_direct3d.h>
 #include <allegro5/allegro_opengl.h>
+
 #include "Entity.h"
 #include "Sprite.h"
 #include "InputManager.h"
@@ -66,12 +81,14 @@ namespace M7engine
 		std::list<Entity*> entities;
 		std::list<ParticleEmitter*> particleEmitters;
 		ALLEGRO_DISPLAY *display;
+		ALLEGRO_BITMAP *icon;
 		ALLEGRO_EVENT_QUEUE *eventQueue;
 		ALLEGRO_TIMER *timer;
 
 	public:
 		Engine();
 		virtual ~Engine();
+
 		bool init(int width, int height, int mode);
 		void close();
 		bool update();
@@ -93,8 +110,10 @@ namespace M7engine
 		ALLEGRO_EVENT_QUEUE* getEventQueue() { return eventQueue; }
 
 		int getFrameRate() { return this->frameRate; }
+		void setFrameRate(float arg) { this->frameRate = arg; al_set_timer_speed(timer, 1.0 / arg); }
 		int getFrameCount() { return this->frameCount; }
 		float getFPS() { return this->fps; }
+
 		int getScreenWidth() { return this->screenWidth; }
 		void setScreenWidth(int value) { this->screenWidth = value; }
 		int getScreenHeight() { return this->screenHeight; }
@@ -105,6 +124,12 @@ namespace M7engine
 		bool setWindowMode(int value);
 		int getDisplayContext() { return this->displayContext; }
 		bool setDisplayContext(int value);
+
+		void setWindowTitle(const char *title) { al_set_window_title(display, title); }
+		bool setIcon(const char *filename)
+		{
+			icon = al_load_bitmap(filename); if (!icon) { return false; } al_set_display_icon(display, icon); return true;
+		}
 
 		InputManager *inputManager;
 		SoundManager *soundManager;

@@ -56,10 +56,6 @@ public:
 			setY(m7_engine.inputManager->getMouseY() - yOffset);
 		}
 	}
-
-	void collision(Entity *other)
-	{
-	}
 };
 
 class TestE2 : public M7engine::Entity
@@ -126,14 +122,11 @@ public:
 		if (isOpen)
 		{
 			m7_engine.primitives->drawFilledRectangle(0, 0, m7_engine.getScreenWidth(), 256, al_map_rgba(0, 0, 0, 50));
-			m7_engine.fontManager->drawTextF(20, 20, consoleFont, "Frames: %g", (std::round(m7_engine.getFPS())));
-			m7_engine.fontManager->drawTextF(20, 40, consoleFont, "X: %i", m7_engine.inputManager->getMouseX());
-			m7_engine.fontManager->drawTextF(20, 60, consoleFont, "Y: %i", m7_engine.inputManager->getMouseY());
+			m7_engine.fontManager->drawTextF(20, 20, consoleFont, "FPS: %g", (std::round(m7_engine.getFPS())));
+			m7_engine.fontManager->drawTextF(20, 40, consoleFont, "Frames: %i", m7_engine.getFrameCount());
+			m7_engine.fontManager->drawTextF(20, 60, consoleFont, "X: %i", m7_engine.inputManager->getMouseX());
+			m7_engine.fontManager->drawTextF(20, 80, consoleFont, "Y: %i", m7_engine.inputManager->getMouseY());
 		}
-	}
-
-	void collision(Entity *other)
-	{
 	}
 };
 
@@ -143,6 +136,8 @@ int main(int argc, char **argv)
 	bool running = true;
 
 	m7_engine.init(640, 480, 0);
+	m7_engine.setWindowTitle("M7engine Tech Demo");
+	m7_engine.setIcon("m7.png");
 
 	//FOR TEST
 	Sample *Tsample;
@@ -200,6 +195,7 @@ int main(int argc, char **argv)
 
 	Tsample = new Sample();
 	Tsample->loadSample("explode2.wav");
+	Tsample->setSampleSpeed(5);
 
 	Tfont = new Font;
 	Tfont->loadFont("linear.otf", 20);
@@ -227,6 +223,8 @@ int main(int argc, char **argv)
 		if (m7_engine.inputManager->getKeyReleased(ALLEGRO_KEY_SPACE))
 		{
 			m7_engine.soundManager->playSample(Tsample);
+			if (m7_engine.getFrameRate() == 30){ m7_engine.setFrameRate(60); }
+			else { m7_engine.setFrameRate(30); }
 		}
 		if (m7_engine.inputManager->getKeyReleased(ALLEGRO_KEY_BACKSPACE))
 		{

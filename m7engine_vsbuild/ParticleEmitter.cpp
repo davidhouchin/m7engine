@@ -100,10 +100,12 @@ namespace M7engine
 
 	void ParticleEmitter::draw()
 	{
+		al_hold_bitmap_drawing(1);
 		for (iter i = particles.begin(); i != particles.end(); ++i)
 		{
 			(*i)->draw();
 		}
+		al_hold_bitmap_drawing(0);
 	}
 
 	void ParticleEmitter::update()

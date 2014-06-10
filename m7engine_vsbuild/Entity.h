@@ -25,8 +25,8 @@ namespace M7engine
 		virtual bool loadImage(const char *filename);
 		void setImage(Sprite *image);
 		virtual void reloadImage();
-		virtual void update() = 0;
-		virtual void collision(Entity *other) = 0;
+		virtual void update() {};
+		virtual void collision(Entity *other) {};
 		void move();
 		virtual void draw();
 

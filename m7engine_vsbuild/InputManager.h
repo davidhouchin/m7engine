@@ -25,6 +25,9 @@ namespace M7engine
 		int getMouseX() { return this->mouseX; }
 		int getMouseY() { return this->mouseY; }
 		int getMouseZ() { return this->mouseZ; }
+		int getMouseDX() { return this->mouseDX; }
+		int getMouseDY() { return this->mouseDY; }
+		int getMouseDZ() { return this->mouseDZ; }
 		int getMouseKeyNum() { return al_get_mouse_num_buttons(); }
 		bool getMouseState(int arg) { return al_mouse_button_down(&mouseState, arg); }
 		bool getMousePressed(int arg) { return mouseKeyStates[arg] & KEY_PRESS; }
@@ -37,16 +40,18 @@ namespace M7engine
 		bool getKeyReleased(int arg) { return keyStates[arg] & KEY_RELEASE; }
 		bool getKeyHeld(int arg) { return keyStates[arg] & KEY_HELD; }
 		bool getKeyOpen(int arg) { return keyStates[arg] & KEY_OPEN; }
+		int getKeyLast() { return keyLast; }
 
 	private:
-		int mouseX, mouseY, mouseZ;
+		int mouseX, mouseY, mouseZ, mouseDX, mouseDY, mouseDZ;
 		ALLEGRO_EVENT_QUEUE *keyboardQueue;
 		ALLEGRO_EVENT_QUEUE *mouseQueue;
 		ALLEGRO_KEYBOARD_STATE keyboardState;
 		ALLEGRO_MOUSE_STATE mouseState;
-		bool* mouseKeys;
-		bool* oldMouseKeys;
-		int* mouseKeyStates;
+		int keyLast;
+		bool *mouseKeys;
+		bool *oldMouseKeys;
+		int *mouseKeyStates;
 		bool keys[ALLEGRO_KEY_MAX];
 		bool oldKeys[ALLEGRO_KEY_MAX];
 		int keyStates[ALLEGRO_KEY_MAX];
