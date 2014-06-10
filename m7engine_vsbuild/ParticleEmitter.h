@@ -47,12 +47,12 @@ namespace M7engine
 		void setSpread(int arg){ spread = arg; }
 		void setLength(double arg){ length = arg; }
 		void setVelocity(double arg){ velocity = arg; }
-		void setScale(double arg){ scale = arg; }
 		bool loadImage(const char* filename);
-		bool reloadImage();
+		void reloadImage();
 		void draw();
 		void update();
 		void add();
+		Sprite* getSprite() { return image; }
 		void collision(Entity *other)
 		{
 		}
@@ -60,9 +60,9 @@ namespace M7engine
 	private:
 		typedef std::vector<Entity*>::iterator iter;
 		std::vector<Entity*> particles;
-		ALLEGRO_BITMAP *image;
+		Sprite *image;
 		Vector2 position;
-		double direction, length, velocity, scale;
+		double direction, length, velocity;
 		int max, alphaMin, alphaMax, minR, minG, minB, maxR, maxG, maxB, spread;
 		const char *bitmapFilename;
 

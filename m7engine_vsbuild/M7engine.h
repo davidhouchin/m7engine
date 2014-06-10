@@ -6,13 +6,14 @@
 * For more information, see COPYING.
 */
 
-/*   _      _    ____  _____    ______    ______
+/*
+ _      _    ____  _____    ______    ______
 /\`\   / \  /  __\/\  __`\ /\  ___\  /\____ \
 \ \ `\|   \/\ \_/\\ \ \ \ \\ \ \__/  \/___/\ \
-\ \    /\ \ \ \\ \\ \ \ \ \\ \  __\      \ \ \
-\ \ \`\ \ \ \ \\_\\ \ \_\ \\ \ \_/_      \ \ \
-\ \ \ \ \_\ \____/\ \____, \ \_____\     \ \_\
-\/_/  \/_/\/___/  \/___/   \/_____/      \/_/
+ \ \    /\ \ \ \\ \\ \ \ \ \\ \  __\      \ \ \
+  \ \ \`\ \ \ \ \\_\\ \ \_\ \\ \ \_/_      \ \ \
+   \ \ \ \ \_\ \____/\ \____, \ \_____\     \ \_\
+    \/_/  \/_/\/___/  \/___/   \/_____/      \/_/
 */
 
 ///////THINGS TO DO///////
@@ -40,6 +41,7 @@
 #include <allegro5/allegro_direct3d.h>
 #include <allegro5/allegro_opengl.h>
 #include "Entity.h"
+#include "Sprite.h"
 #include "InputManager.h"
 #include "SoundManager.h"
 #include "Vector2.h"
@@ -50,7 +52,7 @@
 #include "CollisionManager.h"
 
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 4
+#define VERSION_MINOR 2
 
 namespace M7engine
 {

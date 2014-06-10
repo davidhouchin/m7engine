@@ -80,6 +80,7 @@
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="Primitives.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +92,7 @@
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="Primitives.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>

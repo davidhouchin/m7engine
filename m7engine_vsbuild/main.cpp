@@ -30,7 +30,7 @@ public:
 		int r = rand();
 		int g = rand();
 		int b = rand();
-		this->setColor(al_map_rgb(r, g, b));
+		this->getSprite()->setColor(al_map_rgb(r, g, b));
 
 		if (m7_engine.inputManager->getMouseX() < getX() + getWidth() && m7_engine.inputManager->getMouseX() > getX())
 		{
@@ -69,7 +69,7 @@ class TestE2 : public M7engine::Entity
 		int r = rand();
 		int g = rand();
 		int b = rand();
-		this->setColor(al_map_rgb(r, g, b));
+		this->getSprite()->setColor(al_map_rgb(r, g, b));
 
 		if (m7_engine.inputManager->getKeyHeld(ALLEGRO_KEY_W))
 		{
@@ -109,7 +109,7 @@ private:
 public:
 	Console()
 	{
-		isOpen = false;
+		isOpen = true;
 		consoleFont = new Font;
 		consoleFont->loadFont("linear.otf", 20);
 		consoleFont->setColor(al_map_rgb(255, 255, 255));
@@ -165,29 +165,29 @@ int main(int argc, char **argv)
 
 	Tentity = new TestE2();
 	Tentity->loadImage("monster2.png");
-	Tentity->setScale(3);
+	Tentity->getSprite()->setScale(3);
 	Tentity->setSize(96, 96);
 
 	Tentity2 = new TestE();
 	Tentity2->loadImage("monster2.png");
-	Tentity2->setScale(1);
-	Tentity2->setColor(al_map_rgb(0, 255, 0));
+	Tentity2->getSprite()->setScale(1);
+	Tentity2->getSprite()->setColor(al_map_rgb(0, 255, 0));
 
 	Tentity3 = new TestE();
 	Tentity3->loadImage("monster2.png");
-	Tentity3->setScale(2);
-	Tentity3->setColor(al_map_rgb(0, 0, 255));
+	Tentity3->getSprite()->setScale(2);
+	Tentity3->getSprite()->setColor(al_map_rgb(0, 0, 255));
 	Tentity3->setPosition(256, 128);
 	Tentity3->setSizeToImageScale();
-	
+
 	Temitter = new ParticleEmitter();
 	Temitter->loadImage("particle16.png");
 	Temitter->setPosition(128, 128);
-	Temitter->setScale(2);
+	Temitter->getSprite()->setScale(2);
 	Temitter->setDirection(0);
 	Temitter->setMax(500);
 	Temitter->setAlphaRange(0, 100);
-	Temitter->setColorRange(0, 0, 0, 255, 255, 255);
+	Temitter->setColorRange(100, 100, 100, 150, 150, 150);
 	Temitter->setSpread(40);
 	Temitter->setVelocity(8);
 	Temitter->setLength(800);

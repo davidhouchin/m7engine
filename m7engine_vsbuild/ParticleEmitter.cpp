@@ -12,7 +12,7 @@ namespace M7engine
 {
 	ParticleEmitter::ParticleEmitter()
 	{
-		image = NULL;
+		image = new Sprite();
 		max = 100;
 		length = 100;
 		direction = 0;
@@ -26,12 +26,11 @@ namespace M7engine
 		maxB = 255;
 		spread = 10;
 		velocity = 1;
-		scale = 1;
 	}
 
 	ParticleEmitter::~ParticleEmitter()
 	{
-		al_destroy_bitmap(image);
+		delete image;
 
 		for (iter i = particles.begin(); i != particles.end(); ++i)
 		{
@@ -43,11 +42,10 @@ namespace M7engine
 
 	bool ParticleEmitter::loadImage(const char* filename)
 	{
-		image = al_load_bitmap(filename);
-
+		image->loadImage(filename);
 		if (!image)
 		{
-			fprintf(stderr, "Failed to load particle image: '%s'\n", filename);
+			fprintf(stderr, "Particle emitter failed to load particle image: '%s'\n", filename);
 			return false;
 		}
 
@@ -55,16 +53,14 @@ namespace M7engine
 		return true;
 	}
 
-	bool ParticleEmitter::reloadImage()
+	void ParticleEmitter::reloadImage()
 	{
 		if (image != NULL)
 		{
-			al_destroy_bitmap(image);
-			image = al_load_bitmap(this->bitmapFilename);
+			image->reloadBitmap();
 			if (!image)
 			{
 				fprintf(stderr, "Failed to reload bitmap: '%s'\n", bitmapFilename);
-				return false;
 			}
 			else
 			{
@@ -72,10 +68,8 @@ namespace M7engine
 				{
 					(*i)->setImage(this->image);
 				}
-				return true;
 			}
 		}
-		return false;
 	}
 
 	void ParticleEmitter::add()
@@ -97,9 +91,9 @@ namespace M7engine
 		int g = rand() % (maxG - minG) + minG;
 		int b = rand() % (maxB - minB) + minB;
 		int a = rand() % (alphaMax - alphaMin) + alphaMin;
-		p->setColor(al_map_rgba(r, g, b, a));
+		p->getSprite()->setColor(al_map_rgba(r, g, b, a));
 
-		p->setScale(scale);
+		p->getSprite()->setScale(this->image->getScale());
 
 		particles.push_back(p);
 	}
@@ -118,7 +112,6 @@ namespace M7engine
 		{
 			add();
 		}
-		fprintf(stderr, "%i \n", particles.size());
 
 		for (iter i = particles.begin(); i != particles.end(); ++i)
 		{

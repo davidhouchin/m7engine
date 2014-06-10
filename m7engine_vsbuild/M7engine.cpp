@@ -113,6 +113,7 @@ namespace M7engine
 			oldTime = gameTime;
 		}
 		frameCount++;
+		fprintf(stdout, "Engine update cycle: %i\n", frameCount);
 
 		inputManager->update();
 
@@ -140,12 +141,13 @@ namespace M7engine
 		}
 
 		this->cleanEntities();
-
+		fprintf(stdout, "Engine update cycle complete.\n");
 		return true;
 	}
 
 	void Engine::updateEntities()
 	{
+		fprintf(stdout, "Engine is updating entities.\n");
 		std::list<Entity*>::iterator iter;
 		Entity *entity;
 		iter = entities.begin();
@@ -163,6 +165,8 @@ namespace M7engine
 
 	void Engine::drawEntities()
 	{
+		fprintf(stdout, "Engine is drawing.\n");
+		al_set_target_backbuffer(display);
 		std::list<Entity*>::iterator iter;
 		Entity *entity;
 		iter = entities.begin();
@@ -180,6 +184,7 @@ namespace M7engine
 
 	void Engine::cleanEntities()
 	{
+		fprintf(stdout, "Engine is cleaning.\n");
 		std::list<Entity*>::iterator iter;
 		Entity *entity;
 		iter = entities.begin();
@@ -203,6 +208,7 @@ namespace M7engine
 		static int id = 0;
 		entity->setID(id);
 		entities.push_back(entity);
+		fprintf(stdout, "Engine added entity id: %i\n", id);
 		id++;
 	}
 
@@ -233,6 +239,7 @@ namespace M7engine
 
 	void Engine::updateCollisions()
 	{
+		fprintf(stdout, "Engine is updating collisions.\n");
 		std::list<Entity*>::iterator iterA, iterB;
 		Entity *entityA;
 		Entity *entityB;
@@ -332,6 +339,7 @@ namespace M7engine
 
 	void Engine::reloadBitmaps()
 	{
+		fprintf(stdout, "Engine is reloading bitmaps.\n");
 		std::list<Entity*>::iterator iter;
 		Entity *entity;
 		iter = entities.begin();

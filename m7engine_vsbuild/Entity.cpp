@@ -15,76 +15,53 @@ namespace M7engine
 		this->id = -1;
 		this->visible = true;
 		this->active = true;
-		this->image = NULL;
+		this->image = new Sprite();
 		this->setPosition(128, 128);
 		this->direction = 0;
-		this->width = 1;
-		this->height = 1;
-		this->rotation = 0;
-		this->scale = 1;
-		this->color = al_map_rgb(255, 255, 255);
 	}
 
 	Entity::~Entity()
 	{
-		if (image != NULL)
-		{
-			al_destroy_bitmap(image);
-		}
+		delete image;
 	}
 
 	bool Entity::loadImage(const char *filename)
 	{
-		if (image != NULL)
-		{
-			al_destroy_bitmap(image);
-		}
-
-		image = al_load_bitmap(filename);
+		fprintf(stdout, "Entity ID %i loading image: '%s'\n", id, filename);
+		image->loadImage(filename);
 		if (!image)
 		{
-			fprintf(stderr, "Failed to load bitmap: '%s'\n", filename);
+			fprintf(stderr, "Entity failed to set bitmap: '%s'\n", filename);
 			return false;
 		}
 		else
 		{
-			this->bitmapFilename = filename;
-			this->setSize(al_get_bitmap_width(image), al_get_bitmap_height(image));
+			this->setSize(image->getWidth(), image->getHeight());
 			return true;
 		}
 
 	}
 
-	void Entity::setImage(ALLEGRO_BITMAP *image)
+	void Entity::setImage(Sprite *image)
 	{
 		this->image = image;
-		this->setSize(al_get_bitmap_width(image), al_get_bitmap_height(image));
+		this->setSize(image->getWidth(), image->getHeight());
 	}
 
-	bool Entity::reloadImage()
+	void Entity::reloadImage()
 	{
 		if (image != NULL)
 		{
-			al_destroy_bitmap(image);
-			image = al_load_bitmap(this->bitmapFilename);
-			if (!image)
-			{
-				fprintf(stderr, "Failed to reload bitmap: '%s'\n", bitmapFilename);
-				return false;
-			}
-			else
-			{
-				return true;
-			}
+			image->reloadBitmap();
 		}
-		return false;
 	}
 
 	void Entity::draw()
 	{
 		if (image)
 		{
-			al_draw_tinted_scaled_rotated_bitmap(image, color, 0, 0, this->getX(), this->getY(), scale, scale, rotation, 0);
+			fprintf(stderr, "%i is drawing->\n", id);
+			image->draw(this->getX(), this->getY());
 		}
 	}
 

@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include "Vector2.h"
+#include "Sprite.h"
 
 namespace M7engine
 {
@@ -22,8 +23,8 @@ namespace M7engine
 		virtual ~Entity();
 
 		virtual bool loadImage(const char *filename);
-		void setImage(ALLEGRO_BITMAP *image);
-		virtual bool reloadImage();
+		void setImage(Sprite *image);
+		virtual void reloadImage();
 		virtual void update() = 0;
 		virtual void collision(Entity *other) = 0;
 		void move();
@@ -51,7 +52,7 @@ namespace M7engine
 		void setVelocity(double x, double y){ velocity.setX(x); velocity.setY(y); }
 
 		void setSize(int width, int height) { this->width = width; this->height = height; }
-		void setSizeToImageScale() { this->width = width * scale; this->height = height * scale; }
+		void setSizeToImageScale() { this->width = width * image->getScale(); this->height = height * image->getScale(); }
 		int getWidth() { return this->width; }
 		void setWidth(int arg) { this->width = arg; }
 		int getHeight() { return this->height; }
@@ -60,23 +61,14 @@ namespace M7engine
 		int getDirection() { return direction; }
 		void setDirection(int arg) { direction = arg; }
 
-		double getRotation() { return rotation; }
-		void setRotation(double arg) { rotation = arg; }
-		double getScale() { return scale; }
-		void setScale(double arg) { scale = arg; }
-
-		ALLEGRO_COLOR getColor() { return color; }
-		void setColor(ALLEGRO_COLOR arg) { color = arg; }
+		Sprite* getSprite(){ return image; }
 
 	private:
 		int id, width, height, direction;
-		double rotation, scale;
 		bool visible, active;
 		Vector2 position, velocity;
-		ALLEGRO_BITMAP *image;
-		ALLEGRO_COLOR color;
-		const char *bitmapFilename;
+		Sprite *image;
 	};
-}
+};
 
 #endif
