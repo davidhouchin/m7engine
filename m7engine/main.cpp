@@ -107,7 +107,7 @@ public:
 	{
 		isOpen = true;
 		consoleFont = new Font;
-		consoleFont->loadFont("linear.otf", 20);
+		consoleFont->loadFont("../resources/linear.otf", 20);
 		consoleFont->setColor(al_map_rgb(255, 255, 255));
 		consoleFont->setJustification(0);
 	}
@@ -132,12 +132,18 @@ public:
 
 int main(int argc, char **argv)
 {
+	//Print working directory (debug)
+	TCHAR pwd[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, pwd);
+	fprintf(stdout, pwd);
+	fprintf(stdout, "PWD: \n");
+
 	using namespace M7engine;
 	bool running = true;
 
 	int resX, resY, fs;
 
-	m7_engine.getConfigReader()->loadConfig("config.ini");
+	m7_engine.getConfigReader()->loadConfig("../resources/config.ini");
 	resX = m7_engine.getConfigReader()->getInt("video", "resX");
 	resY = m7_engine.getConfigReader()->getInt("video", "resY");
 	fs = m7_engine.getConfigReader()->getBool("video", "fullscreen");
@@ -145,7 +151,7 @@ int main(int argc, char **argv)
 
 	m7_engine.init(resX, resY, fs);
 	m7_engine.setWindowTitle("M7engine Tech Demo");
-	m7_engine.setIcon("m7.png");
+	m7_engine.setIcon("../resources/m7.png");
 	
 	//FOR TEST
 	Sample *Tsample;
@@ -158,33 +164,27 @@ int main(int argc, char **argv)
 	Console *console;
 	//////////
 
-	//Print working directory (debug)
-	TCHAR pwd[MAX_PATH];
-	GetCurrentDirectory(MAX_PATH, pwd);
-	fprintf(stderr, pwd);
-	fprintf(stderr, "\n");
-
 	console = new Console();
 
 	Tentity = new TestE2();
-	Tentity->loadImage("monster2.png");
+	Tentity->loadImage("../resources/monster2.png");
 	Tentity->getSprite()->setScale(3);
 	Tentity->setSize(96, 96);
 
 	Tentity2 = new TestE();
-	Tentity2->loadImage("monster2.png");
+	Tentity2->loadImage("../resources/monster2.png");
 	Tentity2->getSprite()->setScale(1);
 	Tentity2->getSprite()->setColor(al_map_rgb(0, 255, 0));
 
 	Tentity3 = new TestE();
-	Tentity3->loadImage("monster2.png");
+	Tentity3->loadImage("../resources/monster2.png");
 	Tentity3->getSprite()->setScale(2);
 	Tentity3->getSprite()->setColor(al_map_rgb(0, 0, 255));
 	Tentity3->setPosition(256, 128);
 	Tentity3->setSizeToImageScale();
 
 	Temitter = new ParticleEmitter();
-	Temitter->loadImage("particle16.png");
+	Temitter->loadImage("../resources/particle16.png");
 	Temitter->setPosition(128, 128);
 	Temitter->getSprite()->setScale(2);
 	Temitter->setDirection(0);
@@ -202,11 +202,11 @@ int main(int argc, char **argv)
 	m7_engine.addEntity(Temitter);
 
 	Tsample = new Sample();
-	Tsample->loadSample("explode2.wav");
+	Tsample->loadSample("../resources/explode2.wav");
 	Tsample->setSampleSpeed(5);
 
 	Tfont = new Font;
-	Tfont->loadFont("linear.otf", 20);
+	Tfont->loadFont("../resources/linear.otf", 20);
 	Tfont->setColor(al_map_rgb(0, 200, 200));
 	Tfont->setJustification(1);
 

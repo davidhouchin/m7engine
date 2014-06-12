@@ -12,7 +12,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F3B78707-D780-458E-A37F-E10088F66F1E}</ProjectGuid>
-    <RootNamespace>m7engine_vsbuild</RootNamespace>
+    <RootNamespace>m7engine</RootNamespace>
+    <ProjectName>m7engine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -98,18 +99,21 @@
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="explode2.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="m7.png" />
-    <Image Include="monster2.png" />
-    <Image Include="particle16.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="COPYING.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="linear.otf" />
+    <None Include="..\resources\config.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\resources\explode2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\resources\linear.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\resources\m7.png" />
+    <Image Include="..\resources\monster2.png" />
+    <Image Include="..\resources\particle16.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

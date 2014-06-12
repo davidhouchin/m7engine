@@ -88,29 +88,34 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="explode2.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="monster2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="particle16.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="m7.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="COPYING.txt">
       <Filter>Header Files</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="linear.otf">
+    <None Include="..\resources\config.ini">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\resources\explode2.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\resources\linear.otf">
       <Filter>Resource Files</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\resources\m7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\resources\monster2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\resources\particle16.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

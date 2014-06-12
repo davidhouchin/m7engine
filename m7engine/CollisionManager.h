@@ -13,16 +13,15 @@
 
 namespace M7engine
 {
-	class CollisionManager
-	{
-	public:
-		CollisionManager();
-		virtual ~CollisionManager();
+class CollisionManager
+{
+public:
+	CollisionManager();
+	virtual ~CollisionManager();
 
-		bool getCollisionBBox(Entity *a, Entity *b);
+	bool getCollisionBBox(Entity *a, Entity *b);
 
-	private:
-
-	};
+private:
+};
 }
 #endif

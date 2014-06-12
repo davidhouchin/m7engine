@@ -16,21 +16,21 @@
 
 namespace M7engine
 {
-	class ConfigReader
-	{
-	public:
-		ConfigReader();
-		virtual ~ConfigReader();
+class ConfigReader
+{
+public:
+	ConfigReader();
+	virtual ~ConfigReader();
 
-		bool loadConfig(const char *filename);
+	bool loadConfig(const char *filename);
 
-		int getInt(const char *section, const char *key);
-		bool getBool(const char *section, const char *key);
-		const char* getChar(const char *section, const char *key);
+	int getInt(const char *section, const char *key);
+	bool getBool(const char *section, const char *key);
+	const char* getChar(const char *section, const char *key);
 
-	private:
-		ALLEGRO_CONFIG* engineConfig;
-	};
+private:
+	ALLEGRO_CONFIG* engineConfig;
+};
 };
 
 #endif

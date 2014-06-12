@@ -72,80 +72,80 @@
 
 namespace M7engine
 {
-	class Engine
+class Engine
+{
+private:
+	bool redraw;
+	int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext;
+	double oldTime;
+	float fps;
+	std::list<Entity*> entities;
+	std::list<ParticleEmitter*> particleEmitters;
+	ALLEGRO_DISPLAY *display;
+	ALLEGRO_BITMAP *icon;
+	ALLEGRO_EVENT_QUEUE *eventQueue;
+	ALLEGRO_TIMER *timer;
+
+public:
+	Engine();
+	virtual ~Engine();
+
+	bool init(int width, int height, int mode);
+	void close();
+	bool update();
+
+	void updateEntities();
+	void drawEntities();
+	void cleanEntities();
+	void addEntity(Entity *entity);
+	void addParticleEmitter(ParticleEmitter *particleEmitter);
+	Entity *findEntity(int id);
+	std::list<Entity*> getEntityList() { return entities; }
+	std::list<ParticleEmitter*> getParticleEmitterList() { return particleEmitters; }
+	long getEntityCount() { return (long)entities.size(); }
+	void reloadBitmaps();
+
+	void updateCollisions();
+
+	ALLEGRO_DISPLAY* getDisplay() { return display; }
+	ALLEGRO_EVENT_QUEUE* getEventQueue() { return eventQueue; }
+
+	int getFrameRate() { return this->frameRate; }
+	void setFrameRate(float arg) { this->frameRate = arg; al_set_timer_speed(timer, 1.0 / arg); }
+	int getFrameCount() { return this->frameCount; }
+	float getFPS() { return this->fps; }
+
+	int getScreenWidth() { return this->screenWidth; }
+	void setScreenWidth(int value) { this->screenWidth = value; }
+	int getScreenHeight() { return this->screenHeight; }
+	void setScreenHeight(int value) { this->screenHeight = value; }
+	int getColorDepth() { return this->colorDepth; }
+	void setColorDepth(int value) { this->colorDepth = value; }
+	int getWindowMode() { return this->windowMode; }
+	bool setWindowMode(int value);
+	int getDisplayContext() { return this->displayContext; }
+	bool setDisplayContext(int value);
+
+	void setWindowTitle(const char *title) { al_set_window_title(display, title); }
+	bool setIcon(const char *filename)
 	{
-	private:
-		bool redraw;
-		int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext;
-		double oldTime;
-		float fps;
-		std::list<Entity*> entities;
-		std::list<ParticleEmitter*> particleEmitters;
-		ALLEGRO_DISPLAY *display;
-		ALLEGRO_BITMAP *icon;
-		ALLEGRO_EVENT_QUEUE *eventQueue;
-		ALLEGRO_TIMER *timer;
+		icon = al_load_bitmap(filename); if (!icon) { return false; } al_set_display_icon(display, icon); return true;
+	}
 
-	public:
-		Engine();
-		virtual ~Engine();
+	InputManager *inputManager;
+	SoundManager *soundManager;
+	FontManager *fontManager;
+	Primitives *primitives;
+	CollisionManager *collisionManager;
+	ConfigReader *configReader;
 
-		bool init(int width, int height, int mode);
-		void close();
-		bool update();
-
-		void updateEntities();
-		void drawEntities();
-		void cleanEntities();
-		void addEntity(Entity *entity);
-		void addParticleEmitter(ParticleEmitter *particleEmitter);
-		Entity *findEntity(int id);
-		std::list<Entity*> getEntityList() { return entities; }
-		std::list<ParticleEmitter*> getParticleEmitterList() { return particleEmitters; }
-		long getEntityCount() { return (long)entities.size(); }
-		void reloadBitmaps();
-
-		void updateCollisions();
-
-		ALLEGRO_DISPLAY* getDisplay() { return display; }
-		ALLEGRO_EVENT_QUEUE* getEventQueue() { return eventQueue; }
-
-		int getFrameRate() { return this->frameRate; }
-		void setFrameRate(float arg) { this->frameRate = arg; al_set_timer_speed(timer, 1.0 / arg); }
-		int getFrameCount() { return this->frameCount; }
-		float getFPS() { return this->fps; }
-
-		int getScreenWidth() { return this->screenWidth; }
-		void setScreenWidth(int value) { this->screenWidth = value; }
-		int getScreenHeight() { return this->screenHeight; }
-		void setScreenHeight(int value) { this->screenHeight = value; }
-		int getColorDepth() { return this->colorDepth; }
-		void setColorDepth(int value) { this->colorDepth = value; }
-		int getWindowMode() { return this->windowMode; }
-		bool setWindowMode(int value);
-		int getDisplayContext() { return this->displayContext; }
-		bool setDisplayContext(int value);
-
-		void setWindowTitle(const char *title) { al_set_window_title(display, title); }
-		bool setIcon(const char *filename)
-		{
-			icon = al_load_bitmap(filename); if (!icon) { return false; } al_set_display_icon(display, icon); return true;
-		}
-
-		InputManager *inputManager;
-		SoundManager *soundManager;
-		FontManager *fontManager;
-		Primitives *primitives;
-		CollisionManager *collisionManager;
-		ConfigReader *configReader;
-
-		InputManager* getInputManager() { return inputManager; }
-		SoundManager* getSoundManager() { return soundManager; }
-		FontManager* getFontManager() { return fontManager; }
-		Primitives* getPrimitives() { return primitives; }
-		CollisionManager* getCollisionManager() { return collisionManager; }
-		ConfigReader* getConfigReader() { return configReader; }
-	};
+	InputManager* getInputManager() { return inputManager; }
+	SoundManager* getSoundManager() { return soundManager; }
+	FontManager* getFontManager() { return fontManager; }
+	Primitives* getPrimitives() { return primitives; }
+	CollisionManager* getCollisionManager() { return collisionManager; }
+	ConfigReader* getConfigReader() { return configReader; }
+};
 };
 
 #endif
