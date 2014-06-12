@@ -135,10 +135,18 @@ int main(int argc, char **argv)
 	using namespace M7engine;
 	bool running = true;
 
-	m7_engine.init(640, 480, 0);
+	int resX, resY, fs;
+
+	m7_engine.getConfigReader()->loadConfig("config.ini");
+	resX = m7_engine.getConfigReader()->getInt("video", "resX");
+	resY = m7_engine.getConfigReader()->getInt("video", "resY");
+	fs = m7_engine.getConfigReader()->getBool("video", "fullscreen");
+	fprintf(stdout, "Read values: %i %i %i \n", resX, resY, fs);
+
+	m7_engine.init(resX, resY, fs);
 	m7_engine.setWindowTitle("M7engine Tech Demo");
 	m7_engine.setIcon("m7.png");
-
+	
 	//FOR TEST
 	Sample *Tsample;
 	TestE2 *Tentity;

@@ -65,6 +65,7 @@
 #include "Primitives.h"
 #include "Font.h"
 #include "CollisionManager.h"
+#include "ConfigReader.h"
 
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 2
@@ -136,12 +137,14 @@ namespace M7engine
 		FontManager *fontManager;
 		Primitives *primitives;
 		CollisionManager *collisionManager;
+		ConfigReader *configReader;
 
 		InputManager* getInputManager() { return inputManager; }
 		SoundManager* getSoundManager() { return soundManager; }
 		FontManager* getFontManager() { return fontManager; }
 		Primitives* getPrimitives() { return primitives; }
 		CollisionManager* getCollisionManager() { return collisionManager; }
+		ConfigReader* getConfigReader() { return configReader; }
 	};
 };
 

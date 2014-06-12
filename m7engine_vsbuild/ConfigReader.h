@@ -12,13 +12,24 @@
 #include <stdio.h>
 #include <cstring>
 #include <string>
+#include <allegro5/allegro.h>
 
 namespace M7engine
 {
 	class ConfigReader
 	{
+	public:
 		ConfigReader();
 		virtual ~ConfigReader();
+
+		bool loadConfig(const char *filename);
+
+		int getInt(const char *section, const char *key);
+		bool getBool(const char *section, const char *key);
+		const char* getChar(const char *section, const char *key);
+
+	private:
+		ALLEGRO_CONFIG* engineConfig;
 	};
 };
 

@@ -21,6 +21,8 @@ namespace M7engine
 		this->setColorDepth(32);
 		this->windowMode = 0;
 		this->displayContext = 0;
+
+		configReader = new ConfigReader;
 	}
 
 	Engine::~Engine()
