@@ -141,13 +141,16 @@ int main(int argc, char **argv)
 	using namespace M7engine;
 	bool running = true;
 
+	Logger *logger = m7_engine.getLogger();
+	logger->logMessage(0, "Game Started");
+
 	int resX, resY, fs;
 
 	m7_engine.getConfigReader()->loadConfig("../resources/config.ini");
 	resX = m7_engine.getConfigReader()->getInt("video", "resX");
 	resY = m7_engine.getConfigReader()->getInt("video", "resY");
 	fs = m7_engine.getConfigReader()->getBool("video", "fullscreen");
-	fprintf(stdout, "Read values: %i %i %i \n", resX, resY, fs);
+	logger->logMessage(0, "Read values: %i %i %i", resX, resY, fs);
 
 	m7_engine.init(resX, resY, fs);
 	m7_engine.setWindowTitle("M7engine Tech Demo");

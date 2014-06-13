@@ -66,6 +66,7 @@
 #include "Font.h"
 #include "CollisionManager.h"
 #include "ConfigReader.h"
+#include "Logger.h"
 
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 2
@@ -138,6 +139,7 @@ public:
 	Primitives *primitives;
 	CollisionManager *collisionManager;
 	ConfigReader *configReader;
+	Logger *logger;
 
 	InputManager* getInputManager() { return inputManager; }
 	SoundManager* getSoundManager() { return soundManager; }
@@ -145,6 +147,7 @@ public:
 	Primitives* getPrimitives() { return primitives; }
 	CollisionManager* getCollisionManager() { return collisionManager; }
 	ConfigReader* getConfigReader() { return configReader; }
+	Logger* getLogger() { return logger; }
 };
 };
 

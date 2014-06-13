@@ -23,6 +23,7 @@ ConfigReader::~ConfigReader()
 bool ConfigReader::loadConfig(const char *filename)
 {
 	fprintf(stdout, "ConfigReader loading config file: '%s'\n", filename);
+	//logger->logMessage(0, "ConfigReader loading config file: '%s'", filename);
 
 	engineConfig = al_load_config_file(filename);
 	if (!engineConfig)

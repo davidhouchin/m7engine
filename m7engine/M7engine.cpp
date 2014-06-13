@@ -22,12 +22,14 @@ Engine::Engine()
 	this->windowMode = 0;
 	this->displayContext = 0;
 
+	logger = new Logger("m7engine.log");
 	configReader = new ConfigReader;
 }
 
 Engine::~Engine()
 {
-	std::cout << "Cleaning up resources...\n";
+	logger->logMessage(0, "Cleaning up resources...");
+
 	//Comment out for now because it causes a crash on exit
 	/*delete inputManager;
 	delete soundManager;
@@ -116,9 +118,7 @@ bool Engine::init(int width, int height, int mode)
 
 bool Engine::update()
 {
-	#ifdef DEBUG_CYCLE
-	fprintf(stdout, "Engine update cycle: %i\n", frameCount);
-	#endif
+	logger->logMessage(1, "Engine update cycle: %i\n", frameCount);
 
 	inputManager->update();
 		
@@ -159,18 +159,14 @@ bool Engine::update()
 
 	this->cleanEntities();
 
-	#ifdef DEBUG_CYCLE
-	fprintf(stdout, "Engine update cycle complete.\n");
-	#endif
+	logger->logMessage(1, "Engine update cycle complete");
 
 	return true;
 }
 
 void Engine::updateEntities()
 {
-	#ifdef DEBUG_CYCLE
-	fprintf(stdout, "Engine is updating entities.\n");
-	#endif
+	logger->logMessage(1, "Engine is updating entities.");
 
 	std::list<Entity*>::iterator iter;
 	Entity *entity;
@@ -189,9 +185,7 @@ void Engine::updateEntities()
 
 void Engine::drawEntities()
 {
-	#ifdef DEBUG_CYCLE
-	fprintf(stdout, "Engine is drawing.\n");
-	#endif
+	logger->logMessage(1, "Engine is drawing.");
 
 	al_set_target_backbuffer(display);
 	std::list<Entity*>::iterator iter;
@@ -211,9 +205,7 @@ void Engine::drawEntities()
 
 void Engine::cleanEntities()
 {
-	#ifdef DEBUG_CYCLE
-	fprintf(stdout, "Engine is cleaning.\n");
-	#endif
+	logger->logMessage(1, "Engine is cleaning.");
 
 	std::list<Entity*>::iterator iter;
 	Entity *entity;
@@ -238,7 +230,7 @@ void Engine::addEntity(Entity *entity)
 	static int id = 0;
 	entity->setID(id);
 	entities.push_back(entity);
-	fprintf(stdout, "Engine added entity id: %i\n", id);
+	logger->logMessage(0, "Engine added entity id: %i\n", id);
 	id++;
 }
 
@@ -269,9 +261,7 @@ Entity* Engine::findEntity(int id)
 
 void Engine::updateCollisions()
 {
-	#ifdef DEBUG_CYCLE
-	fprintf(stdout, "Engine is updating collisions.\n");
-	#endif
+	logger->logMessage(99, "Engine is updating collisions");
 
 	std::list<Entity*>::iterator iterA, iterB;
 	Entity *entityA;
@@ -308,14 +298,14 @@ bool Engine::setWindowMode(int value)
 	switch (value)
 	{
 	case 0:
-		std::cout << "Changing to windowed mode...\n";
+		logger->logMessage(0, "Changing to windowed mode...");
 		al_destroy_display(this->display);
 		display = al_create_display(getScreenWidth(), getScreenHeight());
 		if (!display) { fprintf(stderr, "Failed to change to windowed mode!\n"); return 1; }
 		this->windowMode = 0;
 		break;
 	case 1:
-		std::cout << "Changing to fullscreen...\n";
+		logger->logMessage(0, "Changing to fullscreen mode...");
 		al_destroy_display(this->display);
 		al_set_new_display_flags(ALLEGRO_FULLSCREEN);
 		display = al_create_display(getScreenWidth(), getScreenHeight());
@@ -323,7 +313,7 @@ bool Engine::setWindowMode(int value)
 		this->windowMode = 1;
 		break;
 	case 2:
-		std::cout << "Changing to fullscreen windowed...\n";
+		logger->logMessage(0, "Changing to fullscreen windowed mode...");
 		al_destroy_display(this->display);
 		al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 		display = al_create_display(getScreenWidth(), getScreenHeight());
@@ -348,7 +338,7 @@ bool Engine::setDisplayContext(int value)
 	switch (value)
 	{
 	case 0:
-		std::cout << "Changing to Direct3D context...\n";
+		logger->logMessage(0, "Changing to Direct3D context...");
 		al_destroy_display(this->display);
 		al_set_new_display_flags(ALLEGRO_DIRECT3D);
 		display = al_create_display(getScreenWidth(), getScreenHeight());
@@ -356,7 +346,7 @@ bool Engine::setDisplayContext(int value)
 		this->displayContext = 0;
 		break;
 	case 1:
-		std::cout << "Changing to OpenGL context...\n";
+		logger->logMessage(0, "Changing to OpenGL context...");
 		al_destroy_display(this->display);
 		al_set_new_display_flags(ALLEGRO_OPENGL);
 		display = al_create_display(getScreenWidth(), getScreenHeight());
@@ -372,7 +362,7 @@ bool Engine::setDisplayContext(int value)
 
 void Engine::reloadBitmaps()
 {
-	fprintf(stdout, "Engine is reloading bitmaps.\n");
+	logger->logMessage(0, "Engine is reloading bitmaps...");
 	std::list<Entity*>::iterator iter;
 	Entity *entity;
 	iter = entities.begin();
