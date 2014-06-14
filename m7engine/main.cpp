@@ -192,7 +192,7 @@ int main(int argc, char **argv)
 	Temitter->setPosition(128, 128);
 	Temitter->getSprite()->setScale(2);
 	Temitter->setDirection(0);
-	Temitter->setMax(100);
+	Temitter->setMax(500);
 	Temitter->setAlphaRange(0, 100);
 	Temitter->setColorRange(100, 100, 100, 150, 150, 150);
 	Temitter->setSpread(40);

@@ -147,7 +147,7 @@ bool Engine::update()
 		drawEntities();
 
 		al_flip_display();
-		al_clear_to_color(al_map_rgb(0, 255, 255));
+		al_clear_to_color(al_map_rgb(0, 0, 0));
 
 		if (gameTime - oldTime >= 1.0)
 		{

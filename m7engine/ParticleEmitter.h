@@ -20,12 +20,18 @@ namespace M7engine
 {
 class Particle : public Entity
 {
-	void update()
-	{
-	}
+friend class ParticleEmitter;
 
-	void collision(Entity *other)
+protected:
+	ALLEGRO_COLOR color;
+
+	void Particle::draw()
 	{
+		if (image)
+		{
+			image->setColor(color);
+			image->draw(this->getX(), this->getY());
+		}
 	}
 };
 
@@ -54,9 +60,6 @@ public:
 	void update();
 	void add();
 	Sprite* getSprite() { return image; }
-	void collision(Entity *other)
-	{
-	}
 
 private:
 	typedef std::vector<Entity*>::iterator iter;

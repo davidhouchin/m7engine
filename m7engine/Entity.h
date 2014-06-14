@@ -64,7 +64,7 @@ public:
 
 	Sprite* getSprite(){ return image; }
 
-private:
+protected:
 	int id, width, height, direction;
 	bool visible, active;
 	Vector2 position, velocity;

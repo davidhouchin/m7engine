@@ -79,6 +79,7 @@ void ParticleEmitter::add()
 
 	Particle *p = new Particle();
 	p->setImage(image);
+
 	p->setPosition(position.getX(), position.getY());
 	double variation = (rand() % spread - spread / 2) / 100.0f;
 
@@ -91,7 +92,8 @@ void ParticleEmitter::add()
 	int g = rand() % (maxG - minG) + minG;
 	int b = rand() % (maxB - minB) + minB;
 	int a = rand() % (alphaMax - alphaMin) + alphaMin;
-	p->getSprite()->setColor(al_map_rgba(r, g, b, a));
+
+	p->color = al_map_rgba(r, g, b, a);
 
 	p->getSprite()->setScale(this->image->getScale());
 

@@ -15,7 +15,7 @@ Entity::Entity()
 	this->id = -1;
 	this->visible = true;
 	this->active = true;
-	this->image = new Sprite();
+	this->image = NULL;
 	this->setPosition(128, 128);
 	this->direction = 0;
 }
@@ -27,6 +27,11 @@ Entity::~Entity()
 
 bool Entity::loadImage(const char *filename)
 {
+	if (!image)
+	{
+		image = new Sprite;
+	}
+
 	Logger::getInstance()->logMessage(0, "Entity ID %i loading image: '%s'", id, filename);
 	image->loadImage(filename);
 	if (!image)
@@ -60,7 +65,7 @@ void Entity::draw()
 {
 	if (image)
 	{
-		Logger::getInstance()->logError(99, "%i is drawing->", id);
+		Logger::getInstance()->logMessage(99, "%i is drawing->", id);
 		
 		image->draw(this->getX(), this->getY());
 	}
