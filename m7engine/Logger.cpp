@@ -10,11 +10,22 @@
 
 namespace M7engine
 {
-Logger::Logger(const char *file)
+
+Logger* Logger::loggerInstance = NULL;
+
+Logger* Logger::getInstance()
+{
+	if (!loggerInstance)
+	{
+		loggerInstance = new Logger;
+	}
+
+	return loggerInstance;
+}
+
+Logger::Logger()
 {
 	logLevel = 0;
-	filename = file;
-	remove(filename);
 }
 
 Logger::~Logger()
@@ -25,6 +36,7 @@ Logger::~Logger()
 bool Logger::setLogFile(const char *file)
 {
 	filename = file;
+	remove(filename);
 	logFile.open(filename);
 	if (!logFile.is_open())
 	{
@@ -35,7 +47,7 @@ bool Logger::setLogFile(const char *file)
 
 void Logger::logMessage(int level, const char *message, ...)
 {
-	if (level <= logLevel)
+	if ((level <= logLevel) && (filename != NULL))
 	{
 		char buffer[99];
 		va_list args;
@@ -51,9 +63,9 @@ void Logger::logMessage(int level, const char *message, ...)
 	}
 }
 
-void Logger::logMessage(const char *message, int level, ALLEGRO_COLOR color)
+void Logger::logMessage(int level, const char *message, ALLEGRO_COLOR color, ...)
 {
-	if (level <= logLevel)
+	if ((level <= logLevel) && (filename != NULL))
 	{
 		char buffer[99];
 		va_list args;
@@ -69,9 +81,9 @@ void Logger::logMessage(const char *message, int level, ALLEGRO_COLOR color)
 	}
 }
 
-void Logger::logError(const char *message, int level)
+void Logger::logError(int level, const char *message, ...)
 {
-	if (level <= logLevel)
+	if ((level <= logLevel) && (filename != NULL))
 	{
 		char buffer[99];
 		va_list args;
@@ -87,9 +99,9 @@ void Logger::logError(const char *message, int level)
 	}
 }
 
-void Logger::logError(const char *message, int level, ALLEGRO_COLOR color)
+void Logger::logError(int level, const char *message, ALLEGRO_COLOR color, ...)
 {
-	if (level <= logLevel)
+	if ((level <= logLevel) && (filename != NULL))
 	{
 		char buffer[99];
 		va_list args;

@@ -13,6 +13,7 @@
 #include <allegro5/allegro.h>
 #include "Vector2.h"
 #include "Sprite.h"
+#include "Logger.h"
 
 namespace M7engine
 {

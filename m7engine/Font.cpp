@@ -24,7 +24,7 @@ bool Font::loadFont(const char *filename, int size)
 	font = al_load_ttf_font(filename, size, 0);
 	if (!font)
 	{
-		fprintf(stderr, "Failed to load font: '%s'\n", filename);
+		Logger::getInstance()->logError(0, "Failed to load font: '%s'", filename);
 		return false;
 	}
 
@@ -50,7 +50,7 @@ bool FontManager::init()
 
 	if (!al_init_ttf_addon())
 	{
-		fprintf(stderr, "al_init_ttf_addon failed\n");
+		Logger::getInstance()->logError(0, "al_init_ttf addon failed");
 		return false;
 	}
 

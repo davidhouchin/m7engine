@@ -141,8 +141,9 @@ int main(int argc, char **argv)
 	using namespace M7engine;
 	bool running = true;
 
-	Logger *logger = m7_engine.getLogger();
-	logger->logMessage(0, "Game Started");
+	Logger *logger = Logger::getInstance();
+	logger->setLogFile("m7engine.log");
+	logger->logMessage(0, "Game started");
 
 	int resX, resY, fs;
 
@@ -150,53 +151,22 @@ int main(int argc, char **argv)
 	resX = m7_engine.getConfigReader()->getInt("video", "resX");
 	resY = m7_engine.getConfigReader()->getInt("video", "resY");
 	fs = m7_engine.getConfigReader()->getBool("video", "fullscreen");
-	logger->logMessage(0, "Read values: %i %i %i", resX, resY, fs);
+	logger->logMessage(0, "Read config values: %i %i %i", resX, resY, fs);
 
 	m7_engine.init(resX, resY, fs);
 	m7_engine.setWindowTitle("M7engine Tech Demo");
 	m7_engine.setIcon("../resources/m7.png");
 	
 	//FOR TEST
-	Sample *Tsample;
-	TestE2 *Tentity;
-	TestE *Tentity2;
-	TestE *Tentity3;
-	ParticleEmitter *Temitter;
-	Font *Tfont;
-	Font *Tfont2;
-	Console *console;
+	Sample *Tsample = new Sample;
+	TestE2 *Tentity = new TestE2;
+	TestE *Tentity2 = new TestE;
+	TestE *Tentity3 = new TestE;
+	ParticleEmitter *Temitter = new ParticleEmitter;
+	Font *Tfont = new Font;
+	Font *Tfont2 = new Font;
+	Console *console = new Console;
 	//////////
-
-	console = new Console();
-
-	Tentity = new TestE2();
-	Tentity->loadImage("../resources/monster2.png");
-	Tentity->getSprite()->setScale(3);
-	Tentity->setSize(96, 96);
-
-	Tentity2 = new TestE();
-	Tentity2->loadImage("../resources/monster2.png");
-	Tentity2->getSprite()->setScale(1);
-	Tentity2->getSprite()->setColor(al_map_rgb(0, 255, 0));
-
-	Tentity3 = new TestE();
-	Tentity3->loadImage("../resources/monster2.png");
-	Tentity3->getSprite()->setScale(2);
-	Tentity3->getSprite()->setColor(al_map_rgb(0, 0, 255));
-	Tentity3->setPosition(256, 128);
-	Tentity3->setSizeToImageScale();
-
-	Temitter = new ParticleEmitter();
-	Temitter->loadImage("../resources/particle16.png");
-	Temitter->setPosition(128, 128);
-	Temitter->getSprite()->setScale(2);
-	Temitter->setDirection(0);
-	Temitter->setMax(500);
-	Temitter->setAlphaRange(0, 100);
-	Temitter->setColorRange(100, 100, 100, 150, 150, 150);
-	Temitter->setSpread(40);
-	Temitter->setVelocity(8);
-	Temitter->setLength(800);
 
 	m7_engine.addEntity(Tentity);
 	m7_engine.addEntity(Tentity2);
@@ -204,16 +174,38 @@ int main(int argc, char **argv)
 	m7_engine.addEntity(console);
 	m7_engine.addEntity(Temitter);
 
-	Tsample = new Sample();
+	Tentity->loadImage("../resources/monster2.png");
+	Tentity->getSprite()->setScale(3);
+	Tentity->setSize(96, 96);
+
+	Tentity2->loadImage("../resources/monster2.png");
+	Tentity2->getSprite()->setScale(1);
+	Tentity2->getSprite()->setColor(al_map_rgb(0, 255, 0));
+
+	Tentity3->loadImage("../resources/monster2.png");
+	Tentity3->getSprite()->setScale(2);
+	Tentity3->getSprite()->setColor(al_map_rgb(0, 0, 255));
+	Tentity3->setPosition(256, 128);
+	Tentity3->setSizeToImageScale();
+
+	Temitter->loadImage("../resources/particle16.png");
+	Temitter->setPosition(128, 128);
+	Temitter->getSprite()->setScale(2);
+	Temitter->setDirection(0);
+	Temitter->setMax(100);
+	Temitter->setAlphaRange(0, 100);
+	Temitter->setColorRange(100, 100, 100, 150, 150, 150);
+	Temitter->setSpread(40);
+	Temitter->setVelocity(8);
+	Temitter->setLength(800);
+
 	Tsample->loadSample("../resources/explode2.wav");
 	Tsample->setSampleSpeed(5);
 
-	Tfont = new Font;
 	Tfont->loadFont("../resources/linear.otf", 20);
 	Tfont->setColor(al_map_rgb(0, 200, 200));
 	Tfont->setJustification(1);
 
-	Tfont2 = new Font;
 	Tfont2->setFont(Tfont->getFont());
 	Tfont2->setColor(al_map_rgb(200, 200, 0));
 	Tfont2->setJustification(0);

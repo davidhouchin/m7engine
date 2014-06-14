@@ -28,27 +28,27 @@ bool InputManager::init()
 {
 	if (!al_install_mouse())
 	{
-		fprintf(stderr, "Failed to initialize mouse!");
+		Logger::getInstance()->logError(0, "Failed to intialize mouse");
 		return false;
 	}
 
 	if (!al_install_keyboard())
 	{
-		fprintf(stderr, "Failed to initialize keyboard!");
+		Logger::getInstance()->logError(0, "Failed to initialize keyboard");
 		return false;
 	}
 
 	keyboardQueue = al_create_event_queue();
 	if (!keyboardQueue)
 	{
-		fprintf(stderr, "Failed to create keyboard input event queue!");
+		Logger::getInstance()->logError(0, "Failed to create keyboard input event queue");
 		return false;
 	}
 
 	mouseQueue = al_create_event_queue();
 	if (!mouseQueue)
-	{
-		fprintf(stderr, "Failed to create mouse input event queue!");
+	{ 
+		Logger::getInstance()->logError(0, "Failed to create mouse input event queue");
 		return false;
 	}
 

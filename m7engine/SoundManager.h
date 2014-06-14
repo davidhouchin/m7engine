@@ -12,6 +12,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <stdio.h>
+#include "Logger.h"
 
 namespace M7engine
 {

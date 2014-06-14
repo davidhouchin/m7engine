@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <allegro5/allegro.h>
+#include "Logger.h"
 
 namespace M7engine
 {

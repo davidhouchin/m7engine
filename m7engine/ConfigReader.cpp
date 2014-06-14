@@ -22,13 +22,12 @@ ConfigReader::~ConfigReader()
 
 bool ConfigReader::loadConfig(const char *filename)
 {
-	fprintf(stdout, "ConfigReader loading config file: '%s'\n", filename);
-	//logger->logMessage(0, "ConfigReader loading config file: '%s'", filename);
+	Logger::getInstance()->logMessage(0, "ConfigReader loading config file: '%s'", filename);
 
 	engineConfig = al_load_config_file(filename);
 	if (!engineConfig)
 	{
-		fprintf(stderr, "ConfigReader failed to load config file: '%s'\n", filename);
+		Logger::getInstance()->logError(0, "ConfigReader failed to load config file: '%s'\n", filename);
 		return false;
 	}
 	else
@@ -41,7 +40,8 @@ int ConfigReader::getInt(const char *section, const char *key)
 {
 	if (!engineConfig)
 	{
-		fprintf(stderr, "ConfigReader failed to get value, no config file\n");
+		Logger::getInstance()->logError(0, "ConfigReader failed to get value, no config file");
+
 		return NULL;
 	}
 	else
@@ -56,7 +56,8 @@ bool ConfigReader::getBool(const char *section, const char *key)
 {
 	if (!engineConfig)
 	{
-		fprintf(stderr, "ConfigReader failed to get value, no config file\n");
+		Logger::getInstance()->logError(0, "ConfigReader failed to get value, no config file");
+
 		return NULL;
 	}
 	else
@@ -73,7 +74,7 @@ const char* ConfigReader::getChar(const char *section, const char *key)
 {
 	if (!engineConfig)
 	{
-		fprintf(stderr, "ConfigReader failed to get value, no config file\n");
+		Logger::getInstance()->logError(0, "ConfigReader failed to get value, no config file");
 		return NULL;
 	}
 	else

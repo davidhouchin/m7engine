@@ -26,7 +26,7 @@ bool Sample::loadSample(const char* filename)
 
 	if (!sample_data)
 	{
-		fprintf(stderr, "Failed to load sample: '%s'\n", filename);
+		Logger::getInstance()->logError(0, "Failed to load sample: '%s'", filename);
 		return false;
 	}
 
@@ -34,7 +34,7 @@ bool Sample::loadSample(const char* filename)
 
 	if (!al_set_sample(sample, sample_data))
 	{
-		fprintf(stderr, "al_set_sample failed\n");
+		Logger::getInstance()->logError(0, "al_set_sample failed failed");
 		return false;
 	}
 
@@ -60,39 +60,39 @@ bool SoundManager::init()
 {
 	if (!al_install_audio())
 	{
-		fprintf(stderr, "al_install_audio failed\n");
+		Logger::getInstance()->logError(0, "al_install_audio failed");
 		return false;
 	}
 
 	if (!al_init_acodec_addon())
 	{
-		fprintf(stderr, "al_init_acodec_addon failed\n");
+		Logger::getInstance()->logError(0, "al_init_acodec_addon failed");
 		return false;
 	}
 
 	if (!al_reserve_samples(64))
 	{
-		fprintf(stderr, "al_reserve_samples failed\n");
+		Logger::getInstance()->logError(0, "al_reserve_samples failed");
 		return false;
 	}
 
 	voice = al_create_voice(44100, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_2);
 	if (!voice)
 	{
-		fprintf(stderr, "al_create_voice failed\n");
+		Logger::getInstance()->logError(0, "al_create_voice failed");
 		return false;
 	}
 
 	mixer = al_create_mixer(44100, ALLEGRO_AUDIO_DEPTH_FLOAT32, ALLEGRO_CHANNEL_CONF_2);
 	if (!mixer)
 	{
-		fprintf(stderr, "al_create_mixer failed\n");
+		Logger::getInstance()->logError(0, "al_create_mixer failed");
 		return false;
 	}
 
 	if (!al_attach_mixer_to_voice(mixer, voice))
 	{
-		fprintf(stderr, "al_attach_mixer_to_voice failed\n");
+		Logger::getInstance()->logError(0, "al_attach_mixer_to_voice failed");
 		return false;
 	}
 
@@ -115,7 +115,7 @@ bool SoundManager::playSample(Sample *sampleName)
 
 	if (!al_play_sample_instance(sample))
 	{
-		fprintf(stderr, "Failed to play sample: '%s'\n", sampleName->getFilename());
+		Logger::getInstance()->logError(0, "Failed to play sample: '%s'", sampleName->getFilename());
 		return false;
 	}
 

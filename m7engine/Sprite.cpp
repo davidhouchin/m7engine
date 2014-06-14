@@ -12,9 +12,7 @@ namespace M7engine
 {
 Sprite::Sprite()
 {
-	#ifdef DEBUG_CYCLE
-	fprintf(stdout, "Sprite created.\n");
-	#endif
+	Logger::getInstance()->logMessage(0, "Sprite created");
 
 	this->bitmap = NULL;
 	this->width = 1;
@@ -28,14 +26,14 @@ Sprite::~Sprite()
 {
 	if (bitmap != NULL)
 	{
-		fprintf(stderr, "Sprite destroying self: %s\n", bitmapFilename);
+		Logger::getInstance()->logError(0, "Sprite destroying self: %s", bitmapFilename);
 		al_destroy_bitmap(bitmap);
 	}
 }
 
 bool Sprite::loadImage(const char *filename)
 {
-	fprintf(stdout, "Sprite loading image: '%s'\n", filename);
+	Logger::getInstance()->logMessage(0, "Sprite loading image: '%s'", filename);
 	if (bitmap != NULL)
 	{
 		al_destroy_bitmap(bitmap);
@@ -44,7 +42,7 @@ bool Sprite::loadImage(const char *filename)
 	bitmap = al_load_bitmap(filename);
 	if (!bitmap)
 	{
-		fprintf(stderr, "Sprite failed to load bitmap: '%s'\n", filename);
+		Logger::getInstance()->logError(0, "Sprite failed to load bitmap: '%s'", filename);
 		return false;
 	}
 	else
@@ -68,7 +66,7 @@ bool Sprite::loadImage(const char *filename, int width, int height, int columns,
 	bitmap = al_load_bitmap(filename);
 	if (!bitmap)
 	{
-		fprintf(stderr, "Failed to load bitmap: '%s'\n", filename);
+		Logger::getInstance()->logError(0, "Failed to load bitmap: '%s'", filename);
 		return false;
 	}
 	else
@@ -110,12 +108,12 @@ bool Sprite::reloadBitmap()
 
 		if (!bitmap)
 		{
-			fprintf(stderr, "Sprite failed to reload bitmap: '%s'\n", bitmapFilename);
+			Logger::getInstance()->logError(0, "Sprite failed to reload bitmap: '%s'", bitmapFilename);
 			return false;
 		}
 		else
 		{
-			fprintf(stderr, "Sprite reloaded successfully.\n");
+			Logger::getInstance()->logMessage(0, "Sprite reloaded successfully");
 			return true;
 		}
 	}
@@ -148,9 +146,7 @@ void Sprite::draw(int x, int y)
 	{
 		if (this->maxFrames > 0)
 		{
-			#ifdef DEBUG_CYCLE
-			fprintf(stderr, "Frame: %i\n", frame);
-			#endif
+			Logger::getInstance()->logMessage(99, "Frame: %i", frame);
 
 			bitmap = frameList[this->frame];
 			al_draw_tinted_scaled_rotated_bitmap(bitmap, color, 0, 0, x, y, scale, scale, rotation, 0);

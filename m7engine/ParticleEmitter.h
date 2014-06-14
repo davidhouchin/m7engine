@@ -14,6 +14,7 @@
 #include <vector>
 #include "Vector2.h"
 #include "Entity.h"
+#include "Logger.h"
 
 namespace M7engine
 {

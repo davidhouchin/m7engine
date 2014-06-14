@@ -45,7 +45,7 @@ bool ParticleEmitter::loadImage(const char* filename)
 	image->loadImage(filename);
 	if (!image)
 	{
-		fprintf(stderr, "Particle emitter failed to load particle image: '%s'\n", filename);
+		Logger::getInstance()->logError(0, "Particle emitter failed to load particle image: '%s'", filename);
 		return false;
 	}
 
@@ -60,7 +60,7 @@ void ParticleEmitter::reloadImage()
 		image->reloadBitmap();
 		if (!image)
 		{
-			fprintf(stderr, "Failed to reload bitmap: '%s'\n", bitmapFilename);
+			Logger::getInstance()->logError(0, "Failed to reload bitmap: '%s'", bitmapFilename);
 		}
 		else
 		{

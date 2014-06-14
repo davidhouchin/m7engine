@@ -13,6 +13,7 @@
 #include <cstring>
 #include <string>
 #include <allegro5/allegro.h>
+#include "Logger.h"
 
 namespace M7engine
 {

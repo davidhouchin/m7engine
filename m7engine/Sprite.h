@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <vector>
 #include <allegro5/allegro.h>
+#include "Logger.h"
 
 namespace M7engine
 {

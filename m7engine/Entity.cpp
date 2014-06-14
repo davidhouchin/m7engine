@@ -27,11 +27,11 @@ Entity::~Entity()
 
 bool Entity::loadImage(const char *filename)
 {
-	fprintf(stdout, "Entity ID %i loading image: '%s'\n", id, filename);
+	Logger::getInstance()->logMessage(0, "Entity ID %i loading image: '%s'", id, filename);
 	image->loadImage(filename);
 	if (!image)
 	{
-		fprintf(stderr, "Entity failed to set bitmap: '%s'\n", filename);
+		Logger::getInstance()->logError(0, "Entity failed to set bitmap: '%s'", filename);
 		return false;
 	}
 	else
@@ -60,9 +60,8 @@ void Entity::draw()
 {
 	if (image)
 	{
-		#ifdef DEBUG_CYCLE
-		fprintf(stderr, "%i is drawing->\n", id);
-		#endif
+		Logger::getInstance()->logError(99, "%i is drawing->", id);
+		
 		image->draw(this->getX(), this->getY());
 	}
 }

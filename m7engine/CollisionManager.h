@@ -10,6 +10,7 @@
 #define	COLLISIONMANAGER_H
 
 #include "Entity.h"
+#include "Logger.h"
 
 namespace M7engine
 {

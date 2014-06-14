@@ -22,13 +22,12 @@ Engine::Engine()
 	this->windowMode = 0;
 	this->displayContext = 0;
 
-	logger = new Logger("m7engine.log");
 	configReader = new ConfigReader;
 }
 
 Engine::~Engine()
 {
-	logger->logMessage(0, "Cleaning up resources...");
+	Logger::getInstance()->logMessage(0, "Cleaning up resources...");
 
 	//Comment out for now because it causes a crash on exit
 	/*delete inputManager;
@@ -52,7 +51,7 @@ bool Engine::init(int width, int height, int mode)
 
 	if (!al_init())
 	{
-		fprintf(stderr, "al_init failed\n");
+		Logger::getInstance()->logError(0, "al_init failed");
 		return false;
 	}
 
@@ -75,7 +74,7 @@ bool Engine::init(int width, int height, int mode)
 	timer = al_create_timer(1.0 / this->getFrameRate());
 	if (!timer)
 	{
-		fprintf(stderr, "Failed to create game loop timer\n");
+		Logger::getInstance()->logError(0, "Failed to create game loop timer");
 		return false;
 	}
 
@@ -88,7 +87,7 @@ bool Engine::init(int width, int height, int mode)
 	display = al_create_display(width, height);
 	if (!display)
 	{
-		fprintf(stderr, "Failed to create main display\n");
+		Logger::getInstance()->logError(0, "Failed to create main display");
 		al_destroy_timer(timer);
 		return false;
 	}
@@ -96,7 +95,7 @@ bool Engine::init(int width, int height, int mode)
 	eventQueue = al_create_event_queue();
 	if (!eventQueue)
 	{
-		fprintf(stderr, "Failed to create main event queue\n");
+		Logger::getInstance()->logError(0, "Failed to create main event queue");
 		al_destroy_display(display);
 		al_destroy_timer(timer);
 		return false;
@@ -118,7 +117,7 @@ bool Engine::init(int width, int height, int mode)
 
 bool Engine::update()
 {
-	logger->logMessage(1, "Engine update cycle: %i\n", frameCount);
+	Logger::getInstance()->logMessage(1, "Engine update cycle: %i", frameCount);
 
 	inputManager->update();
 		
@@ -159,14 +158,14 @@ bool Engine::update()
 
 	this->cleanEntities();
 
-	logger->logMessage(1, "Engine update cycle complete");
+	Logger::getInstance()->logMessage(1, "Engine update cycle complete");
 
 	return true;
 }
 
 void Engine::updateEntities()
 {
-	logger->logMessage(1, "Engine is updating entities.");
+	Logger::getInstance()->logMessage(1, "Engine is updating entities");
 
 	std::list<Entity*>::iterator iter;
 	Entity *entity;
@@ -185,7 +184,7 @@ void Engine::updateEntities()
 
 void Engine::drawEntities()
 {
-	logger->logMessage(1, "Engine is drawing.");
+	Logger::getInstance()->logMessage(1, "Engine is drawing");
 
 	al_set_target_backbuffer(display);
 	std::list<Entity*>::iterator iter;
@@ -205,7 +204,7 @@ void Engine::drawEntities()
 
 void Engine::cleanEntities()
 {
-	logger->logMessage(1, "Engine is cleaning.");
+	Logger::getInstance()->logMessage(1, "Engine is cleaning");
 
 	std::list<Entity*>::iterator iter;
 	Entity *entity;
@@ -230,7 +229,7 @@ void Engine::addEntity(Entity *entity)
 	static int id = 0;
 	entity->setID(id);
 	entities.push_back(entity);
-	logger->logMessage(0, "Engine added entity id: %i\n", id);
+	Logger::getInstance()->logMessage(0, "Engine added entity id: %i", id);
 	id++;
 }
 
@@ -261,7 +260,7 @@ Entity* Engine::findEntity(int id)
 
 void Engine::updateCollisions()
 {
-	logger->logMessage(99, "Engine is updating collisions");
+	Logger::getInstance()->logMessage(99, "Engine is updating collisions");
 
 	std::list<Entity*>::iterator iterA, iterB;
 	Entity *entityA;
@@ -298,26 +297,26 @@ bool Engine::setWindowMode(int value)
 	switch (value)
 	{
 	case 0:
-		logger->logMessage(0, "Changing to windowed mode...");
+		Logger::getInstance()->logMessage(0, "Changing to windowed mode...");
 		al_destroy_display(this->display);
 		display = al_create_display(getScreenWidth(), getScreenHeight());
-		if (!display) { fprintf(stderr, "Failed to change to windowed mode!\n"); return 1; }
+		if (!display) { Logger::getInstance()->logError(0, "Failed to change to windowed mode"); return 1; }
 		this->windowMode = 0;
 		break;
 	case 1:
-		logger->logMessage(0, "Changing to fullscreen mode...");
+		Logger::getInstance()->logMessage(0, "Changing to fullscreen mode...");
 		al_destroy_display(this->display);
 		al_set_new_display_flags(ALLEGRO_FULLSCREEN);
 		display = al_create_display(getScreenWidth(), getScreenHeight());
-		if (!display) { fprintf(stderr, "Failed to change to fullscreen mode!\n"); return 1; }
+		if (!display) { Logger::getInstance()->logError(0, "Failed to change to fullscreen mode"); return 1; }
 		this->windowMode = 1;
 		break;
 	case 2:
-		logger->logMessage(0, "Changing to fullscreen windowed mode...");
+		Logger::getInstance()->logMessage(0, "Changing to fullscreen windowed mode...");
 		al_destroy_display(this->display);
 		al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 		display = al_create_display(getScreenWidth(), getScreenHeight());
-		if (!display) { fprintf(stderr, "Failed to change to fullscreen windowed mode!\n"); return 1; }
+		if (!display) { Logger::getInstance()->logError(0, "Failed to change to fullscreen windowed mode"); return 1; }
 		this->windowMode = 2;
 		break;
 	}
@@ -338,19 +337,19 @@ bool Engine::setDisplayContext(int value)
 	switch (value)
 	{
 	case 0:
-		logger->logMessage(0, "Changing to Direct3D context...");
+		Logger::getInstance()->logMessage(0, "Changing to Direct3D context...");
 		al_destroy_display(this->display);
 		al_set_new_display_flags(ALLEGRO_DIRECT3D);
 		display = al_create_display(getScreenWidth(), getScreenHeight());
-		if (!display) { fprintf(stderr, "Failed to change to Direct3D context!\n"); return 1; }
+		if (!display) { Logger::getInstance()->logError(0, "Failed to change to Direct3D context"); return 1; }
 		this->displayContext = 0;
 		break;
 	case 1:
-		logger->logMessage(0, "Changing to OpenGL context...");
+		Logger::getInstance()->logMessage(0, "Changing to OpenGL context...");
 		al_destroy_display(this->display);
 		al_set_new_display_flags(ALLEGRO_OPENGL);
 		display = al_create_display(getScreenWidth(), getScreenHeight());
-		if (!display) { fprintf(stderr, "Failed to change to OpenGL context!\n"); return 1; }
+		if (!display) { Logger::getInstance()->logError(0, "Failed to change to OpenGL context"); return 1; }
 		this->displayContext = 1;
 		break;
 	}
@@ -362,7 +361,7 @@ bool Engine::setDisplayContext(int value)
 
 void Engine::reloadBitmaps()
 {
-	logger->logMessage(0, "Engine is reloading bitmaps...");
+	Logger::getInstance()->logMessage(0, "Engine is reloading bitmaps...");
 	std::list<Entity*>::iterator iter;
 	Entity *entity;
 	iter = entities.begin();
