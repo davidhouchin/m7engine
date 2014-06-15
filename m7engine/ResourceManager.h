@@ -20,28 +20,32 @@
 
 namespace M7engine
 {
-	class ResourceManager
-	{
-	public:
-		ResourceManager();
-		virtual ~ResourceManager();
+class ResourceManager
+{
+public:
+	static ResourceManager* getInstance();
 
-		bool loadConfig(const char *filename);
-		bool parseConfig();
+	virtual ~ResourceManager();
 
-		void reloadResources();
+	bool loadConfig(const char *filename);
+	bool parseConfig();
 
-		Sprite* getSprite(const char *name);
-		Sample* getSound(const char *name);
-		Font* getFont(const char *name);
+	bool reloadResources();
 
+	Sprite* getSprite(const char *name);
+	Sample* getSound(const char *name);
+	Font* getFont(const char *name);
 
-	private:
-		ALLEGRO_CONFIG* resourceConfig;
-		std::map<std::string, Sprite*> spriteList;
-		std::map<std::string, Sample*> soundList;
-		std::map<std::string, Font*> fontList;
-
-	};
+private:
+	ResourceManager();
+	static ResourceManager* managerInstance;
+	ALLEGRO_CONFIG* resourceConfig;
+	std::map<std::string, Sprite*> spriteList;
+	typedef std::map<std::string, Sprite*>::iterator iterSpriteList;
+	std::map<std::string, Sample*> soundList;
+	typedef std::map<std::string, Sample*>::iterator iterSoundList;
+	std::map<std::string, Font*> fontList;
+	typedef std::map<std::string, Font*>::iterator iterFontList;
+};
 }
 #endif

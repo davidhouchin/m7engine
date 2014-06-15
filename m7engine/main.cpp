@@ -156,7 +156,8 @@ int main(int argc, char **argv)
 	m7_engine.setWindowTitle("M7engine Tech Demo");
 	m7_engine.setIcon("../resources/m7.png");
 
-	m7_engine.getResourceManager()->loadConfig("../resources/resources.ini");
+	ResourceManager *rManager = ResourceManager::getInstance();
+	rManager->loadConfig("../resources/resources.ini");
 	
 	//FOR TEST
 	Sample *Tsample;
@@ -177,28 +178,28 @@ int main(int argc, char **argv)
 	m7_engine.addEntity(console);
 	m7_engine.addEntity(Temitter);
 
-	Tentity->setImage(m7_engine.getResourceManager()->getSprite("monster"));
+	Tentity->setImage(rManager->getSprite("monster"));
 	Tentity->setScale(3);
 	Tentity->setSizeToImageScale();
 	Tentity->setPosition(512, 256);
 
-	Tentity2->setImage(m7_engine.getResourceManager()->getSprite("monster"));
+	Tentity2->setImage(rManager->getSprite("monster"));
 	Tentity2->setScale(1);
 	Tentity2->setColor(al_map_rgb(0, 255, 0));
 
-	Tentity3->setImage(m7_engine.getResourceManager()->getSprite("monster"));
+	Tentity3->setImage(rManager->getSprite("monster"));
 	Tentity3->setScale(2);
 	Tentity3->setSizeToImageScale();
 	Tentity3->setColor(al_map_rgb(0, 0, 255));
 	Tentity3->setPosition(256, 128);
 
-	Tentity4->setImage(m7_engine.getResourceManager()->getSprite("explosion"));
+	Tentity4->setImage(rManager->getSprite("explosion"));
 	Tentity4->getSprite()->setDelay(4);
 	Tentity4->setScale(1);
 	Tentity4->setSize(128, 128);
 	Tentity4->setPosition(256, 256);
 
-	Temitter->setImage(m7_engine.getResourceManager()->getSprite("particle"));
+	Temitter->setImage(rManager->getSprite("particle"));
 	Temitter->setPosition(128, 128);
 	Temitter->setScale(1);
 	Temitter->setDirection(0);
@@ -209,14 +210,14 @@ int main(int argc, char **argv)
 	Temitter->setVelocity(8);
 	Temitter->setLength(800);
 
-	Tsample = m7_engine.getResourceManager()->getSound("boom");
+	Tsample = rManager->getSound("boom");
 	Tsample->setSampleSpeed(5);
 
-	Tfont = m7_engine.getResourceManager()->getFont("elgethy");
+	Tfont = rManager->getFont("elgethy");
 	Tfont->setColor(al_map_rgb(0, 200, 200));
 	Tfont->setJustification(1);
 
-	Tfont2 = m7_engine.getResourceManager()->getFont("elgethy2");
+	Tfont2 = rManager->getFont("elgethy2");
 	Tfont2->setColor(al_map_rgb(200, 200, 0));
 	Tfont2->setJustification(0);
 

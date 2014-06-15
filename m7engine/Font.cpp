@@ -70,6 +70,5 @@ void FontManager::drawTextF(float x, float y, Font *font, const char *text, ...)
 	vsprintf(buffer, text, args);
 	al_draw_text(font->getFont(), font->getColor(), x, y, font->getJustification(), buffer);
 	va_end(args);
-
 }
 }

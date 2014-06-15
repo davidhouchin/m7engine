@@ -70,7 +70,7 @@ private:
 	Vector2 position;
 	double direction, length, velocity;
 	int max, alphaMin, alphaMax, minR, minG, minB, maxR, maxG, maxB, spread;
-	const char *bitmapFilename;
+	const char *resourceName;
 
 };
 }

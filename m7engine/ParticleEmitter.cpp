@@ -48,7 +48,6 @@ bool ParticleEmitter::loadImage(const char* filename)
 		return false;
 	}
 
-	this->bitmapFilename = filename;
 	return true;
 }
 
@@ -56,16 +55,17 @@ void ParticleEmitter::setImage(Sprite *setSprite)
 {
 	this->image = setSprite;
 	this->setSize(setSprite->getWidth(), setSprite->getHeight());
+	this->resourceName = setSprite->getName();
 }
 
 void ParticleEmitter::reloadImage()
 {
 	if (image != NULL)
 	{
-		image->reloadBitmap();
+		image = ResourceManager::getInstance()->getSprite(resourceName);
 		if (!image)
 		{
-			Logger::getInstance()->logError(0, "Failed to reload bitmap: '%s'", bitmapFilename);
+			Logger::getInstance()->logError(0, "Emitter failed to reload bitmap: '%s'", resourceName);
 		}
 		else
 		{

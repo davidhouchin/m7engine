@@ -74,8 +74,6 @@ bool Engine::init(int width, int height, int mode)
 
 	collisionManager = new CollisionManager;
 
-	resourceManager = new ResourceManager;
-
 	al_init_image_addon();
 
 	timer = al_create_timer(1.0 / this->getFrameRate());
@@ -110,7 +108,6 @@ bool Engine::init(int width, int height, int mode)
 
 	al_register_event_source(eventQueue, al_get_display_event_source(display));
 	al_register_event_source(eventQueue, al_get_timer_event_source(timer));
-	al_register_event_source(eventQueue, al_get_mouse_event_source());
 
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 	al_flip_display();
@@ -378,7 +375,7 @@ void Engine::reloadResources()
 {
 	Logger::getInstance()->logMessage(0, "Engine is reloading resources...");
 
-	resourceManager->reloadResources();
+	ResourceManager::getInstance()->reloadResources();
 
 	std::list<Entity*>::iterator iter;
 	Entity *entity;

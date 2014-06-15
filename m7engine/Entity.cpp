@@ -73,14 +73,20 @@ void Entity::setImage(Sprite *image)
 {
 	this->image = image;
 	this->setSize(image->getWidth(), image->getHeight());
+	this->resourceName = image->getName();
 }
 
 void Entity::reloadImage()
 {
-	/*if (image != NULL)
+	if (image != NULL)
 	{
-		image->reloadBitmap();
-	}*/
+		image = ResourceManager::getInstance()->getSprite(resourceName);
+
+		if (!image)
+		{
+			Logger::getInstance()->logError(0, "Failed to reload bitmap: '%s'", resourceName);
+		}
+	}
 }
 
 void Entity::draw()
