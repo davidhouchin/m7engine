@@ -20,7 +20,12 @@ Engine::Engine()
 	this->setScreenHeight(480);
 	this->setColorDepth(32);
 	this->windowMode = 0;
-	this->displayContext = 0;
+
+	#ifdef _WIN32
+		this->displayContext = 0;
+	#elif
+		this->displayContext = 1;
+	#endif
 
 	configReader = new ConfigReader;
 }
@@ -290,7 +295,11 @@ bool Engine::setWindowMode(int value)
 {
 	switch (displayContext)
 	{
-	case 0: al_set_new_display_flags(ALLEGRO_DIRECT3D); break;
+	case 0: 
+		#ifdef _WIN32
+		al_set_new_display_flags(ALLEGRO_DIRECT3D); 
+		#endif
+		break;
 	case 1: al_set_new_display_flags(ALLEGRO_OPENGL); break;
 	}
 
@@ -337,12 +346,14 @@ bool Engine::setDisplayContext(int value)
 	switch (value)
 	{
 	case 0:
+		#ifdef _WIN32
 		Logger::getInstance()->logMessage(0, "Changing to Direct3D context...");
 		al_destroy_display(this->display);
 		al_set_new_display_flags(ALLEGRO_DIRECT3D);
 		display = al_create_display(getScreenWidth(), getScreenHeight());
 		if (!display) { Logger::getInstance()->logError(0, "Failed to change to Direct3D context"); return 1; }
 		this->displayContext = 0;
+		#endif
 		break;
 	case 1:
 		Logger::getInstance()->logMessage(0, "Changing to OpenGL context...");

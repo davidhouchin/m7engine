@@ -100,13 +100,13 @@ class Console : public M7engine::Entity
 {
 private:
 	bool isOpen;
-	Font *consoleFont;
+	M7engine::Font *consoleFont;
 
 public:
 	Console()
 	{
 		isOpen = true;
-		consoleFont = new Font;
+		consoleFont = new M7engine::Font;
 		consoleFont->loadFont("../resources/linear.otf", 20);
 		consoleFont->setColor(al_map_rgb(255, 255, 255));
 		consoleFont->setJustification(0);
@@ -122,7 +122,7 @@ public:
 		if (isOpen)
 		{
 			m7_engine.primitives->drawFilledRectangle(0, 0, m7_engine.getScreenWidth(), 256, al_map_rgba(0, 0, 0, 50));
-			m7_engine.fontManager->drawTextF(20, 20, consoleFont, "FPS: %g", (std::round(m7_engine.getFPS())));
+			m7_engine.fontManager->drawTextF(20, 20, consoleFont, "FPS: %g", (std::floor(m7_engine.getFPS() + 0.5)));
 			m7_engine.fontManager->drawTextF(20, 40, consoleFont, "Frames: %i", m7_engine.getFrameCount());
 			m7_engine.fontManager->drawTextF(20, 60, consoleFont, "X: %i", m7_engine.inputManager->getMouseX());
 			m7_engine.fontManager->drawTextF(20, 80, consoleFont, "Y: %i", m7_engine.inputManager->getMouseY());
@@ -132,12 +132,6 @@ public:
 
 int main(int argc, char **argv)
 {
-	//Print working directory (debug)
-	TCHAR pwd[MAX_PATH];
-	GetCurrentDirectory(MAX_PATH, pwd);
-	fprintf(stdout, pwd);
-	fprintf(stdout, "PWD: \n");
-
 	using namespace M7engine;
 	bool running = true;
 
@@ -163,8 +157,8 @@ int main(int argc, char **argv)
 	TestE *Tentity2 = new TestE;
 	TestE *Tentity3 = new TestE;
 	ParticleEmitter *Temitter = new ParticleEmitter;
-	Font *Tfont = new Font;
-	Font *Tfont2 = new Font;
+	M7engine::Font *Tfont = new M7engine::Font;
+	M7engine::Font *Tfont2 = new M7engine::Font;
 	Console *console = new Console;
 	//////////
 

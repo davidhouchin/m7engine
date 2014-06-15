@@ -52,8 +52,11 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_image.h>
-#include <allegro5/allegro_direct3d.h>
 #include <allegro5/allegro_opengl.h>
+
+#ifdef _WIN32
+#include <allegro5/allegro_direct3d.h>
+#endif
 
 #include "Entity.h"
 #include "Sprite.h"
@@ -139,7 +142,6 @@ public:
 	Primitives *primitives;
 	CollisionManager *collisionManager;
 	ConfigReader *configReader;
-	Logger *logger;
 
 	InputManager* getInputManager() { return inputManager; }
 	SoundManager* getSoundManager() { return soundManager; }
@@ -147,7 +149,6 @@ public:
 	Primitives* getPrimitives() { return primitives; }
 	CollisionManager* getCollisionManager() { return collisionManager; }
 	ConfigReader* getConfigReader() { return configReader; }
-	Logger* getLogger() { return logger; }
 };
 };
 
