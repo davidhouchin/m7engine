@@ -34,6 +34,8 @@ public:
 	void setHeight(int arg) { this->height = arg; }
 	double getScale() { return scale; }
 	void setScale(double arg) { scale = arg; }
+	int getDelay() { return this->delay; }
+	void setDelay(int arg) { this->delay = arg; }
 
 	void changeFrame(int frame);
 	void nextFrame();
@@ -43,7 +45,7 @@ public:
 	void setColor(ALLEGRO_COLOR arg) { color = arg; }
 
 private:
-	int width, height, frame, maxFrames, frameWidth, frameHeight, columns;
+	int width, height, frame, maxFrames, frameWidth, frameHeight, columns, delay, step;
 	double rotation, scale;
 	ALLEGRO_BITMAP *bitmap;
 	ALLEGRO_COLOR color;

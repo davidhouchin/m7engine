@@ -25,7 +25,7 @@ friend class ParticleEmitter;
 protected:
 	ALLEGRO_COLOR color;
 
-	void Particle::draw()
+	void draw()
 	{
 		if (image)
 		{

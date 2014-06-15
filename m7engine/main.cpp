@@ -23,15 +23,11 @@ public:
 		isMoving = false;
 		xOffset = 0;
 		yOffset = 0;
+		timer[0] = 120;
 	}
 
 	void update()
 	{
-		int r = rand();
-		int g = rand();
-		int b = rand();
-		this->getSprite()->setColor(al_map_rgb(r, g, b));
-
 		if (m7_engine.inputManager->getMouseX() < getX() + getWidth() && m7_engine.inputManager->getMouseX() > getX())
 		{
 			if (m7_engine.inputManager->getMouseY() < getY() + getHeight() && m7_engine.inputManager->getMouseY() > getY())
@@ -54,6 +50,14 @@ public:
 		{
 			setX(m7_engine.inputManager->getMouseX() - xOffset);
 			setY(m7_engine.inputManager->getMouseY() - yOffset);
+		}
+	}
+
+	void alarm(int timerNum)
+	{
+		if (timerNum == 0)
+		{
+			Logger::getInstance()->logMessage(0, "Alarm 0!");
 		}
 	}
 };
@@ -137,6 +141,7 @@ int main(int argc, char **argv)
 
 	Logger *logger = Logger::getInstance();
 	logger->setLogFile("m7engine.log");
+	logger->setLoggingLevel(0);
 	logger->logMessage(0, "Game started");
 
 	int resX, resY, fs;
@@ -156,6 +161,7 @@ int main(int argc, char **argv)
 	TestE2 *Tentity = new TestE2;
 	TestE *Tentity2 = new TestE;
 	TestE *Tentity3 = new TestE;
+	TestE *Tentity4 = new TestE;
 	ParticleEmitter *Temitter = new ParticleEmitter;
 	M7engine::Font *Tfont = new M7engine::Font;
 	M7engine::Font *Tfont2 = new M7engine::Font;
@@ -165,6 +171,7 @@ int main(int argc, char **argv)
 	m7_engine.addEntity(Tentity);
 	m7_engine.addEntity(Tentity2);
 	m7_engine.addEntity(Tentity3);
+	m7_engine.addEntity(Tentity4);
 	m7_engine.addEntity(console);
 	m7_engine.addEntity(Temitter);
 
@@ -181,6 +188,12 @@ int main(int argc, char **argv)
 	Tentity3->getSprite()->setColor(al_map_rgb(0, 0, 255));
 	Tentity3->setPosition(256, 128);
 	Tentity3->setSizeToImageScale();
+
+	Tentity4->loadImage("../resources/explosion.png", 64, 64, 4, 16);
+	Tentity4->getSprite()->setDelay(4);
+	Tentity4->getSprite()->setScale(1);
+	Tentity4->setSize(128, 128);
+	Tentity4->setPosition(256, 256);
 
 	Temitter->loadImage("../resources/particle16.png");
 	Temitter->setPosition(128, 128);
@@ -243,6 +256,7 @@ int main(int argc, char **argv)
 
 		if (m7_engine.collisionManager->getCollisionBBox(Tentity, Tentity2))
 		{
+			al_set_target_backbuffer(m7_engine.getDisplay());
 			m7_engine.primitives->drawFilledRectangle(4, 4, 200, 200, al_map_rgba(0, 255, 0, 100));
 		}
 		m7_engine.fontManager->drawTextF(2, 250, Tfont2, "D:%f x1:%f x2:%f", Tentity->getPosition().distance(Tentity2->getPosition()), Tentity->getX(), Tentity2->getX());

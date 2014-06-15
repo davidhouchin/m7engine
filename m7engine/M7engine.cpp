@@ -147,6 +147,8 @@ bool Engine::update()
 
 		double gameTime = al_get_time();
 
+		al_set_target_backbuffer(display);
+
 		updateCollisions();
 		updateEntities();
 		drawEntities();
@@ -181,6 +183,7 @@ void Engine::updateEntities()
 		entity = *iter;
 		if (entity->getActive())
 		{
+			entity->updateTimers();
 			entity->update();
 		}
 		iter++;
@@ -191,7 +194,6 @@ void Engine::drawEntities()
 {
 	Logger::getInstance()->logMessage(1, "Engine is drawing");
 
-	al_set_target_backbuffer(display);
 	std::list<Entity*>::iterator iter;
 	Entity *entity;
 	iter = entities.begin();

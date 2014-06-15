@@ -24,12 +24,15 @@ public:
 	virtual ~Entity();
 
 	virtual bool loadImage(const char *filename);
+	virtual bool loadImage(const char *filename, int width, int height, int columns, int frames);
 	void setImage(Sprite *image);
 	virtual void reloadImage();
 	virtual void update() {};
+	void updateTimers();
 	virtual void collision(Entity *other) {};
 	void move();
 	virtual void draw();
+	virtual void alarm(int timerNum) {};
 
 	Vector2 getPosition() { return position; }
 	void setPosition(Vector2 arg) { this->position = arg; }
@@ -67,6 +70,7 @@ public:
 protected:
 	int id, width, height, direction;
 	bool visible, active;
+	int timer[10];
 	Vector2 position, velocity;
 	Sprite *image;
 };

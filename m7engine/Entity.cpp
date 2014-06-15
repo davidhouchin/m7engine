@@ -44,7 +44,27 @@ bool Entity::loadImage(const char *filename)
 		this->setSize(image->getWidth(), image->getHeight());
 		return true;
 	}
+}
 
+bool Entity::loadImage(const char *filename, int width, int height, int columns, int frames)
+{
+	if (!image)
+	{
+		image = new Sprite;
+	}
+
+	Logger::getInstance()->logMessage(0, "Entity ID %i loading image: '%s'", id, filename);
+	image->loadImage(filename, width, height, columns, frames);
+	if (!image)
+	{
+		Logger::getInstance()->logError(0, "Entity failed to set bitmap: '%s'", filename);
+		return false;
+	}
+	else
+	{
+		this->setSize(image->getWidth(), image->getHeight());
+		return true;
+	}
 }
 
 void Entity::setImage(Sprite *image)
@@ -75,5 +95,21 @@ void Entity::move()
 {
 	this->setX(this->getX() + this->velocity.getX());
 	this->setY(this->getY() + this->velocity.getY());
+}
+
+void Entity::updateTimers()
+{
+	int i;
+	for (i = 0; i < 10; i++)
+	{
+		if (timer[i] != 0) 
+		{ 
+			timer[i]--;
+			if (timer[i] == 0)
+			{
+				alarm(i);
+			}
+		}
+	}
 }
 }

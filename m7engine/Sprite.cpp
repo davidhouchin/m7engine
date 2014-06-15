@@ -73,6 +73,8 @@ bool Sprite::loadImage(const char *filename, int width, int height, int columns,
 	{
 		this->bitmapFilename = filename;
 
+		this->setSize(al_get_bitmap_width(bitmap), al_get_bitmap_height(bitmap));
+
 		ALLEGRO_BITMAP *tempBitmap = NULL;
 		int tempX = 0;
 		int tempY = 0;
@@ -82,15 +84,15 @@ bool Sprite::loadImage(const char *filename, int width, int height, int columns,
 		this->frameHeight = height;
 		this->columns = columns;
 
-		al_set_target_bitmap(tempBitmap);
-
 		for (int i = 0; i < frames; i++)
 		{
 			tempBitmap = al_create_bitmap(width, height);
 			tempX = 0 + (i % columns) * width;
 			tempY = 0 + (i / columns) * height;
+			Logger::getInstance()->logMessage(0, "Sprite creating frame %i at %i %i", i, tempX, tempY);
+			al_set_target_bitmap(tempBitmap);
 			al_draw_bitmap_region(bitmap, tempX, tempY, width, height, 0, 0, 0);
-			frameList.push_back(bitmap);
+			frameList.push_back(tempBitmap);
 		}
 
 		return true;
@@ -103,7 +105,7 @@ bool Sprite::reloadBitmap()
 	{
 		this->frameList.clear();
 
-		if (maxFrames > 1) { this->loadImage(this->bitmapFilename, this->width, this->height, this->columns, this->maxFrames); }
+		if (maxFrames > 1) { this->loadImage(this->bitmapFilename, this->frameWidth, this->frameHeight, this->columns, this->maxFrames); }
 		else { this->loadImage(this->bitmapFilename); }
 
 		if (!bitmap)
@@ -131,13 +133,13 @@ void Sprite::changeFrame(int changeTo)
 void Sprite::nextFrame()
 {
 	this->frame++;
-	if (frame > maxFrames){ frame = 0; }
+	if (frame > maxFrames-1){ frame = 0; }
 }
 
 void Sprite::previousFrame()
 {
 	this->frame--;
-	if (frame < 0){ frame = maxFrames; }
+	if (frame < 0){ frame = maxFrames-1; }
 }
 
 void Sprite::draw(int x, int y)
@@ -146,10 +148,16 @@ void Sprite::draw(int x, int y)
 	{
 		if (this->maxFrames > 0)
 		{
-			Logger::getInstance()->logMessage(99, "Frame: %i", frame);
-
+			if (this->maxFrames > 1) { Logger::getInstance()->logMessage(99, "Frame: %i", frame); }
 			bitmap = frameList[this->frame];
 			al_draw_tinted_scaled_rotated_bitmap(bitmap, color, 0, 0, x, y, scale, scale, rotation, 0);
+
+			step++;
+			if (step == delay)
+			{
+				step = 0;
+				this->nextFrame();
+			}
 		}
 	}
 }
