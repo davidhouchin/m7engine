@@ -25,7 +25,7 @@ public:
 
 	virtual bool loadImage(const char *filename);
 	virtual bool loadImage(const char *filename, int width, int height, int columns, int frames);
-	void setImage(Sprite *image);
+	virtual void setImage(Sprite *image);
 	virtual void reloadImage();
 	virtual void update() {};
 	void updateTimers();
@@ -56,22 +56,29 @@ public:
 	void setVelocity(double x, double y){ velocity.setX(x); velocity.setY(y); }
 
 	void setSize(int width, int height) { this->width = width; this->height = height; }
-	void setSizeToImageScale() { this->width = width * image->getScale(); this->height = height * image->getScale(); }
+	void setSizeToImageScale() { this->width = scale * image->getWidth(); this->height = scale * image->getHeight(); }
 	int getWidth() { return this->width; }
 	void setWidth(int arg) { this->width = arg; }
 	int getHeight() { return this->height; }
 	void setHeight(int arg) { this->height = arg; }
+	double getScale() { return scale; }
+	void setScale(double arg) { scale = arg; }
 
 	int getDirection() { return direction; }
 	void setDirection(int arg) { direction = arg; }
 
 	Sprite* getSprite(){ return image; }
 
+	ALLEGRO_COLOR getColor() { return color; }
+	void setColor(ALLEGRO_COLOR arg) { color = arg; }
+
 protected:
 	int id, width, height, direction;
+	double scale;
 	bool visible, active;
 	int timer[10];
 	Vector2 position, velocity;
+	ALLEGRO_COLOR color;
 	Sprite *image;
 };
 };

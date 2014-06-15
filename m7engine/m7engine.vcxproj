@@ -82,6 +82,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="Primitives.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Vector2.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="M7engine.h" />
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="Primitives.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Vector2.h" />
@@ -105,17 +107,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\resources\config.ini" />
+    <None Include="..\resources\resources.ini" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\resources\explode2.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="..\resources\linear.otf" />
-  </ItemGroup>
-  <ItemGroup>
+    <Image Include="..\resources\explosion.png" />
     <Image Include="..\resources\m7.png" />
     <Image Include="..\resources\monster2.png" />
     <Image Include="..\resources\particle16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\resources\elgethy.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

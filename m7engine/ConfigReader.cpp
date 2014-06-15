@@ -27,7 +27,7 @@ bool ConfigReader::loadConfig(const char *filename)
 	engineConfig = al_load_config_file(filename);
 	if (!engineConfig)
 	{
-		Logger::getInstance()->logError(0, "ConfigReader failed to load config file: '%s'\n", filename);
+		Logger::getInstance()->logError(0, "ConfigReader failed to load config file: '%s'", filename);
 		return false;
 	}
 	else

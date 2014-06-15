@@ -35,10 +35,14 @@ public:
 	void setJustification(int arg){ justification = arg; }
 	int getJustification(){ return justification; }
 
+	const char* getName(){ return this->name; }
+	void setName(const char *name) { this->name = name; }
+
 private:
 	ALLEGRO_FONT *font;
 	ALLEGRO_COLOR color;
 	int justification;
+	const char *fontFilename, *name;
 };
 
 class FontManager

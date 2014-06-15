@@ -12,7 +12,6 @@ namespace M7engine
 {
 ParticleEmitter::ParticleEmitter()
 {
-	image = new Sprite();
 	max = 100;
 	length = 100;
 	direction = 0;
@@ -51,6 +50,12 @@ bool ParticleEmitter::loadImage(const char* filename)
 
 	this->bitmapFilename = filename;
 	return true;
+}
+
+void ParticleEmitter::setImage(Sprite *setSprite)
+{
+	this->image = setSprite;
+	this->setSize(setSprite->getWidth(), setSprite->getHeight());
 }
 
 void ParticleEmitter::reloadImage()
@@ -95,7 +100,7 @@ void ParticleEmitter::add()
 
 	p->color = al_map_rgba(r, g, b, a);
 
-	p->getSprite()->setScale(this->image->getScale());
+	p->setScale(this->getScale());
 
 	particles.push_back(p);
 }

@@ -18,6 +18,8 @@ Entity::Entity()
 	this->image = NULL;
 	this->setPosition(128, 128);
 	this->direction = 0;
+	this->scale = 1;
+	this->color = al_map_rgb(255, 255, 255);
 }
 
 Entity::~Entity()
@@ -75,10 +77,10 @@ void Entity::setImage(Sprite *image)
 
 void Entity::reloadImage()
 {
-	if (image != NULL)
+	/*if (image != NULL)
 	{
 		image->reloadBitmap();
-	}
+	}*/
 }
 
 void Entity::draw()
@@ -87,6 +89,8 @@ void Entity::draw()
 	{
 		Logger::getInstance()->logMessage(99, "%i is drawing->", id);
 		
+		image->setScale(this->getScale());
+		image->setColor(this->getColor());
 		image->draw(this->getX(), this->getY());
 	}
 }

@@ -58,6 +58,13 @@ bool Sprite::loadImage(const char *filename)
 
 bool Sprite::loadImage(const char *filename, int width, int height, int columns, int frames)
 {
+	if (width == NULL || height == NULL || columns == NULL || frames == NULL)
+	{
+		this->loadImage(filename);
+		return true;
+	}
+
+	Logger::getInstance()->logMessage(0, "Sprite loading image: '%s'", filename);
 	if (bitmap != NULL)
 	{
 		al_destroy_bitmap(bitmap);
@@ -151,7 +158,7 @@ void Sprite::draw(int x, int y)
 			if (this->maxFrames > 1) { Logger::getInstance()->logMessage(99, "Frame: %i", frame); }
 			bitmap = frameList[this->frame];
 			al_draw_tinted_scaled_rotated_bitmap(bitmap, color, 0, 0, x, y, scale, scale, rotation, 0);
-
+			
 			step++;
 			if (step == delay)
 			{

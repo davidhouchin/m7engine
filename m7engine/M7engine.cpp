@@ -74,6 +74,8 @@ bool Engine::init(int width, int height, int mode)
 
 	collisionManager = new CollisionManager;
 
+	resourceManager = new ResourceManager;
+
 	al_init_image_addon();
 
 	timer = al_create_timer(1.0 / this->getFrameRate());
@@ -332,7 +334,7 @@ bool Engine::setWindowMode(int value)
 		break;
 	}
 
-	this->reloadBitmaps();
+	this->reloadResources();
 
 	return 0;
 }
@@ -367,14 +369,17 @@ bool Engine::setDisplayContext(int value)
 		break;
 	}
 
-	this->reloadBitmaps();
+	this->reloadResources();
 
 	return 0;
 }
 
-void Engine::reloadBitmaps()
+void Engine::reloadResources()
 {
-	Logger::getInstance()->logMessage(0, "Engine is reloading bitmaps...");
+	Logger::getInstance()->logMessage(0, "Engine is reloading resources...");
+
+	resourceManager->reloadResources();
+
 	std::list<Entity*>::iterator iter;
 	Entity *entity;
 	iter = entities.begin();

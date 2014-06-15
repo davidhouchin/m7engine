@@ -30,6 +30,7 @@ protected:
 		if (image)
 		{
 			image->setColor(color);
+			image->setScale(scale);
 			image->draw(this->getX(), this->getY());
 		}
 	}
@@ -55,6 +56,7 @@ public:
 	void setLength(double arg){ length = arg; }
 	void setVelocity(double arg){ velocity = arg; }
 	bool loadImage(const char* filename);
+	void setImage(Sprite *setSprite);
 	void reloadImage();
 	void draw();
 	void update();

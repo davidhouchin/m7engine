@@ -24,7 +24,7 @@ public:
 
 	bool loadSample(const char *filename);
 	ALLEGRO_SAMPLE_INSTANCE* getSample() { return sample; }
-	char getFilename() { return filename; }
+	const char* getFilename() { return filename; }
 
 	ALLEGRO_AUDIO_DEPTH getSampleDepth() { return al_get_sample_instance_depth(this->getSample()); }
 
@@ -51,10 +51,13 @@ public:
 	ALLEGRO_PLAYMODE getSamplePlayMode() { return al_get_sample_instance_playmode(this->getSample()); }
 	bool setSamplePlayMode(ALLEGRO_PLAYMODE arg) { return (al_set_sample_instance_playmode(this->getSample(), arg) ? true : false); }
 
+	const char* getName(){ return this->name; }
+	void setName(const char *name) { this->name = name; }
+
 private:
 	ALLEGRO_SAMPLE *sample_data;
 	ALLEGRO_SAMPLE_INSTANCE *sample;
-	char filename;
+	const char *filename, *name;
 };
 
 class SoundManager

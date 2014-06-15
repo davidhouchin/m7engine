@@ -37,6 +37,9 @@ public:
 	int getDelay() { return this->delay; }
 	void setDelay(int arg) { this->delay = arg; }
 
+	const char* getName(){ return this->name; }
+	void setName(const char *name) { this->name = name; }
+
 	void changeFrame(int frame);
 	void nextFrame();
 	void previousFrame();
@@ -50,7 +53,7 @@ private:
 	ALLEGRO_BITMAP *bitmap;
 	ALLEGRO_COLOR color;
 	std::vector<ALLEGRO_BITMAP*> frameList;
-	const char *bitmapFilename;
+	const char *bitmapFilename, *name;
 };
 };
 

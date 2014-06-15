@@ -54,6 +54,9 @@
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="M7engine.h">
@@ -92,6 +95,9 @@
     <ClInclude Include="Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="COPYING.txt">
@@ -102,16 +108,14 @@
     <None Include="..\resources\config.ini">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\resources\resources.ini">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\resources\explode2.wav">
       <Filter>Resource Files</Filter>
     </Media>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="..\resources\linear.otf">
-      <Filter>Resource Files</Filter>
-    </Font>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\resources\m7.png">
@@ -123,5 +127,13 @@
     <Image Include="..\resources\particle16.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\resources\explosion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\resources\elgethy.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>

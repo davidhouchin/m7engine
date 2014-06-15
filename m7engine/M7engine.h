@@ -69,6 +69,7 @@
 #include "Font.h"
 #include "CollisionManager.h"
 #include "ConfigReader.h"
+#include "ResourceManager.h"
 #include "Logger.h"
 
 #define VERSION_MAJOR 0
@@ -107,7 +108,7 @@ public:
 	std::list<Entity*> getEntityList() { return entities; }
 	std::list<ParticleEmitter*> getParticleEmitterList() { return particleEmitters; }
 	long getEntityCount() { return (long)entities.size(); }
-	void reloadBitmaps();
+	void reloadResources();
 
 	void updateCollisions();
 
@@ -142,6 +143,7 @@ public:
 	Primitives *primitives;
 	CollisionManager *collisionManager;
 	ConfigReader *configReader;
+	ResourceManager *resourceManager;
 
 	InputManager* getInputManager() { return inputManager; }
 	SoundManager* getSoundManager() { return soundManager; }
@@ -149,6 +151,7 @@ public:
 	Primitives* getPrimitives() { return primitives; }
 	CollisionManager* getCollisionManager() { return collisionManager; }
 	ConfigReader* getConfigReader() { return configReader; }
+	ResourceManager* getResourceManager() { return resourceManager; }
 };
 };
 

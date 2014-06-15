@@ -69,7 +69,7 @@ class TestE2 : public M7engine::Entity
 		int r = rand();
 		int g = rand();
 		int b = rand();
-		this->getSprite()->setColor(al_map_rgb(r, g, b));
+		this->setColor(al_map_rgb(r, g, b));
 
 		if (m7_engine.inputManager->getKeyHeld(ALLEGRO_KEY_W))
 		{
@@ -111,7 +111,7 @@ public:
 	{
 		isOpen = true;
 		consoleFont = new M7engine::Font;
-		consoleFont->loadFont("../resources/linear.otf", 20);
+		consoleFont->loadFont("../resources/elgethy.ttf", 25);
 		consoleFont->setColor(al_map_rgb(255, 255, 255));
 		consoleFont->setJustification(0);
 	}
@@ -155,16 +155,18 @@ int main(int argc, char **argv)
 	m7_engine.init(resX, resY, fs);
 	m7_engine.setWindowTitle("M7engine Tech Demo");
 	m7_engine.setIcon("../resources/m7.png");
+
+	m7_engine.getResourceManager()->loadConfig("../resources/resources.ini");
 	
 	//FOR TEST
-	Sample *Tsample = new Sample;
+	Sample *Tsample;
 	TestE2 *Tentity = new TestE2;
 	TestE *Tentity2 = new TestE;
 	TestE *Tentity3 = new TestE;
 	TestE *Tentity4 = new TestE;
 	ParticleEmitter *Temitter = new ParticleEmitter;
-	M7engine::Font *Tfont = new M7engine::Font;
-	M7engine::Font *Tfont2 = new M7engine::Font;
+	M7engine::Font *Tfont;
+	M7engine::Font *Tfont2;
 	Console *console = new Console;
 	//////////
 
@@ -175,29 +177,30 @@ int main(int argc, char **argv)
 	m7_engine.addEntity(console);
 	m7_engine.addEntity(Temitter);
 
-	Tentity->loadImage("../resources/monster2.png");
-	Tentity->getSprite()->setScale(3);
-	Tentity->setSize(96, 96);
+	Tentity->setImage(m7_engine.getResourceManager()->getSprite("monster"));
+	Tentity->setScale(3);
+	Tentity->setSizeToImageScale();
+	Tentity->setPosition(512, 256);
 
-	Tentity2->loadImage("../resources/monster2.png");
-	Tentity2->getSprite()->setScale(1);
-	Tentity2->getSprite()->setColor(al_map_rgb(0, 255, 0));
+	Tentity2->setImage(m7_engine.getResourceManager()->getSprite("monster"));
+	Tentity2->setScale(1);
+	Tentity2->setColor(al_map_rgb(0, 255, 0));
 
-	Tentity3->loadImage("../resources/monster2.png");
-	Tentity3->getSprite()->setScale(2);
-	Tentity3->getSprite()->setColor(al_map_rgb(0, 0, 255));
-	Tentity3->setPosition(256, 128);
+	Tentity3->setImage(m7_engine.getResourceManager()->getSprite("monster"));
+	Tentity3->setScale(2);
 	Tentity3->setSizeToImageScale();
+	Tentity3->setColor(al_map_rgb(0, 0, 255));
+	Tentity3->setPosition(256, 128);
 
-	Tentity4->loadImage("../resources/explosion.png", 64, 64, 4, 16);
+	Tentity4->setImage(m7_engine.getResourceManager()->getSprite("explosion"));
 	Tentity4->getSprite()->setDelay(4);
-	Tentity4->getSprite()->setScale(1);
+	Tentity4->setScale(1);
 	Tentity4->setSize(128, 128);
 	Tentity4->setPosition(256, 256);
 
-	Temitter->loadImage("../resources/particle16.png");
+	Temitter->setImage(m7_engine.getResourceManager()->getSprite("particle"));
 	Temitter->setPosition(128, 128);
-	Temitter->getSprite()->setScale(2);
+	Temitter->setScale(1);
 	Temitter->setDirection(0);
 	Temitter->setMax(500);
 	Temitter->setAlphaRange(0, 100);
@@ -206,14 +209,14 @@ int main(int argc, char **argv)
 	Temitter->setVelocity(8);
 	Temitter->setLength(800);
 
-	Tsample->loadSample("../resources/explode2.wav");
+	Tsample = m7_engine.getResourceManager()->getSound("boom");
 	Tsample->setSampleSpeed(5);
 
-	Tfont->loadFont("../resources/linear.otf", 20);
+	Tfont = m7_engine.getResourceManager()->getFont("elgethy");
 	Tfont->setColor(al_map_rgb(0, 200, 200));
 	Tfont->setJustification(1);
 
-	Tfont2->setFont(Tfont->getFont());
+	Tfont2 = m7_engine.getResourceManager()->getFont("elgethy2");
 	Tfont2->setColor(al_map_rgb(200, 200, 0));
 	Tfont2->setJustification(0);
 
