@@ -43,6 +43,7 @@ bool Logger::setLogFile(const char *file)
 		return false;
 	}
 	logFile.close();
+	return true;
 }
 
 void Logger::logMessage(int level, const char *message, ...)

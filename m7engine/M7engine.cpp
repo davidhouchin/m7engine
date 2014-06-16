@@ -60,9 +60,6 @@ bool Engine::init(int width, int height, int mode)
 		return false;
 	}
 
-	inputManager = new InputManager;
-	inputManager->init();
-
 	soundManager = new SoundManager;
 	soundManager->init();
 
@@ -123,7 +120,7 @@ bool Engine::update()
 {
 	Logger::getInstance()->logMessage(1, "Engine update cycle: %i", frameCount);
 
-	inputManager->update();
+	InputManager::getInstance()->update();
 		
 	frameCount++;
 

@@ -74,6 +74,7 @@
   <ItemGroup>
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ConfigReader.cpp" />
+    <ClCompile Include="Console.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -90,6 +91,7 @@
   <ItemGroup>
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ConfigReader.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="InputManager.h" />

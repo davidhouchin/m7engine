@@ -18,7 +18,8 @@ namespace M7engine
 class InputManager
 {
 public:
-	InputManager();
+	static InputManager* getInstance();
+
 	virtual ~InputManager();
 	bool init();
 	void update();
@@ -44,6 +45,8 @@ public:
 	int getKeyLast() { return keyLast; }
 
 private:
+	InputManager();
+	static InputManager* managerInstance;
 	int mouseX, mouseY, mouseZ, mouseDX, mouseDY, mouseDZ;
 	ALLEGRO_EVENT_QUEUE *keyboardQueue;
 	ALLEGRO_EVENT_QUEUE *mouseQueue;

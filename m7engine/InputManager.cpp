@@ -10,6 +10,19 @@
 
 namespace M7engine
 {
+
+InputManager* InputManager::managerInstance = NULL;
+
+InputManager* InputManager::getInstance()
+{
+	if (!managerInstance)
+	{
+		managerInstance = new InputManager;
+	}
+
+	return managerInstance;
+}
+
 InputManager::InputManager()
 {
 }

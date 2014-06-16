@@ -63,7 +63,7 @@
 #include "Logger.h"
 
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 2
+#define VERSION_MINOR 3
 
 namespace M7engine
 {
@@ -125,14 +125,12 @@ public:
 		icon = al_load_bitmap(filename); if (!icon) { return false; } al_set_display_icon(display, icon); return true;
 	}
 
-	InputManager *inputManager;
 	SoundManager *soundManager;
 	FontManager *fontManager;
 	Primitives *primitives;
 	CollisionManager *collisionManager;
 	ConfigReader *configReader;
 
-	InputManager* getInputManager() { return inputManager; }
 	SoundManager* getSoundManager() { return soundManager; }
 	FontManager* getFontManager() { return fontManager; }
 	Primitives* getPrimitives() { return primitives; }

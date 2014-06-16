@@ -10,6 +10,9 @@
 
 using namespace M7engine;
 Engine m7_engine;
+Logger *logger = Logger::getInstance();
+ResourceManager *rManager = ResourceManager::getInstance();
+InputManager *inputManager = InputManager::getInstance();
 
 class TestE : public M7engine::Entity
 {
@@ -28,28 +31,28 @@ public:
 
 	void update()
 	{
-		if (m7_engine.inputManager->getMouseX() < getX() + getWidth() && m7_engine.inputManager->getMouseX() > getX())
+		if (inputManager->getMouseX() < getX() + getWidth() && inputManager->getMouseX() > getX())
 		{
-			if (m7_engine.inputManager->getMouseY() < getY() + getHeight() && m7_engine.inputManager->getMouseY() > getY())
+			if (inputManager->getMouseY() < getY() + getHeight() && inputManager->getMouseY() > getY())
 			{
-				if (m7_engine.inputManager->getMousePressed(1))
+				if (inputManager->getMousePressed(1))
 				{
 					isMoving = true;
-					xOffset = m7_engine.inputManager->getMouseX() - getX();
-					yOffset = m7_engine.inputManager->getMouseY() - getY();
+					xOffset = inputManager->getMouseX() - getX();
+					yOffset = inputManager->getMouseY() - getY();
 				}
 			}
 		}
 
-		if (m7_engine.inputManager->getMouseReleased(1))
+		if (inputManager->getMouseReleased(1))
 		{
 			isMoving = false;
 		}
 
 		if (isMoving)
 		{
-			setX(m7_engine.inputManager->getMouseX() - xOffset);
-			setY(m7_engine.inputManager->getMouseY() - yOffset);
+			setX(inputManager->getMouseX() - xOffset);
+			setY(inputManager->getMouseY() - yOffset);
 		}
 	}
 
@@ -71,19 +74,19 @@ class TestE2 : public M7engine::Entity
 		int b = rand();
 		this->setColor(al_map_rgb(r, g, b));
 
-		if (m7_engine.inputManager->getKeyHeld(ALLEGRO_KEY_W))
+		if (inputManager->getKeyHeld(ALLEGRO_KEY_W))
 		{
 			this->setY(this->getY() - 6.0f);
 		}
-		if (m7_engine.inputManager->getKeyHeld(ALLEGRO_KEY_S))
+		if (inputManager->getKeyHeld(ALLEGRO_KEY_S))
 		{
 			this->setY(this->getY() + 6.0f);
 		}
-		if (m7_engine.inputManager->getKeyHeld(ALLEGRO_KEY_A))
+		if (inputManager->getKeyHeld(ALLEGRO_KEY_A))
 		{
 			this->setX(this->getX() - 6.0f);
 		}
-		if (m7_engine.inputManager->getKeyHeld(ALLEGRO_KEY_D))
+		if (inputManager->getKeyHeld(ALLEGRO_KEY_D))
 		{
 			this->setX(this->getX() + 6.0f);
 		}
@@ -118,7 +121,7 @@ public:
 
 	void update()
 	{
-		if (m7_engine.inputManager->getKeyReleased(ALLEGRO_KEY_TILDE))
+		if (inputManager->getKeyReleased(ALLEGRO_KEY_TILDE))
 		{
 			isOpen = !isOpen;
 		}
@@ -128,8 +131,8 @@ public:
 			m7_engine.primitives->drawFilledRectangle(0, 0, m7_engine.getScreenWidth(), 256, al_map_rgba(0, 0, 0, 50));
 			m7_engine.fontManager->drawTextF(20, 20, consoleFont, "FPS: %g", (std::floor(m7_engine.getFPS() + 0.5)));
 			m7_engine.fontManager->drawTextF(20, 40, consoleFont, "Frames: %i", m7_engine.getFrameCount());
-			m7_engine.fontManager->drawTextF(20, 60, consoleFont, "X: %i", m7_engine.inputManager->getMouseX());
-			m7_engine.fontManager->drawTextF(20, 80, consoleFont, "Y: %i", m7_engine.inputManager->getMouseY());
+			m7_engine.fontManager->drawTextF(20, 60, consoleFont, "X: %i", inputManager->getMouseX());
+			m7_engine.fontManager->drawTextF(20, 80, consoleFont, "Y: %i", inputManager->getMouseY());
 		}
 	}
 };
@@ -139,7 +142,6 @@ int main(int argc, char **argv)
 	using namespace M7engine;
 	bool running = true;
 
-	Logger *logger = Logger::getInstance();
 	logger->setLogFile("m7engine.log");
 	logger->setLoggingLevel(0);
 	logger->logMessage(0, "Game started");
@@ -156,9 +158,9 @@ int main(int argc, char **argv)
 	m7_engine.setWindowTitle("M7engine Tech Demo");
 	m7_engine.setIcon("../resources/m7.png");
 
-	ResourceManager *rManager = ResourceManager::getInstance();
 	rManager->loadConfig("../resources/resources.ini");
-	
+	inputManager->init();
+
 	//FOR TEST
 	Sample *Tsample;
 	TestE2 *Tentity = new TestE2;
@@ -230,17 +232,17 @@ int main(int argc, char **argv)
 
 		Temitter->setPosition(Tentity->getX(), Tentity->getY());
 
-		if (m7_engine.inputManager->getKeyReleased(ALLEGRO_KEY_ESCAPE))
+		if (inputManager->getKeyReleased(ALLEGRO_KEY_ESCAPE))
 		{
 			return false;
 		}
-		if (m7_engine.inputManager->getKeyReleased(ALLEGRO_KEY_SPACE))
+		if (inputManager->getKeyReleased(ALLEGRO_KEY_SPACE))
 		{
 			m7_engine.soundManager->playSample(Tsample);
 			if (m7_engine.getFrameRate() == 30){ m7_engine.setFrameRate(60); }
 			else { m7_engine.setFrameRate(30); }
 		}
-		if (m7_engine.inputManager->getKeyReleased(ALLEGRO_KEY_BACKSPACE))
+		if (inputManager->getKeyReleased(ALLEGRO_KEY_BACKSPACE))
 		{
 			switch (m7_engine.getWindowMode())
 			{
@@ -249,7 +251,7 @@ int main(int argc, char **argv)
 			case 2: m7_engine.setWindowMode(0); break;
 			}
 		}
-		if (m7_engine.inputManager->getKeyReleased(ALLEGRO_KEY_TAB))
+		if (inputManager->getKeyReleased(ALLEGRO_KEY_TAB))
 		{
 			switch (m7_engine.getDisplayContext())
 			{
