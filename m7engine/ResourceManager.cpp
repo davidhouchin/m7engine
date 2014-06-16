@@ -144,6 +144,11 @@ bool ResourceManager::reloadResources()
 	}
 	spriteList.clear();
 	
+	for (iterFontList iter = fontList.begin(); iter != fontList.end(); ++iter)
+	{
+		iter->second->reloadFont();
+	}
+
 	if (!resourceConfig)
 	{
 		Logger::getInstance()->logError(0, "ResourceManager failed to parse resources, no config file");

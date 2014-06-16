@@ -30,16 +30,6 @@
          \/____/                                           --                       \/____/          \/___/
 */
 
-///////THINGS TO DO///////
-//- Display depth for entities.
-//- Built in collision detection.
-//- Sound modifications.
-//- Bitmap fonts.
-//- Clean up particle system
-//- Timing utils (?)
-//- Lower level graphics (Bitmaps/backgrounds, etc)
-//////////////////////////
-
 #ifndef M7ENGINE_H
 #define M7ENGINE_H
 
@@ -103,10 +93,8 @@ public:
 	void drawEntities();
 	void cleanEntities();
 	void addEntity(Entity *entity);
-	void addParticleEmitter(ParticleEmitter *particleEmitter);
 	Entity *findEntity(int id);
 	std::list<Entity*> getEntityList() { return entities; }
-	std::list<ParticleEmitter*> getParticleEmitterList() { return particleEmitters; }
 	long getEntityCount() { return (long)entities.size(); }
 	void reloadResources();
 

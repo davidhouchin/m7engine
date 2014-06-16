@@ -239,11 +239,6 @@ void Engine::addEntity(Entity *entity)
 	id++;
 }
 
-void Engine::addParticleEmitter(ParticleEmitter *particleEmitter)
-{
-	particleEmitters.push_back(particleEmitter);
-}
-
 Entity* Engine::findEntity(int id)
 {
 	std::list<Entity*>::iterator iter;

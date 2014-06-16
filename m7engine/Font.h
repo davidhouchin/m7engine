@@ -27,6 +27,7 @@ public:
 
 	bool loadFont(const char *filename, int size);
 	void setFont(ALLEGRO_FONT *arg);
+	bool reloadFont();
 	ALLEGRO_FONT* getFont(){ return font; }
 
 	void setColor(ALLEGRO_COLOR arg){ color = arg; }
@@ -34,6 +35,8 @@ public:
 
 	void setJustification(int arg){ justification = arg; }
 	int getJustification(){ return justification; }
+	void setSize(int arg){ size = arg; }
+	int getSize(){ return size; }
 
 	const char* getName(){ return this->name; }
 	void setName(const char *name) { this->name = name; }
@@ -41,7 +44,7 @@ public:
 private:
 	ALLEGRO_FONT *font;
 	ALLEGRO_COLOR color;
-	int justification;
+	int justification, size;
 	const char *fontFilename, *name;
 };
 
@@ -52,7 +55,7 @@ public:
 	virtual ~FontManager();
 
 	bool init();
-
+	
 	void drawText(float x, float y, Font *font, char const *text);
 	void drawTextF(float x, float y, Font *font, char const *text, ...);
 };

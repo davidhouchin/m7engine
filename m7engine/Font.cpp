@@ -22,6 +22,8 @@ Font::~Font()
 bool Font::loadFont(const char *filename, int size)
 {
 	font = al_load_ttf_font(filename, size, 0);
+	setSize(size);
+	this->fontFilename = filename;
 	if (!font)
 	{
 		Logger::getInstance()->logError(0, "Failed to load font: '%s'", filename);
@@ -34,6 +36,18 @@ bool Font::loadFont(const char *filename, int size)
 void Font::setFont(ALLEGRO_FONT *arg)
 {
 	font = arg;
+}
+
+bool Font::reloadFont()
+{
+	al_destroy_font(font);
+	font = al_load_ttf_font(fontFilename, size, 0);
+	if (!font)
+	{
+		Logger::getInstance()->logError(0, "Failed to load font: '%s'", fontFilename);
+		return false;
+	}
+	return true;
 }
 
 FontManager::FontManager()
