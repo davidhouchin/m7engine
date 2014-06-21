@@ -5,142 +5,131 @@
 * the GNU General Public License as published by the Free Software Foundation.
 * For more information, see COPYING.
 */
+/**
+ *  Input Manager
+ *  InputManager.cpp
+ *  Purpose: Manager to access and handle keyboard and mouse input.
+ *  @author David Houchin
+ *  @version 1.0 7/17/14
+ */
 
 #include "InputManager.h"
 
-namespace M7engine
-{
+namespace M7engine {
 
 InputManager* InputManager::managerInstance = NULL;
 
-InputManager* InputManager::getInstance()
-{
-	if (!managerInstance)
-	{
-		managerInstance = new InputManager;
-	}
+InputManager* InputManager::getInstance() {
+    if (!managerInstance) {
+        managerInstance = new InputManager;
+    }
 
-	return managerInstance;
+    return managerInstance;
 }
 
-InputManager::InputManager()
-{
+InputManager::InputManager() {
 }
 
-InputManager::~InputManager()
-{
-	al_destroy_event_queue(this->keyboardQueue);
-	al_destroy_event_queue(this->mouseQueue);
+InputManager::~InputManager() {
+    al_destroy_event_queue(this->keyboardQueue);
+    al_destroy_event_queue(this->mouseQueue);
 
-	delete[] mouseKeys;
-	delete[] oldMouseKeys;
-	delete[] mouseKeyStates;
+    delete[] mouseKeys;
+    delete[] oldMouseKeys;
+    delete[] mouseKeyStates;
 }
 
-bool InputManager::init()
-{
-	if (!al_install_mouse())
-	{
-		Logger::getInstance()->logError(0, "Failed to intialize mouse");
-		return false;
-	}
+bool InputManager::init() {
+    if (!al_install_mouse()) {
+        Logger::getInstance()->logError(0, "Failed to intialize mouse");
+        return false;
+    }
 
-	if (!al_install_keyboard())
-	{
-		Logger::getInstance()->logError(0, "Failed to initialize keyboard");
-		return false;
-	}
+    if (!al_install_keyboard()) {
+        Logger::getInstance()->logError(0, "Failed to initialize keyboard");
+        return false;
+    }
 
-	keyboardQueue = al_create_event_queue();
-	if (!keyboardQueue)
-	{
-		Logger::getInstance()->logError(0, "Failed to create keyboard input event queue");
-		return false;
-	}
+    keyboardQueue = al_create_event_queue();
+    if (!keyboardQueue) {
+        Logger::getInstance()->logError(0, "Failed to create keyboard input event queue");
+        return false;
+    }
 
-	mouseQueue = al_create_event_queue();
-	if (!mouseQueue)
-	{ 
-		Logger::getInstance()->logError(0, "Failed to create mouse input event queue");
-		return false;
-	}
+    mouseQueue = al_create_event_queue();
+    if (!mouseQueue) {
+        Logger::getInstance()->logError(0, "Failed to create mouse input event queue");
+        return false;
+    }
 
-	al_register_event_source(mouseQueue, al_get_mouse_event_source());
-	al_register_event_source(keyboardQueue, al_get_keyboard_event_source());
+    al_register_event_source(mouseQueue, al_get_mouse_event_source());
+    al_register_event_source(keyboardQueue, al_get_keyboard_event_source());
 
-	mouseX = 0;
-	mouseY = 0;
-	mouseZ = 0;
+    mouseX = 0;
+    mouseY = 0;
+    mouseZ = 0;
 
-	mouseKeys = new bool[getMouseKeyNum()];
-	oldMouseKeys = new bool[getMouseKeyNum()];
-	mouseKeyStates = new int[getMouseKeyNum()];
+    mouseKeys = new bool[getMouseKeyNum()];
+    oldMouseKeys = new bool[getMouseKeyNum()];
+    mouseKeyStates = new int[getMouseKeyNum()];
 
-	for (int i = 0; i < ALLEGRO_KEY_MAX; ++i)
-	{
-		keys[i] = false;
-		oldKeys[i] = false;
-	}
+    for (int i = 0; i < ALLEGRO_KEY_MAX; ++i) {
+        keys[i] = false;
+        oldKeys[i] = false;
+    }
 
-	for (int i = 0; i < getMouseKeyNum(); ++i)
-	{
-		mouseKeys[i] = false;
-		oldMouseKeys[i] = false;
-	}
+    for (int i = 0; i < getMouseKeyNum(); ++i) {
+        mouseKeys[i] = false;
+        oldMouseKeys[i] = false;
+    }
 
-	return true;
+    return true;
 }
 
-void InputManager::update()
-{
-	al_get_keyboard_state(&keyboardState);
-	al_get_mouse_state(&mouseState);
+void InputManager::update() {
+    al_get_keyboard_state(&keyboardState);
+    al_get_mouse_state(&mouseState);
 
-	for (int i = 0; i < ALLEGRO_KEY_MAX; ++i)
-	{
-		oldKeys[i] = keys[i];
-		keys[i] = al_key_down(&keyboardState, i);
-	}
-	for (int i = 0; i < ALLEGRO_KEY_MAX; ++i)
-	{
-		if (keys[i] && !oldKeys[i]){ keyStates[i] = KEY_PRESS; }
-		if (!keys[i] && oldKeys[i]){ keyStates[i] = KEY_RELEASE; }
-		if (keys[i] && oldKeys[i]){ keyStates[i] = KEY_HELD; }
-		if (!keys[i] && !oldKeys[i]){ keyStates[i] = KEY_OPEN; }
-	}
+    for (int i = 0; i < ALLEGRO_KEY_MAX; ++i) {
+        oldKeys[i] = keys[i];
+        keys[i] = al_key_down(&keyboardState, i);
+    }
+    for (int i = 0; i < ALLEGRO_KEY_MAX; ++i) {
+        if (keys[i] && !oldKeys[i]){ keyStates[i] = KEY_PRESS; }
+        if (!keys[i] && oldKeys[i]){ keyStates[i] = KEY_RELEASE; }
+        if (keys[i] && oldKeys[i]){ keyStates[i] = KEY_HELD; }
+        if (!keys[i] && !oldKeys[i]){ keyStates[i] = KEY_OPEN; }
+    }
 
-	ALLEGRO_EVENT k_ev;
-	al_get_next_event(keyboardQueue, &k_ev);
+    ALLEGRO_EVENT k_ev;
+    al_get_next_event(keyboardQueue, &k_ev);
 
-	keyLast = k_ev.keyboard.keycode;
+    keyLast = k_ev.keyboard.keycode;
 
-	for (int i = 1; i < getMouseKeyNum(); ++i)
-	{
-		oldMouseKeys[i] = mouseKeys[i];
-		mouseKeys[i] = al_mouse_button_down(&mouseState, i);
-	}
-	for (int i = 1; i < getMouseKeyNum(); ++i)
-	{
-		if (mouseKeys[i] && !oldMouseKeys[i]){ mouseKeyStates[i] = KEY_PRESS; }
-		if (!mouseKeys[i] && oldMouseKeys[i]){ mouseKeyStates[i] = KEY_RELEASE; }
-		if (mouseKeys[i] && oldMouseKeys[i]){ mouseKeyStates[i] = KEY_HELD; }
-		if (!mouseKeys[i] && !oldMouseKeys[i]){ mouseKeyStates[i] = KEY_OPEN; }
-	}
+    for (int i = 1; i < getMouseKeyNum(); ++i) {
+        oldMouseKeys[i] = mouseKeys[i];
+        mouseKeys[i] = al_mouse_button_down(&mouseState, i);
+    }
+    for (int i = 1; i < getMouseKeyNum(); ++i) {
+        if (mouseKeys[i] && !oldMouseKeys[i]){ mouseKeyStates[i] = KEY_PRESS; }
+        if (!mouseKeys[i] && oldMouseKeys[i]){ mouseKeyStates[i] = KEY_RELEASE; }
+        if (mouseKeys[i] && oldMouseKeys[i]){ mouseKeyStates[i] = KEY_HELD; }
+        if (!mouseKeys[i] && !oldMouseKeys[i]){ mouseKeyStates[i] = KEY_OPEN; }
+    }
 
-	ALLEGRO_EVENT m_ev;
-	al_get_next_event(mouseQueue, &m_ev);
-	al_flush_event_queue(mouseQueue);
+    ALLEGRO_EVENT m_ev;
+    al_get_next_event(mouseQueue, &m_ev);
+    al_flush_event_queue(mouseQueue);
 
-	switch (m_ev.type)
-	{
-	case ALLEGRO_EVENT_MOUSE_AXES:
-		mouseX = m_ev.mouse.x;
-		mouseY = m_ev.mouse.y;
-		mouseZ = m_ev.mouse.z;
-		mouseDX = m_ev.mouse.dx;
-		mouseDY = m_ev.mouse.dy;
-		mouseDZ = m_ev.mouse.dz;
-		break;
-	}
+    switch (m_ev.type) {
+    case ALLEGRO_EVENT_MOUSE_AXES:
+        mouseX = m_ev.mouse.x;
+        mouseY = m_ev.mouse.y;
+        mouseZ = m_ev.mouse.z;
+        mouseDX = m_ev.mouse.dx;
+        mouseDY = m_ev.mouse.dy;
+        mouseDZ = m_ev.mouse.dz;
+        break;
+    }
 }
 }

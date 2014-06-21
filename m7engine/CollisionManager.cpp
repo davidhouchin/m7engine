@@ -5,53 +5,56 @@
 * the GNU General Public License as published by the Free Software Foundation.
 * For more information, see COPYING.
 */
+/**
+ *  Collision Manager
+ *  CollisionManager.cpp
+ *  Purpose: Determines if two entities are colliding.
+ *  @author David Houchin
+ *  @version 1.0 7/17/14
+ */
 
 #include "CollisionManager.h"
 
-namespace M7engine
-{
-CollisionManager::CollisionManager()
-{
+namespace M7engine {
+CollisionManager::CollisionManager() {
 }
 
-CollisionManager::~CollisionManager()
-{
+CollisionManager::~CollisionManager() {
 }
 
-bool CollisionManager::getCollisionBBox(Entity *a, Entity *b)
-{
-	int leftA, leftB, rightA, rightB, topA, topB, bottomA, bottomB;
+bool CollisionManager::getCollisionBBox(Entity *a, Entity *b) {
+    int leftA, leftB, rightA, rightB, topA, topB, bottomA, bottomB;
 
-	leftA = a->getX();
-	rightA = a->getX() + a->getWidth();
-	topA = a->getY();
-	bottomA = a->getY() + a->getHeight();
+    leftA = a->getX();
+    rightA = a->getX() + a->getWidth();
+    topA = a->getY();
+    bottomA = a->getY() + a->getHeight();
 
-	leftB = b->getX();
-	rightB = b->getX() + b->getWidth();
-	topB = b->getY();
-	bottomB = b->getY() + b->getHeight();
+    leftB = b->getX();
+    rightB = b->getX() + b->getWidth();
+    topB = b->getY();
+    bottomB = b->getY() + b->getHeight();
 
-	if (bottomA <= topB)
-	{
-		return false;
-	}
+    if (bottomA <= topB)
+    {
+        return false;
+    }
 
-	if (topA >= bottomB)
-	{
-		return false;
-	}
+    if (topA >= bottomB)
+    {
+        return false;
+    }
 
-	if (rightA <= leftB)
-	{
-		return false;
-	}
+    if (rightA <= leftB)
+    {
+        return false;
+    }
 
-	if (leftA >= rightB)
-	{
-		return false;
-	}
+    if (leftA >= rightB)
+    {
+        return false;
+    }
 
-	return true;
+    return true;
 }
 }
