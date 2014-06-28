@@ -291,6 +291,9 @@ bool Engine::setWindowMode(int value) {
         break;
     }
 
+	if (windowTitle) { al_set_window_title(display, windowTitle); }
+	if (icon) { al_set_display_icon(display, icon); }
+
     this->reloadResources();
 
     return 0;
@@ -322,6 +325,9 @@ bool Engine::setDisplayContext(int value) {
         this->displayContext = 1;
         break;
     }
+
+	if (windowTitle) { al_set_window_title(display, windowTitle); }
+	if (icon) { al_set_display_icon(display, icon); }
 
     this->reloadResources();
 

@@ -127,7 +127,7 @@ int main(int argc, char **argv) {
 
     logger->setLogFile("m7engine.log");
     logger->setLoggingLevel(0);
-    logger->logMessage(0, "Game started");
+    logger->logMessage(0, "Engine started");
     logger->logMessage(0, m7_engine.getAllegroVersion());
 
     int resX, resY, fs;
@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
     resX = m7_engine.getConfigReader()->getInt("video", "resX");
     resY = m7_engine.getConfigReader()->getInt("video", "resY");
     fs = m7_engine.getConfigReader()->getBool("video", "fullscreen");
-    logger->logMessage(0, "Read config values: %i %i %i", resX, resY, fs);
+    logger->logMessage(0, "Read video config values: %i %i %i", resX, resY, fs);
 
     m7_engine.init(resX, resY, fs);
     m7_engine.setWindowTitle("M7engine Tech Demo");

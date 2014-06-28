@@ -57,7 +57,7 @@ void Logger::logMessage(int level, const char *message, ...) {
         fprintf(stdout, "%f %s\n", al_get_time(), buffer);
 
         logFile.open(filename, std::ios::app);
-        logFile << buffer << "\n";
+        logFile << al_get_time() << " " << buffer << "\n";
         logFile.close();
     }
 }
@@ -70,10 +70,10 @@ void Logger::logMessage(int level, const char *message, ALLEGRO_COLOR color, ...
         vsprintf(buffer, message, args);
         va_end(args);
 
-        fprintf(stdout, "%s\n", buffer);
+		fprintf(stdout, "%f %s\n", al_get_time(), buffer);
 
         logFile.open(filename, std::ios::app);
-        logFile << buffer << "\n";
+		logFile << al_get_time() << " " << buffer << "\n";
         logFile.close();
     }
 }
@@ -86,10 +86,10 @@ void Logger::logError(int level, const char *message, ...) {
         vsprintf(buffer, message, args);
         va_end(args);
 
-        fprintf(stderr, "%s\n", buffer);
+		fprintf(stderr, "%f %s\n", al_get_time(), buffer);
 
         logFile.open(filename, std::ios::app);
-        logFile << buffer << "\n";
+		logFile << al_get_time() << " " << buffer << "\n";
         logFile.close();
     }
 }
@@ -102,10 +102,10 @@ void Logger::logError(int level, const char *message, ALLEGRO_COLOR color, ...) 
         vsprintf(buffer, message, args);
         va_end(args);
 
-        fprintf(stderr, "%s\n", buffer);
+		fprintf(stderr, "%f %s\n", al_get_time(), buffer);
 
         logFile.open(filename, std::ios::app);
-        logFile << buffer << "\n";
+		logFile << al_get_time() << " " << buffer << "\n";
         logFile.close();
     }
 }

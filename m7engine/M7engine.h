@@ -70,7 +70,7 @@
 #include "Logger.h"
 
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 3
+#define VERSION_MINOR 1 //No definite versions at the alpha build point.
 
 namespace M7engine {
 class Engine {
@@ -79,6 +79,7 @@ private:
     int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext;
     double oldTime;
     float fps;
+	const char* windowTitle;
     std::list<Entity*> entities;
     std::list<ParticleEmitter*> particleEmitters;
     ALLEGRO_DISPLAY *display;
@@ -230,12 +231,12 @@ public:
      *  @param context Int specifying display context. 0-DirectX. 1-OpenGL.
      */
     bool setDisplayContext(int context);
+
     /**
      *  Set the window title.
      *  @param title Char array containing window title to use.
      */
-
-    void setWindowTitle(const char *title) { al_set_window_title(display, title); }
+	void setWindowTitle(const char *title) { windowTitle = title; al_set_window_title(display, title); }
     /**
      *  Set the window icon to use. Returns true if successful.
      *  @param *filename Filename of icon bitmap to use.
