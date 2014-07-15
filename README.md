@@ -1,35 +1,24 @@
 m7engine
 ========
 
-A small 2D engine built with Allegro 5.0. Currently only for self-educational purposes.
+A small 2D engine built with SDL2.
 
-I originally wrote this in Linux using a number of libraries, including SDL and straight-up OpenGL,
-but have mostly settled on Allegro 5. Getting back into programming, I found this and fixed it to compile
-under MSVC 12. I intend to continue to work on this while going to school and eventually getting
-somewhat of a workable engine that can compile for Windows, Linux, and eventually OSX.
+This was originally written in Allegro 5, but has been rewritten to completely utilize SDL libraries.
+I am only working on this to teach myself programming. The code is more than likely abysmal, but
+maybe somebody just starting out might pick something or two useful out of it.
+My goal is for a somewhat workable engine that can compile for Windows, Linux, and eventually OSX.
 
-Unfortunately I will have to reteach myself to program, and possibly rewrite a good portion of the source
-to get it underway again. I may eventually choose a new game library as well, but have yet to decide.
-Either way, I do plan on expanding this.
+Currently it supports and entity management system, keyboard/mouse input, simple collision detection,
+simple sound playback, TTF rendering, INI-style read capability, vector maths, primitives drawing, some
+timing utilities, and a simple resource manager, off the top of my head.
 
-Current (somewhat) features include:
--An entity based system
--Input manager for keyboard/mouse
--Simple collision manager
--Simple sound manager
--Particle emitter
--Font rendering (Currently broken on Windows)
--Primitive drawing capabilities
--And vector maths
+Building
+========
 
-My hope is to clean it up quite a bit more and add/fix some more of the following..
--Display depth for entities
--Sound revamp
--Bitmap fonts
--Particle system revamp (Is pretty fudgy currently)
--Some more timing utilites
--Lower level graphics (bitmaps, backgrounds, etc)
--Resource manager
--Fix font rendering under Windows (Nice to see the debug info, if anything)
--Crashes while exiting (Has to do with Allegro destructors)
+I will expand this later on, and try to clean up and automate the build process.
+I have successfully built it on Ubuntu 14.04, Windows 8.1, and OSX 10.9.
+Currently the engine depends on SDL2, SDL2_image, SDL2_mixer, SDL2_ttf, and SDL2_gfx.
+I also utilize C++11 features.
+
+
 
