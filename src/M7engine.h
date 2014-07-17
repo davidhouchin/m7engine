@@ -61,7 +61,6 @@
 #include "Logger.h"
 #include "Timer.h"
 #include "Text.h"
-#include "Primitives.h"
 #include "Utilities.h"
 #include "Sound.h"
 #include "ResourceManager.h"
@@ -92,7 +91,6 @@ private:
     Timer timer;
 
     CollisionManager *collisionManager;
-    Primitives *primitives;
     ConfigReader *configReader;
 
 public:
@@ -367,12 +365,6 @@ public:
       *  @return Pointer to collision manager.
       */
     CollisionManager* getCollisionManager() { return collisionManager; }
-
-    /**
-      *  Returns pointer to primitives manager.
-      *  @return Pointer to primitives manager.
-      */
-    Primitives* getPrimitives() { return primitives; }
 
     /**
       *  Returns pointer to configuration reader.

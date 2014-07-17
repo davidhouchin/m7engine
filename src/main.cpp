@@ -42,8 +42,7 @@ public:
         }
 
         if (this->id == 0){engine->renderTextF(128, 64, f, "This text is owned by entity %i", this->id);}
-        else if (this->id == 1){engine->renderTextF(128, 128, f, "This text is owned by entity %i", this->id);
-        engine->getPrimitives()->drawFilledRectangle(this->getX(), this->getY(), 200, 200, 128, 0, 128, 128);}
+        else if (this->id == 1){engine->renderTextF(128, 128, f, "This text is owned by entity %i", this->id);}
     }
 
     void alarm(int timerNum) {

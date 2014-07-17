@@ -68,7 +68,6 @@ Engine::~Engine()
     delete InputManager::getInstance();
     delete Logger::getInstance();
     //delete soundManager;
-    delete primitives;
     delete collisionManager;
 }
 
