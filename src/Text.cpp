@@ -49,14 +49,4 @@ void Font::setFont(TTF_Font *font)
     }
 }
 
-bool Font::reloadFont()
-{
-    /*al_destroy_font(font);
-    font = al_load_ttf_font(fontFilename, size, 0);
-    if (!font) {
-        Logger::getInstance()->logError(0, "Failed to load font: '%s'", fontFilename);
-        return false;
-    }
-    return true;*/
-}
 }

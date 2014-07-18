@@ -9,18 +9,27 @@
 
 std::string M7engine::intToString(int num)
 {
-    return std::to_string(num);
+    //return std::to_string(num);
+    std::stringstream ss;
+    ss << num;
+    return ss.str();
 }
 
 int M7engine::stringToInt(std::string text)
 {
-    int i;
-    for (i = 0; i < text.length(); i++) {
-        if (!std::isdigit(text[i])) {
-            return 0; //String had non integer characters.. returning 0
-        }
-    }
-    return std::stoi(text);
+    //int i;
+    //for (i = 0; i < text.length(); i++) {
+    //     if (!std::isdigit(text[i])) {
+    //        return 0; //String had non integer characters.. returning 0
+    //    }
+    //}
+    return std::atoi(text.c_str());
+}
+
+std::string& M7engine::removeWhitespace(std::string &str)
+{
+    str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
+    return str;
 }
 
 std::string& M7engine::trimEmptyLeft(std::string &str)

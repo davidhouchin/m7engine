@@ -134,25 +134,6 @@ bool Sprite::loadImage(const char *filename, int width, int height, int columns,
     }
 }
 
-bool Sprite::reloadBitmap()
-{
-    /*if (bitmap != NULL) {
-        this->frameList.clear();
-
-        if (maxFrames > 1) { this->loadImage(this->bitmapFilename, this->frameWidth, this->frameHeight, this->columns, this->maxFrames); }
-        else { this->loadImage(this->bitmapFilename); }
-
-        if (!bitmap) {
-            Logger::getInstance()->logError(0, "Sprite failed to reload bitmap: '%s'", bitmapFilename);
-            return false;
-        } else {
-            Logger::getInstance()->logMessage(0, "Sprite reloaded successfully");
-            return true;
-        }
-    }
-    return false;*/
-}
-
 void Sprite::changeFrame(int changeTo)
 {
     this->frame = changeTo;

@@ -118,57 +118,6 @@ bool ResourceManager::parseConfig() {
     return true;
 }
 
-bool ResourceManager::reloadResources() {
-    /*for (iterSpriteList iter = spriteList.begin(); iter != spriteList.end(); ++iter) {
-        delete iter->second;
-    }
-    spriteList.clear();
-
-    for (iterFontList iter = fontList.begin(); iter != fontList.end(); ++iter) {
-        iter->second->reloadFont();
-    }
-
-    if (!resourceConfig) {
-        Logger::getInstance()->logError(0, "ResourceManager failed to parse resources, no config file");
-
-        return false;
-    }
-
-    ALLEGRO_CONFIG_SECTION *iter;
-    const char *section = al_get_first_config_section(resourceConfig, &iter);
-
-    while (section != NULL) {
-        if (section != "") {
-            const char *fname;
-
-            if (al_get_config_value(resourceConfig, section, "filename")) {
-                fname = al_get_config_value(resourceConfig, section, "filename");
-
-                if (std::strcmp(al_get_config_value(resourceConfig, section, "type"), "sprite") == 0) {
-                    int fw = NULL, fh = NULL, fc = NULL, f = NULL;
-                    Sprite *newSprite = new Sprite;
-                    newSprite->setName(section);
-
-                    if (al_get_config_value(resourceConfig, section, "frameWidth")) { fw = atoi(al_get_config_value(resourceConfig, section, "frameWidth")); }
-                    if (al_get_config_value(resourceConfig, section, "frameHeight")) { fh = atoi(al_get_config_value(resourceConfig, section, "frameHeight")); }
-                    if (al_get_config_value(resourceConfig, section, "frameColumns")) { fc = atoi(al_get_config_value(resourceConfig, section, "frameColumns")); }
-                    if (al_get_config_value(resourceConfig, section, "frames")) { f = atoi(al_get_config_value(resourceConfig, section, "frames")); }
-                    if (al_get_config_value(resourceConfig, section, "delay")) { newSprite->setDelay(atoi(al_get_config_value(resourceConfig, section, "delay"))); }
-
-                    newSprite->loadImage(fname, fw, fh, fc, f);
-
-                    spriteList.insert(std::pair<const char*, Sprite*>(section, newSprite));
-                }
-            }
-        }
-
-        section = al_get_next_config_section(&iter);
-    }
-
-    Logger::getInstance()->logMessage(0, "ResourceManager done reloading sprites from config file");
-    return true;*/
-}
-
 Sprite* ResourceManager::getSprite(const char *name) {
     Sprite *reqSprite = spriteList[name];
     if (reqSprite != NULL) {

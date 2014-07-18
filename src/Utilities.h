@@ -30,6 +30,13 @@ std::string intToString(int num);
 int stringToInt(std::string text);
 
 /**
+ *  Remove all whitespace from the given string.
+ *  @param &str The string to empty.
+ *  @return The emptied string.
+ */
+std::string& removeWhitespace(std::string &str);
+
+/**
  *  Trim all the empty space on the left side of the given string.
  *  @param &str The string to trim.
  *  @return The trimmed string.

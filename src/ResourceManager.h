@@ -50,11 +50,6 @@ public:
     bool parseConfig();
 
     /**
-     *  Reloads all volatile resources from disk.
-     */
-    bool reloadResources();
-
-    /**
      *  Returns a pointer to the requested sprite. Returns NULL if not found.
      *  @return Pointer to requested sprite.
      */

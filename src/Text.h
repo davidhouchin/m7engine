@@ -44,11 +44,6 @@ public:
     void setFont(TTF_Font *font);
 
     /**
-     *  Reload current font into memory.
-     */
-    bool reloadFont();
-
-    /**
      *  Return pointer to current font.
      *  @return Pointer to current TTF_Font.
      */

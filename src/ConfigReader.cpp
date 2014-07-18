@@ -51,7 +51,8 @@ bool ConfigReader::loadConfig(const char *filename)
 
         if (line[0] == SECTION_BEGIN_CHAR) {
             inSection = true;
-            line = M7engine::trimEmpty(line);
+            //line = M7engine::trimEmpty(line);
+	    line = M7engine::removeWhitespace(line);
 
             line.erase(line.begin());
             line.erase(line.end()-1);

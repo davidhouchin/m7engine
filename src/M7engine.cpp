@@ -54,20 +54,16 @@ Engine::~Engine()
 
     SDL_FreeSurface(windowIcon);
     SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	window = NULL;
+    SDL_DestroyWindow(window);
+    window = NULL;
 
-    //if (textSurface) {SDL_FreeSurface(textSurface);}
-    //if (textTexture) {SDL_DestroyTexture(textTexture);}
-
-	IMG_Quit();
-	SDL_Quit();
+    IMG_Quit();
+    SDL_Quit();
     TTF_Quit();
     Mix_Quit();
 
     delete InputManager::getInstance();
     delete Logger::getInstance();
-    //delete soundManager;
     delete collisionManager;
 }
 
@@ -106,7 +102,7 @@ bool Engine::init(int width, int height, int mode)
     switch (mode) {
 	case 0: this->windowMode = 0; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN); break; //Set windowed
 	case 1: this->windowMode = 1; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN); break; //Set fullscreen
-    case 2: this->windowMode = 2; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN_DESKTOP); break; //Set fullscreen-windowed
+        case 2: this->windowMode = 2; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN_DESKTOP); break; //Set fullscreen-windowed
     }
 
     if (window == NULL) {
@@ -133,7 +129,6 @@ bool Engine::update()
     Logger::getInstance()->logMessage(99, "Engine update cycle: %i", frameCount);
 
     int deltaMS = this->getDelta();
-    //float delta = (float)(deltaMS)/1000.0;
     frameCount++;
 
     InputManager::getInstance()->update();
@@ -295,7 +290,6 @@ bool Engine::setWindowMode(int value)
     switch (value) {
     case 0:
         Logger::getInstance()->logMessage(0, "Changing to windowed mode...");
-
         if (!window) { Logger::getInstance()->logError(0, "Failed to change to windowed mode"); return 1; }
         this->windowMode = 0;
         break;
@@ -312,11 +306,6 @@ bool Engine::setWindowMode(int value)
         this->windowMode = 2;
         break;
     }
-
-    //if (windowTitle) { al_set_window_title(display, windowTitle); }
-    //if (icon) { al_set_display_icon(display, icon); }
-
-    //this->reloadResources();
 
     return 0;
 }

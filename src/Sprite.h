@@ -48,11 +48,6 @@ public:
     bool loadImage(const char *filename, int width, int height, int columns, int frames);
 
     /**
-     *  Reload bitmap from disk.
-     */
-    bool reloadBitmap();
-
-    /**
      *  Draws the sprite to the position specified.
      *  @param x The X coordinate to draw to.
      *  @param y The Y coordinate to draw to.

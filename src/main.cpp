@@ -24,7 +24,7 @@ public:
     void update() {
         if (inputManager->getMouseX() < getX() + getWidth() && inputManager->getMouseX() > getX()) {
             if (inputManager->getMouseY() < getY() + getHeight() && inputManager->getMouseY() > getY()) {
-                if (inputManager->getMousePressed(1)) {
+                if (inputManager->getMousePressed(0)) {
                     isMoving = true;
                     xOffset = inputManager->getMouseX() - getX();
                     yOffset = inputManager->getMouseY() - getY();
@@ -32,7 +32,7 @@ public:
             }
         }
 
-        if (inputManager->getMouseReleased(1)) {
+        if (inputManager->getMouseReleased(0)) {
             isMoving = false;
         }
 
@@ -57,16 +57,19 @@ int main(int argc, char **argv) {
     bool running = true;
 
     logger->setLogFile("m7engine.log");
-    logger->setLoggingLevel(1);
     logger->logMessage(0, "Engine started");
 
     int resX, resY, fs;
     ConfigReader *config = engine->getConfigReader();
 
     config->loadConfig("../resources/config.ini");
+
+    logger->setLoggingLevel(config->getInt("debug", "log", 0));
+
     resX = config->getInt("video", "resX", 640);
     resY = config->getInt("video", "resY", 480);
     fs = config->getInt("video", "fs", 0);
+
     logger->logMessage(0, "Read config values: %i %i %i", resX, resY, fs);
 
     engine->init(resX, resY, fs);
@@ -87,24 +90,21 @@ int main(int argc, char **argv) {
     engine->addEntity(test3);
 
     test->setImage(rManager->getSprite("monster"));
-    test->setPosition(128, 128);
+    test->setPosition(128, 256);
     test->setColor(255, 0, 255);
     test->setAlpha(255);
     test->getSprite()->setSize(64, 64);
     test->setSize(64, 64);
 
     test2->setImage(rManager->getSprite("cat"));
-    test2->setPosition(256, 128);
+    test2->setPosition(256, 256);
     test2->setColor(0, 255, 0);
     test2->setAlpha(125);
 
     test3->setImage(rManager->getSprite("explosion"));
-    test3->setPosition(256, 256);
+    test3->setPosition(400, 256);
 
     tsound = rManager->getSound("boom");
-
-    Timer timer;
-    timer.start();
 
     while (running) {
         if (!engine->update()) {

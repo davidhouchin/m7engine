@@ -72,18 +72,18 @@ namespace M7engine {
 
 class Engine {
 private:
-	Engine();
-	static Engine* engineInstance;
+    Engine();
+    static Engine* engineInstance;
     bool redraw;
     int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext, frameDelay, currentFrameDelta;
     double oldTime;
     float fps;
-	const char* windowTitle;
+    const char* windowTitle;
     SDL_Surface* windowIcon;
     std::list<Entity*> entities;
 
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+    SDL_Window* window;
+    SDL_Renderer* renderer;
 
     SDL_Surface *textSurface;
     SDL_Texture *textTexture;
@@ -94,11 +94,11 @@ private:
     ConfigReader *configReader;
 
 public:
-	/**
-	 *Returns the static instance of the engine.
-	 *  @return Pointer to engine.
-	 */
-	static Engine* getInstance();
+    /**
+     * Returns the static instance of the engine.
+     * @return Pointer to engine.
+     */
+    static Engine* getInstance();
 
     virtual ~Engine();
 
@@ -109,11 +109,6 @@ public:
      *  @param mode Window mode. 0-Windowed. 1-Fullscreen. 2-Fullscreen Windowed.
      */
     bool init(int width, int height, int mode);
-
-    /**
-     *  Unused
-     */
-    void close();
 
     /**
      *  Main update function to be called every frame.
@@ -159,11 +154,6 @@ public:
      *  @return The number of registered entities.
      */
     long getEntityCount() { return (long)entities.size(); }
-
-    /**
-     *  Reloads volatile resources into memory.
-     */
-    void reloadResources();
 
     /**
      *  Updates the collision states of all registered entities.
