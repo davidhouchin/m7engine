@@ -27,7 +27,8 @@ Entity::Entity()
     width = 1;
     height = 1;
     scale = 1;
-    color = { 0, 0, 0, 255};
+    color = { 255, 255, 255, 255};
+    solid = false;
 
     setPosition(0, 0);
     setVelocity(0, 0);

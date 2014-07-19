@@ -20,11 +20,11 @@ Engine* Engine::engineInstance = NULL;
 
 Engine* Engine::getInstance()
 {
-	if (!engineInstance) {
-		engineInstance = new Engine;
-	}
+    if (!engineInstance) {
+        engineInstance = new Engine;
+    }
 
-	return engineInstance;
+    return engineInstance;
 }
 
 Engine::Engine()
@@ -100,8 +100,8 @@ bool Engine::init(int width, int height, int mode)
     }
 
     switch (mode) {
-	case 0: this->windowMode = 0; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN); break; //Set windowed
-	case 1: this->windowMode = 1; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN); break; //Set fullscreen
+    case 0: this->windowMode = 0; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN); break; //Set windowed
+    case 1: this->windowMode = 1; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN); break; //Set fullscreen
         case 2: this->windowMode = 2; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN_DESKTOP); break; //Set fullscreen-windowed
     }
 
@@ -113,9 +113,9 @@ bool Engine::init(int width, int height, int mode)
         if (renderer == NULL) {
             Logger::getInstance()->logError(0, "Failed to create SDL renderer: %s", SDL_GetError());
         } else {
-			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-		}
-	}
+            SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        }
+    }
 
     collisionManager = new CollisionManager;
 
@@ -275,7 +275,7 @@ void Engine::updateCollisions()
 
         while (iterB != entities.end()) {
             entityB = *iterB;
-            if (collisionManager->getCollisionBBox(entityA, entityB)) {
+            if ((entityA != entityB) && (collisionManager->getCollisionBBox(entityA, entityB))) {
                 entityA->collision(entityB);
             }
             iterB++;

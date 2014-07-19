@@ -95,6 +95,18 @@ public:
     virtual void alarm(int timerNum) {}
 
     /**
+     *  Set entity to be solid or not.
+     *  @param solid Whether to set solid or not.
+     */
+    void setSolid(bool solid) { this->solid = solid; }
+
+    /**
+     *  Returns whether entity is solid.
+     *  @return Whether entity is solid or not.
+     */
+    bool getSolid() { return solid; }
+
+    /**
      *  Returns current position in vector format.
      *  @return A vector containing positional information.
      */
@@ -281,7 +293,7 @@ public:
 protected:
     int id, width, height, direction;
     double scale;
-    bool visible, active;
+    bool visible, active, solid;
     int timer[TIMER_NUM];
     Vector2 position, velocity;
     SDL_Color color;

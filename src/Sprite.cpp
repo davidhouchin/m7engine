@@ -19,7 +19,7 @@
 namespace M7engine {
 Sprite::Sprite()
 {
-    Logger::getInstance()->logMessage(0, "Sprite created");
+    Logger::getInstance()->logMessage(1, "Sprite created");
 
     texture = NULL;
     width = 1;
@@ -38,7 +38,7 @@ Sprite::Sprite()
 Sprite::~Sprite()
 {
     if (texture != NULL) {
-        Logger::getInstance()->logError(0, "Sprite destroying self: %s", textureFilename);
+        Logger::getInstance()->logError(1, "Sprite destroying self: %s", textureFilename);
         SDL_DestroyTexture(texture);
     }
 }
