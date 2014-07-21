@@ -29,7 +29,7 @@ Sound::~Sound()
 
 bool Sound::loadSound(const char* filename)
 {
-    Logger::getInstance()->logMessage(0, "Sound loading chunk: '%s'", filename);
+    Logger::getInstance()->logMessage(0, "Sound '%s' loading chunk: '%s'", name.c_str(), filename);
     if (sound != NULL) {
         Mix_FreeChunk(sound);
         sound = NULL;

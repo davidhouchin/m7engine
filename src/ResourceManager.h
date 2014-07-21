@@ -42,12 +42,24 @@ public:
      *  Load a resource configuration file.
      *  @return Char array containing filename to config file.
      */
-    bool loadConfig(const char *filename);
+    bool loadConfig(std::string filename);
 
     /**
      *  Parse the contents of the loaded configuration file.
      */
     bool parseConfig();
+
+    /**
+     *  Set the path to resolve resource names from.
+     *  @param path String to use as resource path.
+     */
+    void setPath(std::string path) {resolvePath = path; }
+
+    /**
+     *  Get the path to resolve resource names from.
+     *  @return String being used as resource path.
+     */
+    std::string getPath() { return resolvePath; }
 
     /**
      *  Returns a pointer to the requested sprite. Returns NULL if not found.
@@ -78,6 +90,8 @@ private:
     typedef std::map<std::string, Font*>::iterator iterFontList;
 
     bool configLoaded;
+
+    std::string resolvePath;
 
     ConfigReader *resourceReader;
 };

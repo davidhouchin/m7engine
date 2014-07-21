@@ -28,7 +28,7 @@ Font::~Font()
 
 bool Font::loadFont(const char *filename, int size)
 {
-    Logger::getInstance()->logMessage(0, "Font loading file: '%s'", filename);
+    Logger::getInstance()->logMessage(0, "Font '%s' loading file: '%s'", name.c_str(), filename);
     font = TTF_OpenFont(filename, size);
 
     setSize(size);

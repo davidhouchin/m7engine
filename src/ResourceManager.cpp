@@ -29,6 +29,7 @@ ResourceManager* ResourceManager::getInstance() {
 ResourceManager::ResourceManager() {
     resourceReader = new ConfigReader;
     configLoaded = false;
+    resolvePath = "";
 }
 
 ResourceManager::~ResourceManager() {
@@ -50,11 +51,11 @@ ResourceManager::~ResourceManager() {
     fontList.clear();
 }
 
-bool ResourceManager::loadConfig(const char *filename) {
-    Logger::getInstance()->logMessage(0, "ResourceManager loading config file: '%s'", filename);
+bool ResourceManager::loadConfig(std::string filename) {
+    Logger::getInstance()->logMessage(0, "ResourceManager loading config file: '%s'", filename.c_str());
 
-    if (!resourceReader->loadConfig(filename)) {
-        Logger::getInstance()->logError(0, "ResourceManager failed to load config file: '%s'", filename);
+    if (!resourceReader->loadConfig(filename.c_str())) {
+        Logger::getInstance()->logError(0, "ResourceManager failed to load config file: '%s'", filename.c_str());
         return false;
     } else {
         configLoaded = true;
@@ -73,9 +74,14 @@ bool ResourceManager::parseConfig() {
     std::string sectIter = resourceReader->getFirstSection();
 
     while (sectIter != "") {
-            const char *fname;
+            std::string fname;
             if (resourceReader->hasKey(sectIter, "filename")) {
-                fname = resourceReader->getString(sectIter, "filename").c_str();
+                if (resolvePath != "") {
+                    fname = resolvePath + resourceReader->getString(sectIter, "filename");
+                } else {
+                    fname = resourceReader->getString(sectIter, "filename");
+                }
+
 
                 if (resourceReader->getString(sectIter, "type").compare("sprite") == 0) {
                     int fw = 0, fh = 0, fc = 0, f = 0;
@@ -88,14 +94,14 @@ bool ResourceManager::parseConfig() {
                     if (resourceReader->hasKey(sectIter, "frames")) { f = resourceReader->getInt(sectIter, "frames", 0); }
                     if (resourceReader->hasKey(sectIter, "delay")) { newSprite->setDelay(resourceReader->getInt(sectIter, "delay", 0)); }
 
-                    newSprite->loadImage(fname, fw, fh, fc, f);
+                    newSprite->loadImage(fname.c_str(), fw, fh, fc, f);
 
                     spriteList.insert(std::pair<std::string, Sprite*>(sectIter, newSprite));
                 } else if (resourceReader->getString(sectIter, "type").compare("sound") == 0) {
                     Sound *newSample = new Sound;
                     newSample->setName(sectIter);
 
-                    newSample->loadSound(fname);
+                    newSample->loadSound(fname.c_str());
 
                     soundList.insert(std::pair<std::string, Sound*>(sectIter, newSample));
                 } else if (resourceReader->getString(sectIter, "type").compare("font") == 0) {
@@ -105,7 +111,7 @@ bool ResourceManager::parseConfig() {
                     int s = 0;
                     if (resourceReader->hasKey(sectIter, "size")) { s = resourceReader->getInt(sectIter, "size", 0); }
 
-                    newFont->loadFont(fname, s);
+                    newFont->loadFont(fname.c_str(), s);
 
                     fontList.insert(std::pair<std::string, Font*>(sectIter, newFont));
                 }

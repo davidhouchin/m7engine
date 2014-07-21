@@ -41,7 +41,7 @@ public:
     void collision(Entity *other)
     {
         if (other->getSolid()) {
-            setVelocity(getVelocity());
+            speed = 0;
         }
     }
 };
@@ -65,9 +65,8 @@ public:
     }
 };
 
-int main(int argc, char **argv) {
-    bool running = true;
-
+bool initEngine()
+{
     //Start log
     logger->setLogFile("m7engine.log");
     logger->logMessage(0, "Engine started");
@@ -86,15 +85,23 @@ int main(int argc, char **argv) {
 
     logger->logMessage(0, "Read config values: %i %i %i", resX, resY, fs);
 
+    //Start engine
     engine->init(resX, resY, fs);
     engine->setWindowTitle(config->getString("base", "title").c_str());
     engine->setWindowIcon(config->getString("base", "icon").c_str());
 
     //Load resources
-    rManager->loadConfig(config->getString("base", "resconf").c_str());
+    rManager->setPath(config->getString("base", "respath"));
+    rManager->loadConfig(config->getString("base", "resconf"));
 
+    //Start monitoring input
     input->init();
 
+    return true;
+}
+
+bool initObjects()
+{
     //Game objects
     Player *player = new Player;
     Wall *wall1 = new Wall;
@@ -109,6 +116,15 @@ int main(int argc, char **argv) {
 
     wall1->setPosition(64, 64);
     wall2->setPosition(256, 256);
+
+    return true;
+}
+
+int main(int argc, char **argv) {
+    initEngine();
+    initObjects();
+
+    bool running = true;
 
     //Main loop
     while (running) {

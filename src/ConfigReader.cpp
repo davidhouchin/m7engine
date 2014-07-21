@@ -52,7 +52,7 @@ bool ConfigReader::loadConfig(const char *filename)
         if (line[0] == SECTION_BEGIN_CHAR) {
             inSection = true;
             //line = M7engine::trimEmpty(line);
-	    line = M7engine::removeWhitespace(line);
+        line = M7engine::removeWhitespace(line);
 
             line.erase(line.begin());
             line.erase(line.end()-1);
@@ -80,6 +80,8 @@ bool ConfigReader::loadConfig(const char *filename)
             config[curSection].insert(keyPair);
         }
     }
+
+    Logger::getInstance()->logMessage(0, "ConfigReader done parsing config file");
     return true;
 }
 

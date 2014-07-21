@@ -99,6 +99,7 @@ public:
 
 private:
     std::string filename;
+    std::string resolvePath;
 
     //Stored in format section->key->value.
     typedef std::map<std::string, std::string> innerMap;
