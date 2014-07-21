@@ -5,43 +5,75 @@ Engine *engine = Engine::getInstance();
 Logger *logger = Logger::getInstance();
 InputManager *input = InputManager::getInstance();
 ResourceManager *rManager = ResourceManager::getInstance();
+CollisionManager *cManager = engine->getCollisionManager();
+
+class Controller : public Entity {
+private:
+    Font *f, *f2;
+public:
+    Controller()
+    {
+        f = rManager->getFont("elgethy");
+        f2 = rManager->getFont("oldpix");
+    }
+
+    void update()
+    {
+        engine->renderText(engine->getScreenWidth()/2, engine->getScreenHeight()/2, f2, "Example");
+        engine->renderTextF(20, 20, f, "FPS: %i", engine->getFPS());
+    }
+
+};
 
 class Player : public Entity {
 private:
-    double speed = 6;
-    Font *f;
+    int speed = 5;
 public:
     Player()
     {
         setImage(rManager->getSprite("cat"));
-        f = rManager->getFont("oldpix");
+        setOriginToCenter();
     }
 
     void update()
     {
         if (input->getKeyHeld(KEY_UP)) {
-            setY(getY() - speed);
-        }
-
-        if (input->getKeyHeld(KEY_DOWN)) {
-            setY(getY() + speed);
+            if (!cManager->getPlaceMeetingInstance(getX(), getY() - speed, this->id, 2)) {
+                vSpeed = speed * -1;
+            } else {
+                vSpeed = 0;
+            }
+        } else if (input->getKeyHeld(KEY_DOWN)) {
+            if (!cManager->getPlaceMeetingInstance(getX(), getY() + speed, this->id, 2)) {
+                vSpeed = speed;
+            } else {
+                vSpeed = 0;
+            }
+        } else {
+            vSpeed = 0;
         }
 
         if (input->getKeyHeld(KEY_LEFT)) {
-            setX(getX() - speed);
+            if (!cManager->getPlaceMeetingInstance(getX() - speed, getY(), this->id, 2)) {
+                hSpeed = speed * -1;
+            } else {
+                hSpeed = 0;
+            }
+        } else if (input->getKeyHeld(KEY_RIGHT)) {
+            if (!cManager->getPlaceMeetingInstance(getX() + speed, getY(), this->id, 2)) {
+                hSpeed = speed;
+            } else {
+                hSpeed = 0;
+            }
+        } else {
+            hSpeed = 0;
         }
-
-        if (input->getKeyHeld(KEY_RIGHT)) {
-            setX(getX() + speed);
-        }
-
-        engine->renderText(32, 32, f, "Example Game");
     }
 
     void collision(Entity *other)
     {
         if (other->getSolid()) {
-            speed = 0;
+            //speed = 0;
         }
     }
 };
@@ -61,7 +93,8 @@ public:
     Wall()
     {
         setImage(rManager->getSprite("wall"));
-        solid = true;
+        solid = false;
+        setOriginToCenter();
     }
 };
 
@@ -103,10 +136,12 @@ bool initEngine()
 bool initObjects()
 {
     //Game objects
+    Controller *controller = new Controller;
     Player *player = new Player;
     Wall *wall1 = new Wall;
     Wall *wall2 = new Wall;
 
+    engine->addEntity(controller);
     engine->addEntity(player);
     engine->addEntity(wall1);
     engine->addEntity(wall2);
@@ -134,6 +169,9 @@ int main(int argc, char **argv) {
 
         if (input->getKeyReleased(KEY_ESCAPE)) {
             running = false;
+        }
+
+        if (input->getKeyReleased(KEY_SPACE)) {
         }
     }
 

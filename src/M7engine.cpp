@@ -120,6 +120,7 @@ bool Engine::init(int width, int height, int mode)
     collisionManager = new CollisionManager;
 
     timer.start();
+    oldTime = SDL_GetTicks();
 
     return true;
 }
@@ -129,6 +130,11 @@ bool Engine::update()
     Logger::getInstance()->logMessage(99, "Engine update cycle: %i", frameCount);
 
     int deltaMS = this->getDelta();
+
+    int frameTime = SDL_GetTicks();
+    fps = (frameTime - oldTime);
+    oldTime = frameTime;
+
     frameCount++;
 
     InputManager::getInstance()->update();
@@ -196,6 +202,7 @@ void Engine::updateEntities()
         if (entity->getActive()) {
             entity->updateTimers();
             entity->update();
+            entity->move();
         }
         iter++;
     }
@@ -249,6 +256,8 @@ Entity* Engine::findEntity(int id)
 {
     std::list<Entity*>::iterator iter;
     Entity *entity;
+    iter = entities.begin();
+
     while (iter != entities.end()) {
         entity = *iter;
         if (entity->getID() == id) {

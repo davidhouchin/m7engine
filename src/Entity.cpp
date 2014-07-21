@@ -18,17 +18,21 @@
 namespace M7engine {
 Entity::Entity()
 {
-    id = -1;
-    visible = true;
-    active = true;
-    image = NULL;
-    resourceName = "";
-    direction = 0;
-    width = 1;
-    height = 1;
-    scale = 1;
-    color = { 255, 255, 255, 255};
-    solid = false;
+    id                        = -1; //ID pointing to this instance
+    visible                 = true; //Is this object viewable?
+    active                  = true; //Does this object get updated?
+    image                   = NULL; //Pointer to sprite used
+    resourceName              = ""; //Name of the resource from the resource manager
+    xOffset                    = 0; //The sprite origin x
+    yOffset                    = 0; //The sprite origin y
+    direction                  = 0; //Direction object is pointing
+    hSpeed                     = 0; //Horizontal speed
+    vSpeed                     = 0; //Vertical speed
+    width                      = 1; //Width of entity
+    height                     = 1; //Height of entity
+    scale                      = 1; //Image scale to display at
+    color  = { 255, 255, 255, 255}; //RGBA color values
+    solid                  = false; //Considered solid for collision detection
 
     setPosition(0, 0);
     setVelocity(0, 0);
@@ -105,8 +109,10 @@ void Entity::draw()
 
 void Entity::move()
 {
-    this->setX(this->getX() + this->velocity.getX());
-    this->setY(this->getY() + this->velocity.getY());
+    //this->setX(this->getX() + this->velocity.getX());
+    //this->setY(this->getY() + this->velocity.getY());
+    setX(getX() + hSpeed);
+    setY(getY() + vSpeed);
 }
 
 void Entity::updateTimers()

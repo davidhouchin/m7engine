@@ -27,7 +27,7 @@
 #define TIMER_NUM 10
 
 namespace M7engine {
-class Entity { 
+class Entity {
 public:
     Entity();
     virtual ~Entity();
@@ -123,31 +123,43 @@ public:
      *  @param x X position to set.
      *  @param y Y position to set.
      */
-    void setPosition(double x, double y) { position.set(x, y); }
+    void setPosition(double x, double y) { position.set(x - xOffset, y - yOffset); }
 
     /**
      *  Return current X position.
      *  @return The current X position.
      */
-    double getX() { return position.getX(); }
+    double getX() { return position.getX() + xOffset; }
 
     /**
      *  Return current Y position.
      *  @return The current Y position.
      */
-    double getY() { return position.getY(); }
+    double getY() { return position.getY() + yOffset; }
 
     /**
      *  Set the current X coordinate.
      *  @param x X position to set.
      */
-    void setX(double x) { position.setX(x); }
+    void setX(double x) { position.setX(x - xOffset); }
 
     /**
      *  Set the current Y position.
      *  @param y Y position to set.
      */
-    void setY(double y) { position.setY(y); }
+    void setY(double y) { position.setY(y - yOffset); }
+
+    /**
+     *  Return current X offset.
+     *  @return The current X offset.
+     */
+    int getXOffset() { return xOffset; }
+
+    /**
+     *  Return current Y offset.
+     *  @return The current Y offset.
+     */
+    int getYOffset() { return yOffset; }
 
     /**
      *  Manually set the entity ID.
@@ -241,6 +253,11 @@ public:
     void setHeight(int height) { this->height = height; }
 
     /**
+     *  Set the object origin to the center of the entity in respect to current width and height.
+     */
+    void setOriginToCenter() { xOffset = width/2; yOffset = height/2; }
+
+    /**
      *  Returns image scale of entity.
      *  @return The current image scale.
      */
@@ -291,7 +308,7 @@ public:
     void setAlpha(Uint8 a) { color.a = a; }
 
 protected:
-    int id, width, height, direction;
+    int id, width, height, xOffset, yOffset, direction, hSpeed, vSpeed;
     double scale;
     bool visible, active, solid;
     int timer[TIMER_NUM];

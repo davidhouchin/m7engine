@@ -75,9 +75,8 @@ private:
     Engine();
     static Engine* engineInstance;
     bool redraw;
-    int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext, frameDelay, currentFrameDelta;
-    double oldTime;
-    float fps;
+    int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext, frameDelay, currentFrameDelta, oldTime;
+    int fps;
     const char* windowTitle;
     SDL_Surface* windowIcon;
     std::list<Entity*> entities;
@@ -206,7 +205,7 @@ public:
      *  Returns the currently achieved frames per second.
      *  @return Float of current FPS.
      */
-    float getFPS() { return this->fps; }
+    int getFPS() { return this->fps; }
 
     /**
      *  Delays the engine to keep the engine at a set frame rate.
