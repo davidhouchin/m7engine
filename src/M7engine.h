@@ -43,7 +43,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <list>
+#include <vector>
 #include <math.h>
 
 #include <SDL2/SDL.h>
@@ -64,6 +64,7 @@
 #include "Utilities.h"
 #include "Sound.h"
 #include "ResourceManager.h"
+#include "Primitives.h"
 
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 1 //No definite versions at the alpha build point.
@@ -79,7 +80,7 @@ private:
     int fps;
     const char* windowTitle;
     SDL_Surface* windowIcon;
-    std::list<Entity*> entities;
+    std::vector<Entity*> entities;
 
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -146,7 +147,7 @@ public:
      *  Returns a pointer to the list of registered entities.
      *  @return A pointer to the list of registered entities.
      */
-    std::list<Entity*> getEntityList() { return entities; }
+    std::vector<Entity*> getEntityList() { return entities; }
 
     /**
      *  Return the number of registered entities.

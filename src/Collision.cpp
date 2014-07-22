@@ -81,8 +81,35 @@ bool CollisionManager::getCollisionBBox(Entity *a, Entity *b)
     }
 }
 
-bool CollisionManager::getPlaceMeeting(int x, int y, Entity *entity)
+bool CollisionManager::getPlaceMeetingObject(int x, int y, int id, std::string name)
 {
+    SDL_Rect rA, rB;
+    Entity *eA = Engine::getInstance()->findEntity(id);
+    rA.x = x - eA->getXOffset();
+    rA.w = eA->getWidth();
+    rA.y = y - eA->getYOffset();
+    rA.h = eA->getHeight();
+
+    std::vector<Entity*> entities = Engine::getInstance()->getEntityList();
+    std::vector<Entity*>::iterator iter;
+    Entity *entity;
+    iter = entities.begin();
+
+    while (iter != entities.end()) {
+        entity = *iter;
+        if (entity->getName() == name) {
+            rB.x = entity->getX()-entity->getXOffset();
+            rB.w = entity->getWidth();
+            rB.y = entity->getY()-entity->getYOffset();
+            rB.h = entity->getHeight();
+
+            if (getIntersect(rA, rB)) {
+                return true;
+            }
+        }
+        iter++;
+    }
+
     return false;
 }
 
@@ -107,6 +134,38 @@ bool CollisionManager::getPlaceMeetingInstance(int x, int y, int idA, int idB)
     } else {
         return false;
     }
+}
+
+bool CollisionManager::getPlaceMeetingSolid(int x, int y, int id)
+{
+    SDL_Rect rA, rB;
+    Entity *eA = Engine::getInstance()->findEntity(id);
+    rA.x = x - eA->getXOffset();
+    rA.w = eA->getWidth();
+    rA.y = y - eA->getYOffset();
+    rA.h = eA->getHeight();
+
+    std::vector<Entity*> entities = Engine::getInstance()->getEntityList();
+    std::vector<Entity*>::iterator iter;
+    Entity *entity;
+    iter = entities.begin();
+
+    while (iter != entities.end()) {
+        entity = *iter;
+        if (entity->getSolid()) {
+            rB.x = entity->getX()-entity->getXOffset();
+            rB.w = entity->getWidth();
+            rB.y = entity->getY()-entity->getYOffset();
+            rB.h = entity->getHeight();
+
+            if (getIntersect(rA, rB)) {
+                return true;
+            }
+        }
+        iter++;
+    }
+
+    return false;
 }
 
 bool CollisionManager::getPointMeetingInstance(int x, int y, int id)

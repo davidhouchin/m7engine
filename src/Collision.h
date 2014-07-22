@@ -50,7 +50,7 @@ public:
      *  @param *entity Type of entity to check.
      *  @return A bool determining if the entity is at the position.
      */
-    bool getPlaceMeeting(int x, int y, Entity *entity);
+    bool getPlaceMeetingObject(int x, int y, int id, std::string name);
 
     /**
      *  Tests if first entity is colliding with the second using an offset.
@@ -61,6 +61,8 @@ public:
      *  @return A bool determining if the entity is at the position.
      */
     bool getPlaceMeetingInstance(int x, int y, int idA, int idB);
+
+    bool getPlaceMeetingSolid(int x, int y, int id);
 
     /**
      *  Tests if a specific entity is colliding with point.

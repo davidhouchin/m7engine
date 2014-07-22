@@ -174,26 +174,71 @@ void Engine::delayFramerate()
 
 void Engine::renderTexture(SDL_Texture *texture, int x, int y)
 {
-    int w, h;
-    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-    renderTexture(texture, x, y, w, h);
+    if (texture == NULL) {
+        Logger::getInstance()->logError(0, "renderTexture failed: Texture doesn't exist");
+    } else {
+        int w, h;
+        SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+        renderTexture(texture, x, y, w, h);
+    }
 }
 
 void Engine::renderTexture(SDL_Texture *texture, int x, int y, int w, int h)
 {
-    SDL_Rect dest;
-    dest.x = x;
-    dest.y = y;
-    dest.w = w;
-    dest.h = h;
-    SDL_RenderCopy(renderer, texture, NULL, &dest);
+    if (texture == NULL) {
+        Logger::getInstance()->logError(0, "renderTexture failed: Texture doesn't exist");
+    } else {
+        SDL_Rect dest;
+        dest.x = x;
+        dest.y = y;
+        dest.w = w;
+        dest.h = h;
+        SDL_RenderCopy(renderer, texture, NULL, &dest);
+    }
+}
+
+void Engine::renderText(float x, float y, Font *font, const char *text)
+{
+    if (font == NULL) {
+        Logger::getInstance()->logError(0, "drawText failed: Font doesn't exist");
+    } else {
+        textSurface = TTF_RenderText_Blended(font->getFont(), text, font->getSDLColor());
+        textTexture = SDL_CreateTextureFromSurface(getRenderer(), textSurface);
+
+        renderTexture(textTexture, x, y);
+
+        SDL_FreeSurface(textSurface);
+        SDL_DestroyTexture(textTexture);
+    }
+}
+
+void Engine::renderTextF(float x, float y, Font *font, const char *text, ...)
+{
+    if (font == NULL) {
+        Logger::getInstance()->logError(0, "drawTextF failed: Font doesn't exist");
+    } else {
+        char buffer[99];
+        va_list args;
+        va_start(args, text);
+        vsprintf(buffer, text, args);
+
+        textSurface = TTF_RenderText_Blended(font->getFont(), buffer, font->getSDLColor());
+        textTexture = SDL_CreateTextureFromSurface(getRenderer(), textSurface);
+
+        renderTexture(textTexture, x, y);
+
+        SDL_FreeSurface(textSurface);
+        SDL_DestroyTexture(textTexture);
+
+        va_end(args);
+    }
 }
 
 void Engine::updateEntities()
 {
     Logger::getInstance()->logMessage(99, "Engine is updating entities");
 
-    std::list<Entity*>::iterator iter;
+    std::vector<Entity*>::iterator iter;
     Entity *entity;
     iter = entities.begin();
 
@@ -212,7 +257,7 @@ void Engine::drawEntities()
 {
     Logger::getInstance()->logMessage(99, "Engine is drawing");
 
-    std::list<Entity*>::iterator iter;
+    std::vector<Entity*>::iterator iter;
     Entity *entity;
     iter = entities.begin();
 
@@ -229,7 +274,7 @@ void Engine::cleanEntities()
 {
     Logger::getInstance()->logMessage(99, "Engine is cleaning");
 
-    std::list<Entity*>::iterator iter;
+    std::vector<Entity*>::iterator iter;
     Entity *entity;
     iter = entities.begin();
 
@@ -254,7 +299,7 @@ void Engine::addEntity(Entity *entity)
 
 Entity* Engine::findEntity(int id)
 {
-    std::list<Entity*>::iterator iter;
+    std::vector<Entity*>::iterator iter;
     Entity *entity;
     iter = entities.begin();
 
@@ -273,7 +318,7 @@ void Engine::updateCollisions()
 {
     Logger::getInstance()->logMessage(99, "Engine is updating collisions");
 
-    std::list<Entity*>::iterator iterA, iterB;
+    std::vector<Entity*>::iterator iterA, iterB;
     Entity *entityA;
     Entity *entityB;
     iterA = entities.begin();
@@ -317,43 +362,6 @@ bool Engine::setWindowMode(int value)
     }
 
     return 0;
-}
-
-void Engine::renderText(float x, float y, Font *font, const char *text)
-{
-    if (font == NULL) {
-        Logger::getInstance()->logError(0, "drawText failed: Font doesn't exist");
-    } else {
-        textSurface = TTF_RenderText_Blended(font->getFont(), text, font->getSDLColor());
-        textTexture = SDL_CreateTextureFromSurface(getRenderer(), textSurface);
-
-        renderTexture(textTexture, x, y);
-
-        SDL_FreeSurface(textSurface);
-        SDL_DestroyTexture(textTexture);
-    }
-}
-
-void Engine::renderTextF(float x, float y, Font *font, const char *text, ...)
-{
-    if (font == NULL) {
-        Logger::getInstance()->logError(0, "drawTextF failed: Font doesn't exist");
-    } else {
-        char buffer[99];
-        va_list args;
-        va_start(args, text);
-        vsprintf(buffer, text, args);
-
-        textSurface = TTF_RenderText_Blended(font->getFont(), buffer, font->getSDLColor());
-        textTexture = SDL_CreateTextureFromSurface(getRenderer(), textSurface);
-
-        renderTexture(textTexture, x, y);
-
-        SDL_FreeSurface(textSurface);
-        SDL_DestroyTexture(textTexture);
-
-        va_end(args);
-    }
 }
 
 int Engine::playSound(Sound* sound, int repeat)

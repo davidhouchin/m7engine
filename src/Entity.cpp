@@ -14,6 +14,7 @@
  */
 
 #include "Entity.h"
+#include "M7engine.h"
 
 namespace M7engine {
 Entity::Entity()
@@ -23,6 +24,7 @@ Entity::Entity()
     active                  = true; //Does this object get updated?
     image                   = NULL; //Pointer to sprite used
     resourceName              = ""; //Name of the resource from the resource manager
+    name                      = ""; //Name of object
     xOffset                    = 0; //The sprite origin x
     yOffset                    = 0; //The sprite origin y
     direction                  = 0; //Direction object is pointing
@@ -36,11 +38,36 @@ Entity::Entity()
 
     setPosition(0, 0);
     setVelocity(0, 0);
+
+    Engine::getInstance()->addEntity(this);
 }
 
 Entity::~Entity()
 {
     delete image;
+}
+
+bool Entity::setProperties(ConfigReader *reader, std::string name)
+{
+    resourceName = reader->getString(name, "sprite");
+    setImage(ResourceManager::getInstance()->getSprite(resourceName.c_str()));
+
+    width = reader->getInt(name, "width", 1);
+    height = reader->getInt(name, "height", 1);
+
+    xOffset = reader->getInt(name, "xoffset", 0);
+    yOffset = reader->getInt(name, "yoffset", 0);
+
+    scale = reader->getInt(name, "scale", 1);
+
+    visible = reader->getBool(name, "visible", true);
+
+    solid = reader->getBool(name, "solid", false);
+
+    color.r = reader->getInt(name, "r", 255);
+    color.g = reader->getInt(name, "g", 255);
+    color.b = reader->getInt(name, "b", 255);
+    color.a = reader->getInt(name, "a", 255);
 }
 
 bool Entity::loadImage(const char *filename)

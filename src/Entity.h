@@ -21,6 +21,7 @@
 
 #include "Vector2.h"
 #include "Sprite.h"
+#include "ConfigReader.h"
 #include "ResourceManager.h"
 #include "Logger.h"
 
@@ -93,6 +94,10 @@ public:
      *  @param timerNum The number of the timer that went off.
      */
     virtual void alarm(int timerNum) {}
+
+    std::string getName() { return name; }
+
+    void setName(std::string name) { this->name = name; }
 
     /**
      *  Set entity to be solid or not.
@@ -307,6 +312,8 @@ public:
      */
     void setAlpha(Uint8 a) { color.a = a; }
 
+    bool setProperties(ConfigReader *reader, std::string name);
+
 protected:
     int id, width, height, xOffset, yOffset, direction, hSpeed, vSpeed;
     double scale;
@@ -315,7 +322,7 @@ protected:
     Vector2 position, velocity;
     SDL_Color color;
     Sprite* image;
-    std::string resourceName;
+    std::string resourceName, name;
 };
 };
 

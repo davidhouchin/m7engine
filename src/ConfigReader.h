@@ -75,10 +75,26 @@ public:
      *  Retrieve an int value from a loaded configuration file.
      *  @param section The section to retrieve value from.
      *  @param key The specific key to retrieve value from.
+     *  @return An int containing the value of the key.
+     */
+    int getInt(std::string section, std::string key);
+
+    /**
+     *  Retrieve an int value from a loaded configuration file.
+     *  @param section The section to retrieve value from.
+     *  @param key The specific key to retrieve value from.
      *  @param def The default value to return if the key is not found.
      *  @return An int containing the value of the key.
      */
     int getInt(std::string section, std::string key, int def);
+
+    /**
+     *  Retrieve a bool value from a loaded configuration file.
+     *  @param section The section to retrieve value from.
+     *  @param key The specific key to retrieve value from.
+     *  @return An bool containing the value of the key.
+     */
+    bool getBool(std::string section, std::string key);
 
     /**
      *  Retrieve a bool value from a loaded configuration file.
@@ -96,6 +112,15 @@ public:
      *  @return A stringcontaining the value of the key.
      */
     std::string getString(std::string section, std::string key);
+
+    /**
+     *  Retrieve char value from a loaded configuration file.
+     *  @param section The section to retrieve value from.
+     *  @param key The specific key to retrieve value from.
+     *  @param def The default value to return if the key is not found.
+     *  @return A stringcontaining the value of the key.
+     */
+    std::string getString(std::string section, std::string key, std::string def);
 
 private:
     std::string filename;

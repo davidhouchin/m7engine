@@ -52,7 +52,7 @@ bool ConfigReader::loadConfig(const char *filename)
         if (line[0] == SECTION_BEGIN_CHAR) {
             inSection = true;
             //line = M7engine::trimEmpty(line);
-        line = M7engine::removeWhitespace(line);
+            line = M7engine::removeWhitespace(line);
 
             line.erase(line.begin());
             line.erase(line.end()-1);
@@ -155,6 +155,39 @@ std::string ConfigReader::getString(std::string section, std::string key)
     return (*keyIter).second;
 }
 
+std::string ConfigReader::getString(std::string section, std::string key, std::string def)
+{
+    std::map<std::string, innerMap>::iterator sectIter = ConfigReader::config.find(section);
+
+    if (sectIter == config.end()) {
+        return def;
+    }
+
+    innerMap::iterator keyIter = (*sectIter).second.find(key);
+
+    if (keyIter == (*sectIter).second.end()) {
+        return def;
+    }
+
+    return (*keyIter).second;
+}
+
+bool ConfigReader::getBool(std::string section, std::string key)
+{
+    std::string value = ConfigReader::getString(section, key);
+    if (value.empty()) {
+        return false;
+    }
+
+    if ((value.compare("true") == 0) ||
+        (value.compare("yes")  == 0) ||
+        (value.compare("1") == 0)) {
+        return true;
+    }
+
+    return false;
+}
+
 bool ConfigReader::getBool(std::string section, std::string key, bool def)
 {
     std::string value = ConfigReader::getString(section, key);
@@ -169,6 +202,16 @@ bool ConfigReader::getBool(std::string section, std::string key, bool def)
     }
 
     return false;
+}
+
+int ConfigReader::getInt(std::string section, std::string key)
+{
+    std::string value = ConfigReader::getString(section, key);
+    if (value.empty()) {
+        return -1;
+    }
+
+    return M7engine::stringToInt(value);
 }
 
 int ConfigReader::getInt(std::string section, std::string key, int def)

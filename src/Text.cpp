@@ -18,7 +18,7 @@
 namespace M7engine {
 Font::Font()
 {
-    color = {0, 0, 0, 255};
+    color = { 0, 0, 0, 255 };
 }
 
 Font::~Font()
