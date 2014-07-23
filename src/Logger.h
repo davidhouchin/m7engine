@@ -45,7 +45,7 @@ public:
      *  Set file to use as log.
      *  @param *file Char array containing filename.
      */
-    bool setLogFile(const char *file);
+    bool setLogFile(std::string file);
 
     /**
      *  Log a message with default coloring. Accepts printf style variable arguments.
@@ -64,7 +64,7 @@ public:
 private:
     Logger();
     int logLevel;
-    const char *filename;
+    const char* filename;
     std::ofstream logFile;
     static Logger* loggerInstance;
 };

@@ -26,6 +26,7 @@ Sprite::Sprite()
     height = 1;
     rotation = 0;
     scale = 1;
+    frame = 0;
     maxFrames = 1;
     frameWidth = 1;
     frameHeight = 1;
@@ -134,9 +135,9 @@ bool Sprite::loadImage(const char *filename, int width, int height, int columns,
     }
 }
 
-void Sprite::changeFrame(int changeTo)
+void Sprite::changeFrame(int frame)
 {
-    this->frame = changeTo;
+    this->frame = frame;
 
     if (this->frame > this->maxFrames){ this->frame = 0; }
     if (this->frame < 0){ this->frame = this->maxFrames; }

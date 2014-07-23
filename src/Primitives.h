@@ -34,11 +34,11 @@ namespace M7engine {
     void drawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
     /**
-     *  Draws a rectangle.
+     *  Draws an outlined rectangle.
      *  @param x1 The upper left X point.
      *  @param y1 The upper left Y point.
-     *  @param x2 The lower right X point.
-     *  @param y2 The lower right Y point.
+     *  @param w The width of the rectangle.
+     *  @param h The height of the rectangle.
      *  @param r The red component of the draw color.
      *  @param g The green component of the draw color.
      *  @param b The blue component of the draw color.
@@ -50,8 +50,8 @@ namespace M7engine {
      *  Draws a filled rectangle.
      *  @param x1 The upper left X point.
      *  @param y1 The upper left Y point.
-     *  @param x2 The lower right X point.
-     *  @param y2 The lower right Y point.
+     *  @param w The width of the rectangle.
+     *  @param h The height of the rectangle.
      *  @param r The red component of the draw color.
      *  @param g The green component of the draw color.
      *  @param b The blue component of the draw color.

@@ -24,15 +24,17 @@ ConfigReader::~ConfigReader()
 {
 }
 
-bool ConfigReader::loadConfig(const char *filename)
+bool ConfigReader::loadConfig(std::string filename)
 {
-    Logger::getInstance()->logMessage(0, "ConfigReader loading config file: '%s'", filename);
+    Logger::getInstance()->logMessage(0, "ConfigReader loading config file: '%s'", filename.c_str());
 
-    std::ifstream file(filename);
+    std::ifstream file(filename.c_str());
     if (!file.is_open()) {
-        Logger::getInstance()->logError(0, "ConfigReader failed to load config file: '%s'", filename);
+        Logger::getInstance()->logError(0, "ConfigReader failed to load config file: '%s'", filename.c_str());
         return false;
     }
+
+    this->filename = filename;
 
     bool inSection = false;
     std::string curSection;
@@ -51,11 +53,11 @@ bool ConfigReader::loadConfig(const char *filename)
 
         if (line[0] == SECTION_BEGIN_CHAR) {
             inSection = true;
-            //line = M7engine::trimEmpty(line);
-            line = M7engine::removeWhitespace(line);
 
+            line = removeWhitespace(line);
             line.erase(line.begin());
             line.erase(line.end()-1);
+
             curSection = line;
 
             innerMap newMap;
@@ -64,7 +66,7 @@ bool ConfigReader::loadConfig(const char *filename)
             continue;
         }
 
-        std::vector<std::string> current = M7engine::split(line, '=');
+        std::vector<std::string> current = split(line, '=');
 
         if (ConfigReader::hasKey(curSection, current.front())) {
             Logger::getInstance()->logError(0, "ConfigReader found existing key '" +
@@ -87,12 +89,16 @@ bool ConfigReader::loadConfig(const char *filename)
 
 bool ConfigReader::reloadConfig()
 {
-    return (ConfigReader::loadConfig(ConfigReader::filename.c_str()));
+    if (filename != "") {
+        return (loadConfig(filename));
+    } else {
+        return false;
+    }
 }
 
 bool ConfigReader::hasKey(std::string section, std::string key)
 {
-    std::map<std::string, innerMap>::iterator sectIter = ConfigReader::config.find(section);
+    std::map<std::string, innerMap>::iterator sectIter = config.find(section);
 
     if (sectIter == config.end()) {
         return false;
@@ -138,7 +144,7 @@ std::string ConfigReader::getNextSection(std::string section)
 
 std::string ConfigReader::getString(std::string section, std::string key)
 {
-    std::map<std::string, innerMap>::iterator sectIter = ConfigReader::config.find(section);
+    std::map<std::string, innerMap>::iterator sectIter = config.find(section);
 
     if (sectIter == config.end()) {
         Logger::getInstance()->logError(0, "ConfigReader tried to find nonexistent section '%s'", section.c_str());
@@ -157,7 +163,7 @@ std::string ConfigReader::getString(std::string section, std::string key)
 
 std::string ConfigReader::getString(std::string section, std::string key, std::string def)
 {
-    std::map<std::string, innerMap>::iterator sectIter = ConfigReader::config.find(section);
+    std::map<std::string, innerMap>::iterator sectIter = config.find(section);
 
     if (sectIter == config.end()) {
         return def;
@@ -174,7 +180,7 @@ std::string ConfigReader::getString(std::string section, std::string key, std::s
 
 bool ConfigReader::getBool(std::string section, std::string key)
 {
-    std::string value = ConfigReader::getString(section, key);
+    std::string value = getString(section, key);
     if (value.empty()) {
         return false;
     }
@@ -190,7 +196,7 @@ bool ConfigReader::getBool(std::string section, std::string key)
 
 bool ConfigReader::getBool(std::string section, std::string key, bool def)
 {
-    std::string value = ConfigReader::getString(section, key);
+    std::string value = getString(section, key, "");
     if (value.empty()) {
         return def;
     }
@@ -206,21 +212,21 @@ bool ConfigReader::getBool(std::string section, std::string key, bool def)
 
 int ConfigReader::getInt(std::string section, std::string key)
 {
-    std::string value = ConfigReader::getString(section, key);
+    std::string value = getString(section, key);
     if (value.empty()) {
         return -1;
     }
 
-    return M7engine::stringToInt(value);
+    return stringToInt(value);
 }
 
 int ConfigReader::getInt(std::string section, std::string key, int def)
 {
-    std::string value = ConfigReader::getString(section, key);
+    std::string value = getString(section, key, "");
     if (value.empty()) {
         return def;
     }
 
-    return M7engine::stringToInt(value);
+    return stringToInt(value);
 }
 }

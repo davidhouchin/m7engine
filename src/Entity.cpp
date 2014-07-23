@@ -25,6 +25,7 @@ Entity::Entity()
     image                   = NULL; //Pointer to sprite used
     resourceName              = ""; //Name of the resource from the resource manager
     name                      = ""; //Name of object
+    family                    = ""; //Name of family object belongs to
     xOffset                    = 0; //The sprite origin x
     yOffset                    = 0; //The sprite origin y
     direction                  = 0; //Direction object is pointing
@@ -34,7 +35,7 @@ Entity::Entity()
     height                     = 1; //Height of entity
     scale                      = 1; //Image scale to display at
     color  = { 255, 255, 255, 255}; //RGBA color values
-    solid                  = false; //Considered solid for collision detection
+    solid                  = false; //Is considered solid for collision detection?
 
     setPosition(0, 0);
     setVelocity(0, 0);
@@ -49,7 +50,9 @@ Entity::~Entity()
 
 bool Entity::setProperties(ConfigReader *reader, std::string name)
 {
-    resourceName = reader->getString(name, "sprite");
+    family = reader->getString(name, "family", "");
+
+    resourceName = reader->getString(name, "sprite", "");
     setImage(ResourceManager::getInstance()->getSprite(resourceName.c_str()));
 
     width = reader->getInt(name, "width", 1);
@@ -106,6 +109,7 @@ bool Entity::loadImage(const char *filename, int width, int height, int columns,
 
 void Entity::setImage(Sprite *image)
 {
+    if (this->image != NULL) { this->image->changeFrame(0); }
     this->image = image;
     this->setSize(image->getWidth(), image->getHeight());
     this->resourceName = image->getName();

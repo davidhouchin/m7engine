@@ -293,7 +293,7 @@ void Engine::addEntity(Entity *entity)
     static int id = 0;
     entity->setID(id);
     entities.push_back(entity);
-    Logger::getInstance()->logMessage(0, "Engine added entity id: %i", id);
+    Logger::getInstance()->logMessage(1, "Engine added entity id: %i", id);
     id++;
 }
 

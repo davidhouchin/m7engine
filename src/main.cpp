@@ -6,6 +6,7 @@ Logger *logger = Logger::getInstance();
 InputManager *input = InputManager::getInstance();
 ResourceManager *rManager = ResourceManager::getInstance();
 CollisionManager *cManager = engine->getCollisionManager();
+ConfigReader *oConfig = new ConfigReader;
 
 class Controller : public Entity {
 private:
@@ -56,15 +57,29 @@ public:
 
 class Player : public Entity {
 private:
-    int speed = 5;
+    int speed;
+    bool dead, notStarted;
+    int startx, starty;
 public:
     Player()
     {
         setName("player");
+        setProperties(oConfig, getName());
+
+        speed = 5;
+        dead = false;
+        notStarted = true;
     }
 
     void update()
     {
+        if (notStarted) {
+            startx = getX();
+            starty = getY();
+            notStarted = false;
+        }
+
+        if (!dead) {
         if (input->getKeyHeld(KEY_UP)) {
             if (!cManager->getPlaceMeetingSolid(getX(), getY() - speed, this->id)) {
                 vSpeed = speed * -1;
@@ -95,15 +110,32 @@ public:
             }
         } else {
             hSpeed = 0;
-        }
+        }}
 
-        drawRectangle(getX(), getY(), getWidth(), getHeight(), 255, 0, 0, 150);
+        //drawRectangle(getX(), getY(), getWidth(), getHeight(), 255, 0, 0, 150);
     }
 
     void collision(Entity *other)
     {
-        if (other->getName() == "enemy") {
-            std::cout << "You died!" << std::endl;
+        if (other->getFamily() == "enemy") {
+            if (!dead) {
+                dead = true;
+                setImage(rManager->getSprite("explosion"));
+                engine->playSound(rManager->getSound("boom"), 0);
+                hSpeed = 0;
+                vSpeed = 0;
+                timer[0] = 60;
+            }
+        }
+    }
+
+    void alarm(int timerNum)
+    {
+        if (timerNum == 0) {
+            setImage(rManager->getSprite("cat"));
+            setX(startx);
+            setY(starty);
+            dead = false;
         }
     }
 };
@@ -113,8 +145,8 @@ private:
 public:
     EnemyH()
     {
-        setName("enemy");
-        setImage(rManager->getSprite("badguy"));
+        setName("enemyh");
+        setProperties(oConfig, getName());
         hSpeed = 6;
     }
 
@@ -131,8 +163,8 @@ private:
 public:
     EnemyV()
     {
-        setName("enemy");
-        setImage(rManager->getSprite("badguy"));
+        setName("enemyv");
+        setProperties(oConfig, getName());
         vSpeed = 6;
     }
 
@@ -150,21 +182,79 @@ public:
     Wall()
     {
         setName("wall");
-        setImage(rManager->getSprite("wall"));
-        solid = true;
-        setOriginToCenter();
-        timer[0] = 90;
+        setProperties(oConfig, getName());
+    }
+};
+
+class Level {
+private:
+    std::string filename;
+    int interval;
+    int width;
+    int height;
+public:
+    Level()
+    {
+        interval = 0;
+        width = 0;
+        height = 0;
     }
 
-    void alarm(int timerNum) {
-        if (timerNum == 0) {
-            if (getColor().r == 255) {
-                setColor(0, 0, 255);
-            } else {
-                setColor(255, 0, 0);
-            }
-            timer[0] = 90;
+    bool load(std::string filename)
+    {
+        std::ifstream file(filename.c_str());
+        if (!file.is_open()) {
+            logger->logError(0, "Failed to load level '%s'", filename.c_str());
+            return false;
         }
+
+        int xx, yy;
+        xx = 0;
+        yy = 0;
+
+        Entity *entity;
+
+        while (!file.eof()) {
+            std::string line;
+            std::getline(file, line, '\n');
+
+            if (line[0] == '#') {
+                continue;
+            }
+
+            if (line[0] == 's') {
+                interval = stringToInt(split(line, ':').back());
+                yy = interval;
+                continue;
+            }
+
+            if (line[0] == 'w') {
+                width = stringToInt(split(line, ':').back());
+                continue;
+            }
+
+            if (line[0] == 'h') {
+                height = stringToInt(split(line, ':').back());
+                continue;
+            }
+
+            switch (stringToInt(line)) {
+            case 1: entity = new Player; entity->setPosition(xx, yy); break;
+            case 2: entity = new Wall; entity->setPosition(xx, yy); break;
+            case 3: entity = new EnemyH; entity->setPosition(xx, yy); break;
+            case 4: entity = new EnemyV; entity->setPosition(xx, yy); break;
+            default: break;
+            }
+
+            xx += interval;
+            if (xx >= width) {
+                xx = 0; yy += interval;
+            }
+
+            continue;
+        }
+
+        return true;
     }
 };
 
@@ -205,30 +295,13 @@ bool initEngine()
 
 bool initObjects()
 {
-    ConfigReader *oConfig = new ConfigReader;
     oConfig->loadConfig("../resources/objects.ini");
 
     //Game objects
     Controller *controller = new Controller;
-    Player *player = new Player;
-    Wall *wall1 = new Wall;
-    Wall *wall2 = new Wall;
-    Wall *wall3 = new Wall;
-    EnemyH *enemy1 = new EnemyH;
-    EnemyV *enemy2 = new EnemyV;
 
-    player->setPosition(128, 256);
-    player->setProperties(oConfig, player->getName());
-
-    wall1->setPosition(64, 64);
-    wall2->setPosition(256, 64);
-    wall3->setPosition(256, 256);
-
-    enemy1->setPosition(128, 64);
-    enemy1->setColor(255, 0, 0);
-
-    enemy2->setPosition(256, 96);
-    enemy2->setColor(0, 255, 0);
+    Level *level = new Level;
+    level->load("../resources/test.map");
 
     return true;
 }

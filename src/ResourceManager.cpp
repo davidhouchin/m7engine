@@ -88,10 +88,10 @@ bool ResourceManager::parseConfig() {
                     Sprite *newSprite = new Sprite;
                     newSprite->setName(sectIter);
 
-                    if (resourceReader->hasKey(sectIter, "frameWidth")) { fw = resourceReader->getInt(sectIter, "frameWidth", 0); }
-                    if (resourceReader->hasKey(sectIter, "frameHeight")) { fh = resourceReader->getInt(sectIter, "frameHeight", 0); }
-                    if (resourceReader->hasKey(sectIter, "frameColumns")) { fc = resourceReader->getInt(sectIter, "frameColumns", 0); }
-                    if (resourceReader->hasKey(sectIter, "frames")) { f = resourceReader->getInt(sectIter, "frames", 0); }
+                    if (resourceReader->hasKey(sectIter, "frameWidth")) { fw = resourceReader->getInt(sectIter, "frameWidth", 1); }
+                    if (resourceReader->hasKey(sectIter, "frameHeight")) { fh = resourceReader->getInt(sectIter, "frameHeight", 1); }
+                    if (resourceReader->hasKey(sectIter, "frameColumns")) { fc = resourceReader->getInt(sectIter, "frameColumns", 1); }
+                    if (resourceReader->hasKey(sectIter, "frames")) { f = resourceReader->getInt(sectIter, "frames", 1); }
                     if (resourceReader->hasKey(sectIter, "delay")) { newSprite->setDelay(resourceReader->getInt(sectIter, "delay", 0)); }
 
                     newSprite->loadImage(fname.c_str(), fw, fh, fc, f);

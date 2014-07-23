@@ -95,9 +95,29 @@ public:
      */
     virtual void alarm(int timerNum) {}
 
+    /**
+     *  Returns the name of the object.
+     *  @return String containing the object's name.
+     */
     std::string getName() { return name; }
 
+    /**
+     *  Set the name of the particular instance.
+     *  @param name String containing the new name.
+     */
     void setName(std::string name) { this->name = name; }
+
+    /**
+     *  Returns the name of the object family. Secondary name for grouping objects.
+     *  @return String containing the object family name.
+     */
+    std::string getFamily() { return family; }
+
+    /**
+     *  Set the family name of the particular instance.
+     *  @param family String containing the new family name.
+     */
+    void setFamily(std::string family) { this->family = family; }
 
     /**
      *  Set entity to be solid or not.
@@ -312,6 +332,12 @@ public:
      */
     void setAlpha(Uint8 a) { color.a = a; }
 
+    /**
+     *  Sets the main properties from file using a configuration reader. Sets variables not found back to defaults.
+     *  @param *reader The ConfigReader to request information from.
+     *  @param name String containing name of object properties to request.
+     *  @return Whether the request was successful or not. Mainly if the named section could be found.
+     */
     bool setProperties(ConfigReader *reader, std::string name);
 
 protected:
@@ -322,7 +348,7 @@ protected:
     Vector2 position, velocity;
     SDL_Color color;
     Sprite* image;
-    std::string resourceName, name;
+    std::string resourceName, name, family;
 };
 };
 

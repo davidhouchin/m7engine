@@ -56,12 +56,19 @@ public:
      *  Tests if first entity is colliding with the second using an offset.
      *  @param x X coordinate to check.
      *  @param y Y coordinate to check.
-     *
-     *  @param idB ID of instance to check.
+     *  @param idA ID of first entity to check.
+     *  @param idB ID of second entity to check.
      *  @return A bool determining if the entity is at the position.
      */
     bool getPlaceMeetingInstance(int x, int y, int idA, int idB);
 
+    /**
+     *  Tests if an entity is colliding with a solid object.
+     *  @param x X coordinate to check.
+     *  @param y Y coordinate to check.
+     *  @param id ID of entity to check.
+     *  @return A bool determining if the entity is colliding with a solid entity.
+     */
     bool getPlaceMeetingSolid(int x, int y, int id);
 
     /**

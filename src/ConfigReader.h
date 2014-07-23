@@ -41,7 +41,7 @@ public:
      *  @param *filename Path to the file to load.
      *  @return A bool if successful.
      */
-    bool loadConfig(const char *filename);
+    bool loadConfig(std::string filename);
 
     /**
      *  Reloads configuration file. Same as calling loadConfig,

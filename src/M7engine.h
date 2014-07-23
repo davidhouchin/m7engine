@@ -213,6 +213,9 @@ public:
      */
     void delayFramerate();
 
+    /**
+     *  TODO
+     */
     int getDelta() { return this->currentFrameDelta; }
 
     /**
