@@ -39,18 +39,20 @@ Engine::Engine()
     this->setColorDepth(32);
     this->windowMode = 0;
 
-    #ifdef _WIN32
-        this->displayContext = 0;
-    #else
-        this->displayContext = 1;
-    #endif
-
     configReader = new ConfigReader;
 }
 
 Engine::~Engine()
 {
     Logger::getInstance()->logMessage(0, "Cleaning up resources...");
+
+    for (size_t i = 0; i < entities.size(); i++) {
+        if (entities[i] != NULL) {
+            delete entities[i];
+        }
+    }
+
+    entities.clear();
 
     SDL_FreeSurface(windowIcon);
     SDL_DestroyRenderer(renderer);
@@ -64,6 +66,7 @@ Engine::~Engine()
 
     delete InputManager::getInstance();
     delete Logger::getInstance();
+    delete configReader;
     delete collisionManager;
 }
 
@@ -71,6 +74,11 @@ bool Engine::init(int width, int height, int mode)
 {
     this->setScreenWidth(width);
     this->setScreenHeight(height);
+
+    viewport.x = 0;
+    viewport.y = 0;
+    viewport.w = width;
+    viewport.h = height;
 
     if (SDL_Init(0) < 0) {
         Logger::getInstance()->logError(0, "SDL_Init failed: %s", SDL_GetError());
@@ -109,13 +117,17 @@ bool Engine::init(int width, int height, int mode)
         Logger::getInstance()->logError(0, "Failed to create main display: %s", SDL_GetError());
         return false;
     } else {
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
         if (renderer == NULL) {
             Logger::getInstance()->logError(0, "Failed to create SDL renderer: %s", SDL_GetError());
         } else {
             SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         }
     }
+
+    SDL_RenderSetViewport(renderer, &viewport);
+
+    winTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
 
     collisionManager = new CollisionManager;
 
@@ -143,13 +155,17 @@ bool Engine::update()
         return false;
     }
 
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_SetRenderDrawColor(renderer, 0x80, 0x80, 0x80, 0xFF);
+    SDL_SetRenderTarget(renderer, winTexture);
     SDL_RenderClear(renderer);
 
+    drawEntities();
     updateCollisions();
     updateEntities();
-    drawEntities();
 
+    SDL_SetRenderTarget(renderer, NULL);
+    SDL_RenderClear(renderer);
+    SDL_RenderCopyEx(renderer, winTexture, NULL, NULL, 0, NULL, SDL_FLIP_NONE);
     SDL_RenderPresent(renderer);
 
     cleanEntities();
@@ -170,6 +186,19 @@ void Engine::delayFramerate()
     }
 
     timer.restart();
+}
+
+void Engine::setViewport(int x, int y, int w, int h)
+{
+    SDL_SetRenderTarget(renderer, NULL);
+
+    viewport.x = x * -1;
+    viewport.y = y * -1;
+    viewport.w = w;
+    viewport.h = h;
+
+    SDL_SetRenderTarget(renderer, winTexture);
+    SDL_RenderSetViewport(renderer, &viewport);
 }
 
 void Engine::renderTexture(SDL_Texture *texture, int x, int y)
@@ -193,6 +222,7 @@ void Engine::renderTexture(SDL_Texture *texture, int x, int y, int w, int h)
         dest.y = y;
         dest.w = w;
         dest.h = h;
+
         SDL_RenderCopy(renderer, texture, NULL, &dest);
     }
 }
@@ -344,19 +374,17 @@ bool Engine::setWindowMode(int value)
     switch (value) {
     case 0:
         Logger::getInstance()->logMessage(0, "Changing to windowed mode...");
-        if (!window) { Logger::getInstance()->logError(0, "Failed to change to windowed mode"); return 1; }
+        if (SDL_SetWindowFullscreen(window, 0)) { Logger::getInstance()->logError(0, "Failed to change to windowed mode"); return 1; }
         this->windowMode = 0;
         break;
     case 1:
         Logger::getInstance()->logMessage(0, "Changing to fullscreen mode...");
-        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
-        if (!window) { Logger::getInstance()->logError(0, "Failed to change to fullscreen mode"); return 1; }
+        if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN)) { Logger::getInstance()->logError(0, "Failed to change to fullscreen mode"); return 1; }
         this->windowMode = 1;
         break;
     case 2:
         Logger::getInstance()->logMessage(0, "Changing to fullscreen windowed mode...");
-        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-        if (!window) { Logger::getInstance()->logError(0, "Failed to change to fullscreen windowed mode"); return 1; }
+        if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP)) { Logger::getInstance()->logError(0, "Failed to change to fullscreen windowed mode"); return 1; }
         this->windowMode = 2;
         break;
     }

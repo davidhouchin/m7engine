@@ -32,9 +32,9 @@ public:
 
         //Performance Text
         if (showInfo) {
-            drawFilledRectangle(0, 0, engine->getScreenWidth(), 32, 200, 200, 200, 200);
-            engine->renderTextF(20, 10, f, "FPS: %i", engine->getFPS());
-            engine->renderTextF(96, 10, f, "MOUSE XY: %i %i", input->getMouseX(), input->getMouseY());
+            drawFilledRectangle(engine->getViewportX(), engine->getViewportY(), engine->getViewportW(), 32, 200, 200, 200, 95);
+            engine->renderTextF(engine->getViewportX() + 20, engine->getViewportY() + 10, f, "FPS: %i", engine->getFPS());
+            engine->renderTextF(engine->getViewportX() + 96, engine->getViewportY() + 10, f, "MOUSE XY: %i %i", input->getMouseX(), input->getMouseY());
         }
 
         if (aDir) {
@@ -111,6 +111,26 @@ public:
         } else {
             hSpeed = 0;
         }}
+
+        engine->setViewport((getX()+getXOffset()) - (engine->getScreenWidth()/2),
+                            (getY()+getYOffset()) - (engine->getScreenHeight()/2),
+                            engine->getScreenWidth(),
+                            engine->getScreenHeight());
+
+        if (engine->getViewportX() < 0) {
+            engine->setViewport(0, engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
+        }
+        if (engine->getViewportY() < 0) {
+            engine->setViewport(engine->getViewportX(), 0, engine->getViewportW(), engine->getViewportH());
+        }
+        if (engine->getViewportX() > 640 - engine->getViewportW()) {
+            engine->setViewport(640 - engine->getViewportW(), engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
+        }
+        if (engine->getViewportY() > 480 - engine->getViewportH()) {
+            engine->setViewport(engine->getViewportX(), 480 - engine->getViewportH(), engine->getViewportW(), engine->getViewportH());
+        }
+
+        //std::cout << engine->getViewportX() << " " << engine->getViewportY() << " " << engine->getViewportW() << " " << engine->getViewportH() << std::endl;
 
         //drawRectangle(getX(), getY(), getWidth(), getHeight(), 255, 0, 0, 150);
     }
@@ -323,6 +343,11 @@ int main(int argc, char **argv) {
         }
 
         if (input->getKeyReleased(KEY_SPACE)) {
+            switch (engine->getWindowMode()) {
+            case 0: engine->setWindowMode(1); break;
+            case 1: engine->setWindowMode(2); break;
+            case 2: engine->setWindowMode(0); break;
+            }
         }
     }
 

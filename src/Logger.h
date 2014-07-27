@@ -45,7 +45,7 @@ public:
      *  Set file to use as log.
      *  @param *file Char array containing filename.
      */
-    bool setLogFile(std::string file);
+    bool setLogFile(const char* file);
 
     /**
      *  Log a message with default coloring. Accepts printf style variable arguments.

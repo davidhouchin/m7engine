@@ -37,9 +37,9 @@ Logger::~Logger()
     logFile.close();
 }
 
-bool Logger::setLogFile(std::string file)
+bool Logger::setLogFile(const char* file)
 {
-    filename = file.c_str();
+    filename = file;
     remove(filename);
     logFile.open(filename);
     if (!logFile.is_open()) {

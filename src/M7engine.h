@@ -84,9 +84,11 @@ private:
 
     SDL_Window* window;
     SDL_Renderer* renderer;
+    SDL_Rect viewport;
+    SDL_Texture* winTexture;
 
-    SDL_Surface *textSurface;
-    SDL_Texture *textTexture;
+    SDL_Surface* textSurface;
+    SDL_Texture* textTexture;
 
     Timer timer;
 
@@ -177,6 +179,16 @@ public:
      *  @param h The height to scale texture to.
      */
     void renderTexture(SDL_Texture *texture, int x, int y, int w, int h);
+
+    void setViewport(int x, int y, int w, int h);
+
+    int getViewportX() { return viewport.x * -1; }
+
+    int getViewportY() { return viewport.y * -1; }
+
+    int getViewportW() { return viewport.w; }
+
+    int getViewportH() { return viewport.h; }
 
     /**
      *  Returns a pointer to the current window rendered to.

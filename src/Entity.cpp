@@ -45,7 +45,6 @@ Entity::Entity()
 
 Entity::~Entity()
 {
-    delete image;
 }
 
 bool Entity::setProperties(ConfigReader *reader, std::string name)
