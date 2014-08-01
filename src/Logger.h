@@ -63,10 +63,12 @@ public:
 
 private:
     Logger();
+    static Logger* loggerInstance;
+
     int logLevel;
     const char* filename;
+
     std::ofstream logFile;
-    static Logger* loggerInstance;
 };
 };
 

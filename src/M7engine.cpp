@@ -108,9 +108,9 @@ bool Engine::init(int width, int height, int mode)
     }
 
     switch (mode) {
-    case 0: this->windowMode = 0; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN); break; //Set windowed
-    case 1: this->windowMode = 1; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN); break; //Set fullscreen
-        case 2: this->windowMode = 2; window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN_DESKTOP); break; //Set fullscreen-windowed
+    case 0: this->windowMode = 0; window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN); break; //Set windowed
+    case 1: this->windowMode = 1; window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN); break; //Set fullscreen
+        case 2: this->windowMode = 2; window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN_DESKTOP); break; //Set fullscreen-windowed
     }
 
     if (window == NULL) {
@@ -125,9 +125,9 @@ bool Engine::init(int width, int height, int mode)
         }
     }
 
-    SDL_RenderSetViewport(renderer, &viewport);
-
     winTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+    SDL_RenderSetLogicalSize(renderer, width, height);
 
     collisionManager = new CollisionManager;
 
@@ -163,6 +163,7 @@ bool Engine::update()
     updateCollisions();
     updateEntities();
 
+    SDL_SetRenderDrawColor(renderer, 0x80, 0x80, 0x80, 0xFF);
     SDL_SetRenderTarget(renderer, NULL);
     SDL_RenderClear(renderer);
     SDL_RenderCopyEx(renderer, winTexture, NULL, NULL, 0, NULL, SDL_FLIP_NONE);
@@ -190,15 +191,10 @@ void Engine::delayFramerate()
 
 void Engine::setViewport(int x, int y, int w, int h)
 {
-    SDL_SetRenderTarget(renderer, NULL);
-
-    viewport.x = x * -1;
-    viewport.y = y * -1;
+    viewport.x = x;
+    viewport.y = y;
     viewport.w = w;
     viewport.h = h;
-
-    SDL_SetRenderTarget(renderer, winTexture);
-    SDL_RenderSetViewport(renderer, &viewport);
 }
 
 void Engine::renderTexture(SDL_Texture *texture, int x, int y)
@@ -218,8 +214,8 @@ void Engine::renderTexture(SDL_Texture *texture, int x, int y, int w, int h)
         Logger::getInstance()->logError(0, "renderTexture failed: Texture doesn't exist");
     } else {
         SDL_Rect dest;
-        dest.x = x;
-        dest.y = y;
+        dest.x = x - viewport.x;
+        dest.y = y - viewport.y;
         dest.w = w;
         dest.h = h;
 
@@ -342,6 +338,11 @@ Entity* Engine::findEntity(int id)
         }
     }
     return NULL;
+}
+
+void Engine::sortEntitiesByDepth()
+{
+    std::sort(entities.begin(), entities.end(), entityDepthCompare());
 }
 
 void Engine::updateCollisions()

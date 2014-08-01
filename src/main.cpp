@@ -4,7 +4,7 @@ using namespace M7engine;
 Engine *engine = Engine::getInstance();
 Logger *logger = Logger::getInstance();
 InputManager *input = InputManager::getInstance();
-ResourceManager *rManager = ResourceManager::getInstance();
+ResourceManager *resources = ResourceManager::getInstance();
 CollisionManager *cManager = engine->getCollisionManager();
 ConfigReader *oConfig = new ConfigReader;
 
@@ -16,9 +16,9 @@ private:
 public:
     Controller()
     {
-        f = rManager->getFont("elgethy");
+        f = resources->getFont("elgethy");
         f->setColor(60, 185, 85);
-        f2 = rManager->getFont("oldpix");
+        f2 = resources->getFont("oldpix");
         showInfo = true;
         a = 0;
         aDir = true;
@@ -32,7 +32,7 @@ public:
 
         //Performance Text
         if (showInfo) {
-            drawFilledRectangle(engine->getViewportX(), engine->getViewportY(), engine->getViewportW(), 32, 200, 200, 200, 95);
+            //drawFilledRectangle(engine->getViewportX(), engine->getViewportY(), engine->getViewportW(), 32, 200, 200, 200, 95);
             engine->renderTextF(engine->getViewportX() + 20, engine->getViewportY() + 10, f, "FPS: %i", engine->getFPS());
             engine->renderTextF(engine->getViewportX() + 96, engine->getViewportY() + 10, f, "MOUSE XY: %i %i", input->getMouseX(), input->getMouseY());
         }
@@ -50,7 +50,7 @@ public:
         }
 
         f2->setAlpha(a);
-        engine->renderText(engine->getScreenWidth()/2, engine->getScreenHeight()/2, f2, "Example");
+        //engine->renderText(engine->getScreenWidth()/2, engine->getScreenHeight()/2, f2, "Example");
     }
 
 };
@@ -66,7 +66,7 @@ public:
         setName("player");
         setProperties(oConfig, getName());
 
-        speed = 5;
+        speed = 3;
         dead = false;
         notStarted = true;
     }
@@ -83,12 +83,14 @@ public:
         if (input->getKeyHeld(KEY_UP)) {
             if (!cManager->getPlaceMeetingSolid(getX(), getY() - speed, this->id)) {
                 vSpeed = speed * -1;
+                if (this->getSprite()->getName() != "playerup") {setImage(resources->getSprite("playerup")); }
             } else {
                 vSpeed = 0;
             }
         } else if (input->getKeyHeld(KEY_DOWN)) {
             if (!cManager->getPlaceMeetingSolid(getX(), getY() + speed, this->id)) {
                 vSpeed = speed;
+                if (this->getSprite()->getName() != "playerdown") {setImage(resources->getSprite("playerdown")); }
             } else {
                 vSpeed = 0;
             }
@@ -99,17 +101,25 @@ public:
         if (input->getKeyHeld(KEY_LEFT)) {
             if (!cManager->getPlaceMeetingSolid(getX() - speed, getY(), this->id)) {
                 hSpeed = speed * -1;
+                if (this->getSprite()->getName() != "playerleft") {setImage(resources->getSprite("playerleft")); }
             } else {
                 hSpeed = 0;
             }
         } else if (input->getKeyHeld(KEY_RIGHT)) {
             if (!cManager->getPlaceMeetingSolid(getX() + speed, getY(), this->id)) {
                 hSpeed = speed;
+                if (this->getSprite()->getName() != "playerright") {setImage(resources->getSprite("playerright")); }
             } else {
                 hSpeed = 0;
             }
         } else {
             hSpeed = 0;
+        }
+
+        if ((vSpeed != 0) || (hSpeed != 0)) {
+            image->setDelay(10);
+        } else {
+            image->setDelay(-1);
         }}
 
         engine->setViewport((getX()+getXOffset()) - (engine->getScreenWidth()/2),
@@ -126,8 +136,8 @@ public:
         if (engine->getViewportX() > 640 - engine->getViewportW()) {
             engine->setViewport(640 - engine->getViewportW(), engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
         }
-        if (engine->getViewportY() > 480 - engine->getViewportH()) {
-            engine->setViewport(engine->getViewportX(), 480 - engine->getViewportH(), engine->getViewportW(), engine->getViewportH());
+        if (engine->getViewportY() > 1920 - engine->getViewportH()) {
+            engine->setViewport(engine->getViewportX(), 1920 - engine->getViewportH(), engine->getViewportW(), engine->getViewportH());
         }
 
         //std::cout << engine->getViewportX() << " " << engine->getViewportY() << " " << engine->getViewportW() << " " << engine->getViewportH() << std::endl;
@@ -140,8 +150,8 @@ public:
         if (other->getFamily() == "enemy") {
             if (!dead) {
                 dead = true;
-                setImage(rManager->getSprite("explosion"));
-                engine->playSound(rManager->getSound("boom"), 0);
+                setImage(resources->getSprite("explosion"));
+                engine->playSound(resources->getSound("boom"), 0);
                 hSpeed = 0;
                 vSpeed = 0;
                 timer[0] = 60;
@@ -152,7 +162,7 @@ public:
     void alarm(int timerNum)
     {
         if (timerNum == 0) {
-            setImage(rManager->getSprite("cat"));
+            setImage(resources->getSprite("playerdown"));
             setX(startx);
             setY(starty);
             dead = false;
@@ -165,15 +175,21 @@ private:
 public:
     EnemyH()
     {
-        setName("enemyh");
+        setName("zombie");
         setProperties(oConfig, getName());
-        hSpeed = 6;
+        setImage(resources->getSprite("zombieright"));
+        hSpeed = 4;
     }
 
     void collision(Entity *other)
     {
         if (other->getSolid()) {
             hSpeed = (hSpeed * -1);
+            if (this->getSprite()->getName() != "zombieleft") {
+                setImage(resources->getSprite("zombieleft"));
+            } else {
+                setImage(resources->getSprite("zombieright"));
+            }
         }
     }
 };
@@ -183,15 +199,20 @@ private:
 public:
     EnemyV()
     {
-        setName("enemyv");
+        setName("zombie");
         setProperties(oConfig, getName());
-        vSpeed = 6;
+        vSpeed = 4;
     }
 
     void collision(Entity *other)
     {
         if (other->getSolid()) {
             vSpeed = (vSpeed * -1);
+            if (this->getSprite()->getName() != "zombieup") {
+                setImage(resources->getSprite("zombieup"));
+            } else {
+                setImage(resources->getSprite("zombiedown"));
+            }
         }
     }
 };
@@ -202,6 +223,16 @@ public:
     Wall()
     {
         setName("wall");
+        setProperties(oConfig, getName());
+    }
+};
+
+class Dirt : public Entity {
+private:
+public:
+    Dirt()
+    {
+        setName("dirt");
         setProperties(oConfig, getName());
     }
 };
@@ -263,6 +294,7 @@ public:
             case 2: entity = new Wall; entity->setPosition(xx, yy); break;
             case 3: entity = new EnemyH; entity->setPosition(xx, yy); break;
             case 4: entity = new EnemyV; entity->setPosition(xx, yy); break;
+            case 5: entity = new Dirt; entity->setPosition(xx, yy); break;
             default: break;
             }
 
@@ -273,6 +305,8 @@ public:
 
             continue;
         }
+
+        engine->sortEntitiesByDepth();
 
         return true;
     }
@@ -304,8 +338,8 @@ bool initEngine()
     engine->setWindowIcon(config->getString("base", "icon", "").c_str());
 
     //Load resources
-    rManager->setPath(config->getString("base", "respath"));
-    rManager->loadConfig(config->getString("base", "resconf"));
+    resources->setPath(config->getString("base", "respath"));
+    resources->loadConfig(config->getString("base", "resconf"));
 
     //Start monitoring input
     input->init();

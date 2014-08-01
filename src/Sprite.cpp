@@ -164,7 +164,7 @@ void Sprite::draw(int x, int y)
 
             Engine::getInstance()->renderTexture(frameList[frame], x, y, width, height);
 
-            step++;
+            if (delay != -1) { step++; }
             if (step == delay) {
                 step = 0;
                 this->nextFrame();

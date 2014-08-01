@@ -37,27 +37,6 @@ int stringToInt(std::string text);
 std::string& removeWhitespace(std::string &str);
 
 /**
- *  Trim all the empty space on the left side of the given string.
- *  @param &str The string to trim.
- *  @return The trimmed string.
- */
-std::string& trimEmptyLeft(std::string &str);
-
-/**
- *  Trim all the empty space on the right side of the given string.
- *  @param &str The string to trim.
- *  @return The trimmed string.
- */
-std::string& trimEmptyRight(std::string& str);
-
-/**
- *  Trim all the empty space on both sides of the given string.
- *  @param &str The string to trim.
- *  @return The trimmed string.
- */
-std::string& trimEmpty(std::string& str);
-
-/**
  *  Split the given string into two based on a delimiter.
  *  @param &str The string to split.
  *  @param delim The character to treat as delimiter.

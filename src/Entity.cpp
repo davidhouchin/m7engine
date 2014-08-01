@@ -26,6 +26,7 @@ Entity::Entity()
     resourceName              = ""; //Name of the resource from the resource manager
     name                      = ""; //Name of object
     family                    = ""; //Name of family object belongs to
+    depth                      = 0; //The display depth of the object
     xOffset                    = 0; //The sprite origin x
     yOffset                    = 0; //The sprite origin y
     direction                  = 0; //Direction object is pointing
@@ -53,6 +54,8 @@ bool Entity::setProperties(ConfigReader *reader, std::string name)
 
     resourceName = reader->getString(name, "sprite", "");
     setImage(ResourceManager::getInstance()->getSprite(resourceName.c_str()));
+
+    depth = reader->getInt(name, "depth", 0);
 
     width = reader->getInt(name, "width", 1);
     height = reader->getInt(name, "height", 1);

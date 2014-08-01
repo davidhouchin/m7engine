@@ -45,6 +45,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <math.h>
+#include <algorithm>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -75,17 +76,26 @@ class Engine {
 private:
     Engine();
     static Engine* engineInstance;
+
     bool redraw;
     int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext, frameDelay, currentFrameDelta, oldTime;
     int fps;
+
     const char* windowTitle;
     SDL_Surface* windowIcon;
+
     std::vector<Entity*> entities;
 
     SDL_Window* window;
     SDL_Renderer* renderer;
-    SDL_Rect viewport;
     SDL_Texture* winTexture;
+
+    struct Viewport {
+        int x;
+        int y;
+        int h;
+        int w;
+    } viewport;
 
     SDL_Surface* textSurface;
     SDL_Texture* textTexture;
@@ -157,6 +167,16 @@ public:
      */
     long getEntityCount() { return (long)entities.size(); }
 
+    struct entityDepthCompare
+    {
+        inline bool operator() (Entity *a, Entity *b)
+        {
+            return (a->getDepth() > b->getDepth());
+        }
+    };
+
+    void sortEntitiesByDepth();
+
     /**
      *  Updates the collision states of all registered entities.
      */
@@ -182,9 +202,9 @@ public:
 
     void setViewport(int x, int y, int w, int h);
 
-    int getViewportX() { return viewport.x * -1; }
+    int getViewportX() { return viewport.x; }
 
-    int getViewportY() { return viewport.y * -1; }
+    int getViewportY() { return viewport.y; }
 
     int getViewportW() { return viewport.w; }
 

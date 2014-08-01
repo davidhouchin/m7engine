@@ -222,6 +222,10 @@ public:
      */
     void setActive(bool active) { this->active = active; }
 
+    int getDepth() { return depth; }
+
+    void setDepth(int depth) { this->depth = depth; }
+
     /**
      *  Return current velocity in vector format.
      *  @return Vector containing current velocity.
@@ -341,7 +345,7 @@ public:
     bool setProperties(ConfigReader *reader, std::string name);
 
 protected:
-    int id, width, height, xOffset, yOffset, direction, hSpeed, vSpeed;
+    int id, depth, width, height, xOffset, yOffset, direction, hSpeed, vSpeed;
     double scale;
     bool visible, active, solid;
     int timer[TIMER_NUM];
