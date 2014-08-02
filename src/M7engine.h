@@ -85,6 +85,7 @@ private:
     SDL_Surface* windowIcon;
 
     std::vector<Entity*> entities;
+    std::vector<Tile*> tiles;
 
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -176,6 +177,39 @@ public:
     };
 
     void sortEntitiesByDepth();
+
+    /**
+     *  Register a tile.
+     *  @param *tile Pointer to tile to register.
+     */
+    void addTile(Tile *tile);
+
+    /**
+     *  Returns a pointer to the list of registered tiles.
+     *  @return A pointer to the list of registered tiles.
+     */
+    std::vector<Tile*> getTileList() { return tiles; }
+
+    /**
+     *  Return the number of registered tiles.
+     *  @return The number of registered tiles.
+     */
+    long getTileCount() { return (long)tiles.size(); }
+
+    struct tileDepthCompare
+    {
+        inline bool operator() (Tile *a, Tile *b)
+        {
+            return (a->getDepth() > b->getDepth());
+        }
+    };
+
+    void sortTilesByDepth();
+
+    /**
+     *  Call draw routines of all registered tiles.
+     */
+    void drawTiles();
 
     /**
      *  Updates the collision states of all registered entities.

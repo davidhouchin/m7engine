@@ -186,6 +186,27 @@ public:
      */
     int getYOffset() { return yOffset; }
 
+    void setBBox(SDL_Rect bbox) {
+        this->bbox.x = bbox.x;
+        this->bbox.y = bbox.y;
+        this->bbox.w = bbox.w;
+        this->bbox.h = bbox.h;
+    }
+
+    int getBBoxXOffset() { return xBBox; }
+
+    int getBBoxYOffset() { return yBBox; }
+
+    int getXBBox() { return bbox.x; }
+
+    int getYBBox() { return bbox.y; }
+
+    int getWBBox() { return bbox.w; }
+
+    int getHBBox() { return bbox.h; }
+
+    SDL_Rect getBBox() { return bbox; }
+
     /**
      *  Manually set the entity ID.
      *  @param id Int to set id to.
@@ -345,14 +366,106 @@ public:
     bool setProperties(ConfigReader *reader, std::string name);
 
 protected:
-    int id, depth, width, height, xOffset, yOffset, direction, hSpeed, vSpeed;
+    int id, depth, width, height, xOffset, yOffset, direction, hSpeed, vSpeed, xBBox, yBBox;
     double scale;
     bool visible, active, solid;
     int timer[TIMER_NUM];
     Vector2 position, velocity;
+    SDL_Rect bbox;
     SDL_Color color;
     Sprite* image;
     std::string resourceName, name, family;
+};
+
+//Minimal entity class for drawing background objects that don't need much processing.
+class Tile {
+public:
+    Tile();
+    virtual ~Tile();
+
+    /**
+     *  Directly set a sprite as the attached sprite.
+     *  @param *image Pointer to sprite to use.
+     */
+    virtual void setImage(Sprite* image);
+
+    /**
+     *  Main drawing function called per frame.
+     */
+    virtual void draw();
+
+    /**
+     *  Returns the name of the object.
+     *  @return String containing the object's name.
+     */
+    std::string getName() { return name; }
+
+    /**
+     *  Set the name of the particular instance.
+     *  @param name String containing the new name.
+     */
+    void setName(std::string name) { this->name = name; }
+
+    /**
+     *  Returns current position in vector format.
+     *  @return A vector containing positional information.
+     */
+    Vector2 getPosition() { return position; }
+
+    /**
+     *  Set position using a vector.
+     *  @param vector Vector to set position to.
+     */
+    void setPosition(Vector2 vector) { this->position = vector; }
+
+    /**
+     *  Set position using X and Y integer coordinates.
+     *  @param x X position to set.
+     *  @param y Y position to set.
+     */
+    void setPosition(double x, double y) { position.set(x, y); }
+
+    /**
+     *  Return current X position.
+     *  @return The current X position.
+     */
+    double getX() { return position.getX(); }
+
+    /**
+     *  Return current Y position.
+     *  @return The current Y position.
+     */
+    double getY() { return position.getY(); }
+
+    /**
+     *  Set the current X coordinate.
+     *  @param x X position to set.
+     */
+    void setX(double x) { position.setX(x); }
+
+    /**
+     *  Set the current Y position.
+     *  @param y Y position to set.
+     */
+    void setY(double y) { position.setY(y); }
+
+    int getDepth() { return depth; }
+
+    void setDepth(int depth) { this->depth = depth; }
+
+    /**
+     *  Sets the main properties from file using a configuration reader. Sets variables not found back to defaults.
+     *  @param *reader The ConfigReader to request information from.
+     *  @param name String containing name of object properties to request.
+     *  @return Whether the request was successful or not. Mainly if the named section could be found.
+     */
+    bool setProperties(ConfigReader *reader, std::string name);
+
+protected:
+    int depth;
+    Sprite* image;
+    Vector2 position;
+    std::string resourceName, name;
 };
 };
 

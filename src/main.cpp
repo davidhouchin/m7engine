@@ -81,14 +81,14 @@ public:
 
         if (!dead) {
         if (input->getKeyHeld(KEY_UP)) {
-            if (!cManager->getPlaceMeetingSolid(getX(), getY() - speed, this->id)) {
+            if (!cManager->getPlaceMeetingSolid(getXBBox(), getYBBox() - speed, this->id)) {
                 vSpeed = speed * -1;
                 if (this->getSprite()->getName() != "playerup") {setImage(resources->getSprite("playerup")); }
             } else {
                 vSpeed = 0;
             }
         } else if (input->getKeyHeld(KEY_DOWN)) {
-            if (!cManager->getPlaceMeetingSolid(getX(), getY() + speed, this->id)) {
+            if (!cManager->getPlaceMeetingSolid(getXBBox(), getYBBox() + speed, this->id)) {
                 vSpeed = speed;
                 if (this->getSprite()->getName() != "playerdown") {setImage(resources->getSprite("playerdown")); }
             } else {
@@ -99,14 +99,14 @@ public:
         }
 
         if (input->getKeyHeld(KEY_LEFT)) {
-            if (!cManager->getPlaceMeetingSolid(getX() - speed, getY(), this->id)) {
+            if (!cManager->getPlaceMeetingSolid(getXBBox() - speed, getYBBox(), this->id)) {
                 hSpeed = speed * -1;
                 if (this->getSprite()->getName() != "playerleft") {setImage(resources->getSprite("playerleft")); }
             } else {
                 hSpeed = 0;
             }
         } else if (input->getKeyHeld(KEY_RIGHT)) {
-            if (!cManager->getPlaceMeetingSolid(getX() + speed, getY(), this->id)) {
+            if (!cManager->getPlaceMeetingSolid(getXBBox() + speed, getYBBox(), this->id)) {
                 hSpeed = speed;
                 if (this->getSprite()->getName() != "playerright") {setImage(resources->getSprite("playerright")); }
             } else {
@@ -122,8 +122,8 @@ public:
             image->setDelay(-1);
         }}
 
-        engine->setViewport((getX()+getXOffset()) - (engine->getScreenWidth()/2),
-                            (getY()+getYOffset()) - (engine->getScreenHeight()/2),
+        engine->setViewport((getX()) - (engine->getScreenWidth()/2),
+                            (getY()) - (engine->getScreenHeight()/2),
                             engine->getScreenWidth(),
                             engine->getScreenHeight());
 
@@ -142,12 +142,12 @@ public:
 
         //std::cout << engine->getViewportX() << " " << engine->getViewportY() << " " << engine->getViewportW() << " " << engine->getViewportH() << std::endl;
 
-        //drawRectangle(getX(), getY(), getWidth(), getHeight(), 255, 0, 0, 150);
+        //drawRectangle(getXBBox(), getYBBox(), getWBBox(), getHBBox(), 255, 255, 0, 150);
     }
 
     void collision(Entity *other)
     {
-        if (other->getFamily() == "enemy") {
+        if ((other->getFamily() == "enemy") && (!notStarted)) {
             if (!dead) {
                 dead = true;
                 setImage(resources->getSprite("explosion"));
@@ -181,6 +181,11 @@ public:
         hSpeed = 4;
     }
 
+    void update()
+    {
+        //drawRectangle(getXBBox(), getYBBox(), getWBBox(), getHBBox(), 255, 255, 0, 150);
+    }
+
     void collision(Entity *other)
     {
         if (other->getSolid()) {
@@ -202,6 +207,11 @@ public:
         setName("zombie");
         setProperties(oConfig, getName());
         vSpeed = 4;
+    }
+
+    void update()
+    {
+        //drawRectangle(getXBBox(), getYBBox(), getWBBox(), getHBBox(), 255, 255, 0, 150);
     }
 
     void collision(Entity *other)
@@ -227,7 +237,7 @@ public:
     }
 };
 
-class Dirt : public Entity {
+class Dirt : public Tile {
 private:
 public:
     Dirt()
@@ -264,6 +274,7 @@ public:
         yy = 0;
 
         Entity *entity;
+        Tile *tile;
 
         while (!file.eof()) {
             std::string line;
@@ -294,7 +305,7 @@ public:
             case 2: entity = new Wall; entity->setPosition(xx, yy); break;
             case 3: entity = new EnemyH; entity->setPosition(xx, yy); break;
             case 4: entity = new EnemyV; entity->setPosition(xx, yy); break;
-            case 5: entity = new Dirt; entity->setPosition(xx, yy); break;
+            case 5: tile = new Dirt; tile->setPosition(xx, yy); break;
             default: break;
             }
 
@@ -307,6 +318,7 @@ public:
         }
 
         engine->sortEntitiesByDepth();
+        engine->sortTilesByDepth();
 
         return true;
     }

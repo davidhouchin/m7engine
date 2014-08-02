@@ -113,6 +113,17 @@ bool ConfigReader::hasKey(std::string section, std::string key)
     return true;
 }
 
+bool ConfigReader::hasSection(std::string section)
+{
+    std::map<std::string, innerMap>::iterator sectIter = config.find(section);
+
+    if (sectIter == config.end()) {
+        return false;
+    }
+
+    return true;
+}
+
 std::string ConfigReader::getFirstSection()
 {
     if (config.empty()) {

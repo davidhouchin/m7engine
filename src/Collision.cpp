@@ -17,10 +17,12 @@
 #include "M7engine.h"
 
 namespace M7engine {
-CollisionManager::CollisionManager() {
+CollisionManager::CollisionManager()
+{
 }
 
-CollisionManager::~CollisionManager() {
+CollisionManager::~CollisionManager()
+{
 }
 
 bool CollisionManager::getIntersect(SDL_Rect a, SDL_Rect b)
@@ -85,10 +87,10 @@ bool CollisionManager::getPlaceMeetingObject(int x, int y, int id, std::string n
 {
     SDL_Rect rA, rB;
     Entity *eA = Engine::getInstance()->findEntity(id);
-    rA.x = x - eA->getXOffset();
-    rA.w = eA->getWidth();
-    rA.y = y - eA->getYOffset();
-    rA.h = eA->getHeight();
+    rA.x = x;
+    rA.w = eA->getWBBox();
+    rA.y = y;
+    rA.h = eA->getHBBox();
 
     std::vector<Entity*> entities = Engine::getInstance()->getEntityList();
     std::vector<Entity*>::iterator iter;
@@ -98,10 +100,10 @@ bool CollisionManager::getPlaceMeetingObject(int x, int y, int id, std::string n
     while (iter != entities.end()) {
         entity = *iter;
         if (entity->getName() == name) {
-            rB.x = entity->getX()-entity->getXOffset();
-            rB.w = entity->getWidth();
-            rB.y = entity->getY()-entity->getYOffset();
-            rB.h = entity->getHeight();
+            rB.x = entity->getXBBox();
+            rB.w = entity->getWBBox();
+            rB.y = entity->getYBBox();
+            rB.h = entity->getHBBox();
 
             if (getIntersect(rA, rB)) {
                 return true;
@@ -119,15 +121,15 @@ bool CollisionManager::getPlaceMeetingInstance(int x, int y, int idA, int idB)
     Entity *eA = Engine::getInstance()->findEntity(idA);
     Entity *eB = Engine::getInstance()->findEntity(idB);
 
-    rA.x = x - eA->getXOffset();
-    rA.w = eA->getWidth();
-    rA.y = y - eA->getYOffset();
-    rA.h = eA->getHeight();
+    rA.x = x;
+    rA.w = eA->getWBBox();
+    rA.y = y;
+    rA.h = eA->getHBBox();
 
-    rB.x = eB->getX()-eB->getXOffset();
-    rB.w = eB->getWidth();
-    rB.y = eB->getY()-eB->getYOffset();
-    rB.h = eB->getHeight();
+    rB.x = eB->getXBBox();
+    rB.w = eB->getWBBox();
+    rB.y = eB->getYBBox();
+    rB.h = eB->getHBBox();
 
     if (getIntersect(rA, rB)) {
         return true;
@@ -140,10 +142,11 @@ bool CollisionManager::getPlaceMeetingSolid(int x, int y, int id)
 {
     SDL_Rect rA, rB;
     Entity *eA = Engine::getInstance()->findEntity(id);
-    rA.x = x - eA->getXOffset();
-    rA.w = eA->getWidth();
-    rA.y = y - eA->getYOffset();
-    rA.h = eA->getHeight();
+    rA.x = x;
+    rA.w = eA->getWBBox();
+    rA.y = y;
+    rA.h = eA->getHBBox();
+    //drawRectangle(rA.x, rA.y, rA.w, rA.h, 255, 0, 0, 255);
 
     std::vector<Entity*> entities = Engine::getInstance()->getEntityList();
     std::vector<Entity*>::iterator iter;
@@ -153,10 +156,11 @@ bool CollisionManager::getPlaceMeetingSolid(int x, int y, int id)
     while (iter != entities.end()) {
         entity = *iter;
         if (entity->getSolid()) {
-            rB.x = entity->getX()-entity->getXOffset();
-            rB.w = entity->getWidth();
-            rB.y = entity->getY()-entity->getYOffset();
-            rB.h = entity->getHeight();
+            rB.x = entity->getXBBox();
+            rB.w = entity->getWBBox();
+            rB.y = entity->getYBBox();
+            rB.h = entity->getHBBox();
+            //drawRectangle(rB.x, rB.y, rB.w, rB.h, 255, 0, 0, 255);
 
             if (getIntersect(rA, rB)) {
                 return true;
@@ -173,10 +177,10 @@ bool CollisionManager::getPointMeetingInstance(int x, int y, int id)
     SDL_Rect rA, rB;
     Entity *e = Engine::getInstance()->findEntity(id);
 
-    rA.x = e->getX();
-    rA.w = e->getWidth();
-    rA.y = e->getY();
-    rA.h = e->getHeight();
+    rA.x = e->getXBBox();
+    rA.w = e->getWBBox();
+    rA.y = e->getYBBox();
+    rA.h = e->getHBBox();
 
     rB.x = x;
     rB.w = 1;

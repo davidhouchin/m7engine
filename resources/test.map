@@ -1,4 +1,4 @@
-#Test simple map (Just to throw a bunch of objects on-screen for now)
+#Simple test map (Just to throw a bunch of objects on-screen for now)
 s:32
 w:640
 h:1920
@@ -226,27 +226,27 @@ h:1920
 
 2
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+2
+
+2
+2
+5
+
+5
 1
-
-
-
-
-
-
-
-
-
-
-
-
-2
-
-2
-2
-5
-
-5
-
 5
 
 5

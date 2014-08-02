@@ -59,6 +59,13 @@ public:
     bool hasKey(std::string section, std::string key);
 
     /**
+     *  Check if a section exists.
+     *  @param section The section to check for key.
+     *  @return A bool if successful.
+     */
+    bool hasSection(std::string section);
+
+    /**
      *  Returns a string containing the first section stored.
      *  @return A string containing the name of the first section.
      */

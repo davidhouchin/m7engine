@@ -29,7 +29,7 @@ Engine* Engine::getInstance()
 
 Engine::Engine()
 {
-    frameRate = 30;
+    //frameRate = 30;
     frameDelay = 30;
     frameCount = 0;
     fps = 0;
@@ -53,6 +53,14 @@ Engine::~Engine()
     }
 
     entities.clear();
+
+    for (size_t i = 0; i < tiles.size(); i++) {
+        if (tiles[i] != NULL) {
+            delete tiles[i];
+        }
+    }
+
+    tiles.clear();
 
     SDL_FreeSurface(windowIcon);
     SDL_DestroyRenderer(renderer);
@@ -141,7 +149,7 @@ bool Engine::update()
 {
     Logger::getInstance()->logMessage(99, "Engine update cycle: %i", frameCount);
 
-    int deltaMS = this->getDelta();
+    //int deltaMS = this->getDelta();
 
     int frameTime = SDL_GetTicks();
     fps = (frameTime - oldTime);
@@ -159,6 +167,7 @@ bool Engine::update()
     SDL_SetRenderTarget(renderer, winTexture);
     SDL_RenderClear(renderer);
 
+    drawTiles();
     drawEntities();
     updateCollisions();
     updateEntities();
@@ -181,6 +190,7 @@ bool Engine::update()
 void Engine::delayFramerate()
 {
     currentFrameDelta = timer.getDelta();
+    //std::cout << currentFrameDelta << std::endl;
 
     if ((currentFrameDelta) < (frameDelay)) {
         SDL_Delay(frameDelay - currentFrameDelta);
@@ -360,13 +370,38 @@ void Engine::updateCollisions()
 
         while (iterB != entities.end()) {
             entityB = *iterB;
-            if ((entityA != entityB) && (collisionManager->getCollisionBBox(entityA, entityB))) {
+            if ((entityA != entityB) && (collisionManager->getIntersect(entityA->getBBox(), entityB->getBBox()))) {
                 entityA->collision(entityB);
             }
             iterB++;
         }
         iterB = entities.begin();
         iterA++;
+    }
+}
+
+void Engine::addTile(Tile *tile)
+{
+    tiles.push_back(tile);
+}
+
+void Engine::sortTilesByDepth()
+{
+    std::sort(tiles.begin(), tiles.end(), tileDepthCompare());
+}
+
+void Engine::drawTiles()
+{
+    Logger::getInstance()->logMessage(99, "Engine is drawing tiles");
+
+    std::vector<Tile*>::iterator iter;
+    Tile *tile;
+    iter = tiles.begin();
+
+    while (iter != tiles.end()) {
+        tile = *iter;
+        tile->draw();
+        iter++;
     }
 }
 

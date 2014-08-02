@@ -36,6 +36,7 @@ Entity::Entity()
     height                     = 1; //Height of entity
     scale                      = 1; //Image scale to display at
     color  = { 255, 255, 255, 255}; //RGBA color values
+    bbox   = {   0,   0,   1,   1}; //The dimensions of the bounding box
     solid                  = false; //Is considered solid for collision detection?
 
     setPosition(0, 0);
@@ -50,6 +51,10 @@ Entity::~Entity()
 
 bool Entity::setProperties(ConfigReader *reader, std::string name)
 {
+    if (!reader->hasSection(name)) {
+        return false;
+    }
+
     family = reader->getString(name, "family", "");
 
     resourceName = reader->getString(name, "sprite", "");
@@ -63,6 +68,11 @@ bool Entity::setProperties(ConfigReader *reader, std::string name)
     xOffset = reader->getInt(name, "xoffset", 0);
     yOffset = reader->getInt(name, "yoffset", 0);
 
+    xBBox = reader->getInt(name, "xbbox", 0);
+    yBBox = reader->getInt(name, "ybbox", 0);
+    bbox.w = reader->getInt(name, "wbbox", width);
+    bbox.h = reader->getInt(name, "hbbox", height);
+
     scale = reader->getInt(name, "scale", 1);
 
     visible = reader->getBool(name, "visible", true);
@@ -73,6 +83,8 @@ bool Entity::setProperties(ConfigReader *reader, std::string name)
     color.g = reader->getInt(name, "g", 255);
     color.b = reader->getInt(name, "b", 255);
     color.a = reader->getInt(name, "a", 255);
+
+    return true;
 }
 
 bool Entity::loadImage(const char *filename)
@@ -113,7 +125,6 @@ void Entity::setImage(Sprite *image)
 {
     if (this->image != NULL) { this->image->changeFrame(0); }
     this->image = image;
-    this->setSize(image->getWidth(), image->getHeight());
     this->resourceName = image->getName();
 }
 
@@ -142,22 +153,66 @@ void Entity::draw()
 
 void Entity::move()
 {
-    //this->setX(this->getX() + this->velocity.getX());
-    //this->setY(this->getY() + this->velocity.getY());
     setX(getX() + hSpeed);
     setY(getY() + vSpeed);
+    bbox.x = this->getX() + xBBox;
+    bbox.y = this->getY() + yBBox;
 }
 
 void Entity::updateTimers()
 {
     int i;
     for (i = 0; i < TIMER_NUM; i++) {
-        if (timer[i] != 0) {
+        if (timer[i] > 0) {
             timer[i]--;
-            if (timer[i] == 0) {
+            if (timer[i] <= 0) {
                 alarm(i);
             }
         }
+    }
+}
+
+Tile::Tile()
+{
+    image                   = NULL; //Pointer to sprite used
+    resourceName              = ""; //Name of the resource from the resource manager
+    name                      = ""; //Name of tile
+    depth                      = 0; //The display depth of the tile
+
+    setPosition(0, 0);
+
+    Engine::getInstance()->addTile(this);
+}
+
+Tile::~Tile()
+{
+}
+
+bool Tile::setProperties(ConfigReader *reader, std::string name)
+{
+    if (!reader->hasSection(name)) {
+        return false;
+    }
+
+    resourceName = reader->getString(name, "sprite", "");
+    setImage(ResourceManager::getInstance()->getSprite(resourceName.c_str()));
+
+    depth = reader->getInt(name, "depth", 0);
+
+    return true;
+}
+
+void Tile::setImage(Sprite *image)
+{
+    if (this->image != NULL) { this->image->changeFrame(0); }
+    this->image = image;
+    this->resourceName = image->getName();
+}
+
+void Tile::draw()
+{
+    if (image) {
+        image->draw(this->getX(), this->getY());
     }
 }
 }
