@@ -122,6 +122,18 @@ public:
     void setName(std::string name) { this->name = name; }
 
     /**
+     *  Returns the current frame.
+     *  @return Current frame.
+     */
+    int getFrame() { return this->frame; }
+
+    /**
+     *  Returns the total number of frames.
+     *  @return Total number of frames.
+     */
+    int getMaxFrames() { return this->maxFrames; }
+
+    /**
      *  Change the animation frame to the specified frame.
      *  @return Frame to jump to.
      */
@@ -149,13 +161,13 @@ public:
      *  @param g The green value.
      *  @param b The blue value.
      */
-    void setColor(Uint8 r, Uint8 g, Uint8 b) { color.r = r; color.g = g; color.b = b; SDL_SetTextureColorMod(texture, color.r, color.g, color.b); }
+    void setColor(Uint8 r, Uint8 g, Uint8 b) { color.r = r; color.g = g; color.b = b; SDL_SetTextureColorMod(frameList[frame], color.r, color.g, color.b); }
 
     /**
      *  Set the alpha. Accepts values from 0 - 255.
      *  @param a The alpha value.
      */
-    void setAlpha(Uint8 a) { color.a = a; SDL_SetTextureAlphaMod(texture, color.a); }
+    void setAlpha(Uint8 a) { color.a = a; SDL_SetTextureAlphaMod(frameList[frame], color.a); }
 
 private:
     int width, height, frame, maxFrames, frameWidth, frameHeight, columns, delay, step;

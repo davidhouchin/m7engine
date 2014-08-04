@@ -39,6 +39,8 @@ Engine::Engine()
     this->setColorDepth(32);
     this->windowMode = 0;
 
+    drawBoundingBoxes = false;
+
     configReader = new ConfigReader;
 }
 
@@ -301,6 +303,9 @@ void Engine::drawEntities()
         entity = *iter;
         if (entity->getVisible()) {
             entity->draw();
+            if (drawBoundingBoxes) {
+                drawRectangle(entity->getXBBox(), entity->getYBBox(), entity->getWBBox(), entity->getHBBox(), 255, 255, 0, 150);
+            }
         }
         iter++;
     }

@@ -77,7 +77,7 @@ private:
     Engine();
     static Engine* engineInstance;
 
-    bool redraw;
+    bool redraw, drawBoundingBoxes;
     int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext, frameDelay, currentFrameDelta, oldTime;
     int fps;
 
@@ -105,6 +105,24 @@ private:
 
     CollisionManager *collisionManager;
     ConfigReader *configReader;
+
+    //This struct is used for comparing entity depth values when sorting.
+    struct entityDepthCompare
+    {
+        inline bool operator() (Entity *a, Entity *b)
+        {
+            return (a->getDepth() > b->getDepth());
+        }
+    };
+
+    //This struct is used for comparing tile depth values when sorting.
+    struct tileDepthCompare
+    {
+        inline bool operator() (Tile *a, Tile *b)
+        {
+            return (a->getDepth() > b->getDepth());
+        }
+    };
 
 public:
     /**
@@ -168,14 +186,9 @@ public:
      */
     long getEntityCount() { return (long)entities.size(); }
 
-    struct entityDepthCompare
-    {
-        inline bool operator() (Entity *a, Entity *b)
-        {
-            return (a->getDepth() > b->getDepth());
-        }
-    };
-
+    /**
+     *  Sort all registered entities by their drawing depths.
+     */
     void sortEntitiesByDepth();
 
     /**
@@ -196,14 +209,9 @@ public:
      */
     long getTileCount() { return (long)tiles.size(); }
 
-    struct tileDepthCompare
-    {
-        inline bool operator() (Tile *a, Tile *b)
-        {
-            return (a->getDepth() > b->getDepth());
-        }
-    };
-
+    /**
+     *  Sort all registered tiles by their drawing depths.
+     */
     void sortTilesByDepth();
 
     /**
@@ -234,14 +242,37 @@ public:
      */
     void renderTexture(SDL_Texture *texture, int x, int y, int w, int h);
 
+    /**
+     *  Set the position of the viewport.
+     *  @param x The X position of the viewport's top left corner.
+     *  @param y The Y position of the viewport's top left corner.
+     *  @param w The width of the viewport.
+     *  @param h The height of the viewport.
+     */
     void setViewport(int x, int y, int w, int h);
 
+    /**
+     *  Returns the X position of the viewport's top left corner.
+     *  @return X position of viewport.
+     */
     int getViewportX() { return viewport.x; }
 
+    /**
+     *  Returns the Y position of the viewport's top left corner.
+     *  @return Y position of viewport.
+     */
     int getViewportY() { return viewport.y; }
 
+    /**
+     *  Returns the width of the viewport.
+     *  @return Width of viewport.
+     */
     int getViewportW() { return viewport.w; }
 
+    /**
+     *  Returns the height of the viewport.
+     *  @return Height of viewport.
+     */
     int getViewportH() { return viewport.h; }
 
     /**
@@ -418,6 +449,11 @@ public:
      *  Stop the current music.
      */
     void stopMusic();
+
+    /**
+     *  Set whether or not to draw entity bounding boxes.
+     */
+    void setDrawBoundingBoxes(bool value) { drawBoundingBoxes = value; }
 
     /**
       *  Returns pointer to collision manager.

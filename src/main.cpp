@@ -17,7 +17,7 @@ public:
     Controller()
     {
         f = resources->getFont("elgethy");
-        f->setColor(60, 185, 85);
+        f->setColor(255, 185, 85);
         f2 = resources->getFont("oldpix");
         showInfo = true;
         a = 0;
@@ -50,7 +50,6 @@ public:
         }
 
         f2->setAlpha(a);
-        //engine->renderText(engine->getScreenWidth()/2, engine->getScreenHeight()/2, f2, "Example");
     }
 
 };
@@ -139,10 +138,6 @@ public:
         if (engine->getViewportY() > 1920 - engine->getViewportH()) {
             engine->setViewport(engine->getViewportX(), 1920 - engine->getViewportH(), engine->getViewportW(), engine->getViewportH());
         }
-
-        //std::cout << engine->getViewportX() << " " << engine->getViewportY() << " " << engine->getViewportW() << " " << engine->getViewportH() << std::endl;
-
-        //drawRectangle(getXBBox(), getYBBox(), getWBBox(), getHBBox(), 255, 255, 0, 150);
     }
 
     void collision(Entity *other)
@@ -151,10 +146,13 @@ public:
             if (!dead) {
                 dead = true;
                 setImage(resources->getSprite("explosion"));
+                xOffset = 0;
+                yOffset = 0;
                 engine->playSound(resources->getSound("boom"), 0);
                 hSpeed = 0;
                 vSpeed = 0;
-                timer[0] = 60;
+                timer[0] = (image->getMaxFrames()-1) * image->getDelay();
+                setAlpha(200);
             }
         }
     }
@@ -163,9 +161,11 @@ public:
     {
         if (timerNum == 0) {
             setImage(resources->getSprite("playerdown"));
+            setOriginToImageCenter();
             setX(startx);
             setY(starty);
             dead = false;
+            setAlpha(255);
         }
     }
 };
@@ -183,7 +183,6 @@ public:
 
     void update()
     {
-        //drawRectangle(getXBBox(), getYBBox(), getWBBox(), getHBBox(), 255, 255, 0, 150);
     }
 
     void collision(Entity *other)
@@ -211,7 +210,6 @@ public:
 
     void update()
     {
-        //drawRectangle(getXBBox(), getYBBox(), getWBBox(), getHBBox(), 255, 255, 0, 150);
     }
 
     void collision(Entity *other)
@@ -233,6 +231,16 @@ public:
     Wall()
     {
         setName("wall");
+        setProperties(oConfig, getName());
+    }
+};
+
+class Tree : public Entity {
+private:
+public:
+    Tree()
+    {
+        setName("tree");
         setProperties(oConfig, getName());
     }
 };
@@ -306,6 +314,7 @@ public:
             case 3: entity = new EnemyH; entity->setPosition(xx, yy); break;
             case 4: entity = new EnemyV; entity->setPosition(xx, yy); break;
             case 5: tile = new Dirt; tile->setPosition(xx, yy); break;
+            case 6: entity = new Tree; entity->setPosition(xx, yy); break;
             default: break;
             }
 
@@ -349,6 +358,8 @@ bool initEngine()
     engine->setWindowTitle(config->getString("base", "title", "").c_str());
     engine->setWindowIcon(config->getString("base", "icon", "").c_str());
 
+    engine->setDrawBoundingBoxes(config->getBool("debug", "drawbboxes", false));
+
     //Load resources
     resources->setPath(config->getString("base", "respath"));
     resources->loadConfig(config->getString("base", "resconf"));
@@ -367,12 +378,13 @@ bool initObjects()
     Controller *controller = new Controller;
 
     Level *level = new Level;
-    level->load("../resources/test.map");
+    level->load("../resources/maps/test.map");
 
     return true;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     initEngine();
     initObjects();
 

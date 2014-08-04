@@ -58,7 +58,9 @@ bool Entity::setProperties(ConfigReader *reader, std::string name)
     family = reader->getString(name, "family", "");
 
     resourceName = reader->getString(name, "sprite", "");
-    setImage(ResourceManager::getInstance()->getSprite(resourceName.c_str()));
+    if (resourceName != "") {
+        setImage(ResourceManager::getInstance()->getSprite(resourceName.c_str()));
+    }
 
     depth = reader->getInt(name, "depth", 0);
 

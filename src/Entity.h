@@ -186,6 +186,10 @@ public:
      */
     int getYOffset() { return yOffset; }
 
+    /**
+     *  Set the bounding box using the dimensions of a rect.
+     *  @param bbox A SDL_Rect to use as the new bounding box.
+     */
     void setBBox(SDL_Rect bbox) {
         this->bbox.x = bbox.x;
         this->bbox.y = bbox.y;
@@ -193,18 +197,46 @@ public:
         this->bbox.h = bbox.h;
     }
 
+    /**
+     *  Return the X offset of the bounding box from the entity's top left corner.
+     *  @return The current X offset.
+     */
     int getBBoxXOffset() { return xBBox; }
 
+    /**
+     *  Return the Y offset of the bounding box from the entity's top left corner.
+     *  @return The current Y offset.
+     */
     int getBBoxYOffset() { return yBBox; }
 
+    /**
+     *  Return the in-world X position of the bounding box.
+     *  @return The bounding box's X position.
+     */
     int getXBBox() { return bbox.x; }
 
+    /**
+     *  Return the in-world Y position of the bounding box.
+     *  @return The bounding box's Y position.
+     */
     int getYBBox() { return bbox.y; }
 
+    /**
+     *  Return the width of the bounding box.
+     *  @return The bounding box's width.
+     */
     int getWBBox() { return bbox.w; }
 
+    /**
+     *  Return the height of the bounding box.
+     *  @return The bounding box's height.
+     */
     int getHBBox() { return bbox.h; }
 
+    /**
+     *  Return the bounding box as a whole rect.
+     *  @return The bounding box itself.
+     */
     SDL_Rect getBBox() { return bbox; }
 
     /**
@@ -243,8 +275,16 @@ public:
      */
     void setActive(bool active) { this->active = active; }
 
+    /**
+     *  Return the current drawing depth.
+     *  @return The current drawing depth.
+     */
     int getDepth() { return depth; }
 
+    /**
+     *  Sets the drawing depth. This sets the order in which this object is drawn. Lower numbers are drawn over higher numbers.
+     *  @param depth The drawing depth to set this object to.
+     */
     void setDepth(int depth) { this->depth = depth; }
 
     /**
@@ -306,6 +346,11 @@ public:
      *  Set the object origin to the center of the entity in respect to current width and height.
      */
     void setOriginToCenter() { xOffset = width/2; yOffset = height/2; }
+
+    /**
+     *  Sets the object origin to the center of the entity in respect to the center of the current sprite.
+     */
+    void setOriginToImageCenter() { xOffset = image->getWidth()/2; yOffset = image->getHeight()/2; }
 
     /**
      *  Returns image scale of entity.
@@ -449,8 +494,16 @@ public:
      */
     void setY(double y) { position.setY(y); }
 
+    /**
+     *  Return the current drawing depth.
+     *  @return The current drawing depth.
+     */
     int getDepth() { return depth; }
 
+    /**
+     *  Sets the drawing depth. This sets the order in which this tile is drawn. Lower numbers are drawn over higher numbers.
+     *  @param depth The drawing depth to set this tile to.
+     */
     void setDepth(int depth) { this->depth = depth; }
 
     /**
