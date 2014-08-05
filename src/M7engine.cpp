@@ -42,6 +42,7 @@ Engine::Engine()
     drawBoundingBoxes = false;
 
     configReader = new ConfigReader;
+    console = Console::getInstance();
 }
 
 Engine::~Engine()
@@ -78,6 +79,7 @@ Engine::~Engine()
     delete Logger::getInstance();
     delete configReader;
     delete collisionManager;
+    delete console;
 }
 
 bool Engine::init(int width, int height, int mode)
@@ -173,6 +175,9 @@ bool Engine::update()
     drawEntities();
     updateCollisions();
     updateEntities();
+
+    console->update();
+    console->draw();
 
     SDL_SetRenderDrawColor(renderer, 0x80, 0x80, 0x80, 0xFF);
     SDL_SetRenderTarget(renderer, NULL);

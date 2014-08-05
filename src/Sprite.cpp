@@ -54,8 +54,8 @@ bool Sprite::loadImage(const char *filename)
 
     texture = IMG_LoadTexture(Engine::getInstance()->getRenderer(), filename);
     if (texture == NULL) {
-        Logger::getInstance()->logError(0, "Sprite '%s' failed to optimize bitmap: '%s' SDL error: %s", name.c_str(), filename, SDL_GetError());
-        SDL_DestroyTexture(texture);
+        Logger::getInstance()->logError(0, "Sprite '%s' failed to load bitmap: '%s'", name.c_str(), filename);
+        Logger::getInstance()->logError(0, "SDL error: %s", IMG_GetError());
         return false;
     } else {
         frameList.push_back(texture);
@@ -85,7 +85,8 @@ bool Sprite::loadImage(const char *filename, int width, int height, int columns,
 
     SDL_Surface *loadSurface = IMG_Load(filename);
     if (loadSurface == NULL) {
-        Logger::getInstance()->logError(0, "Sprite '%s' failed to load bitmap: '%s' SDL error: %s", name.c_str(), filename, SDL_GetError());
+        Logger::getInstance()->logError(0, "Sprite '%s' failed to load bitmap: '%s'", name.c_str(), filename);
+        Logger::getInstance()->logError(0, "SDL error: %s", IMG_GetError());
         return false;
     } else {
         this->textureFilename = filename;

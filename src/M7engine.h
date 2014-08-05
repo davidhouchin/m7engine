@@ -66,6 +66,7 @@
 #include "Sound.h"
 #include "ResourceManager.h"
 #include "Primitives.h"
+#include "Console.h"
 
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 1 //No definite versions at the alpha build point.
@@ -73,57 +74,6 @@
 namespace M7engine {
 
 class Engine {
-private:
-    Engine();
-    static Engine* engineInstance;
-
-    bool redraw, drawBoundingBoxes;
-    int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext, frameDelay, currentFrameDelta, oldTime;
-    int fps;
-
-    const char* windowTitle;
-    SDL_Surface* windowIcon;
-
-    std::vector<Entity*> entities;
-    std::vector<Tile*> tiles;
-
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    SDL_Texture* winTexture;
-
-    struct Viewport {
-        int x;
-        int y;
-        int h;
-        int w;
-    } viewport;
-
-    SDL_Surface* textSurface;
-    SDL_Texture* textTexture;
-
-    Timer timer;
-
-    CollisionManager *collisionManager;
-    ConfigReader *configReader;
-
-    //This struct is used for comparing entity depth values when sorting.
-    struct entityDepthCompare
-    {
-        inline bool operator() (Entity *a, Entity *b)
-        {
-            return (a->getDepth() > b->getDepth());
-        }
-    };
-
-    //This struct is used for comparing tile depth values when sorting.
-    struct tileDepthCompare
-    {
-        inline bool operator() (Tile *a, Tile *b)
-        {
-            return (a->getDepth() > b->getDepth());
-        }
-    };
-
 public:
     /**
      * Returns the static instance of the engine.
@@ -466,6 +416,60 @@ public:
       *  @return Pointer to configuration reader.
       */
     ConfigReader* getConfigReader() { return configReader; }
+
+    Console* getConsole() { return console; }
+
+private:
+    Engine();
+    static Engine* engineInstance;
+
+    bool redraw, drawBoundingBoxes;
+    int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext, frameDelay, currentFrameDelta, oldTime;
+    int fps;
+
+    const char* windowTitle;
+    SDL_Surface* windowIcon;
+
+    std::vector<Entity*> entities;
+    std::vector<Tile*> tiles;
+
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+    SDL_Texture* winTexture;
+
+    struct Viewport {
+        int x;
+        int y;
+        int h;
+        int w;
+    } viewport;
+
+    SDL_Surface* textSurface;
+    SDL_Texture* textTexture;
+
+    Timer timer;
+
+    CollisionManager *collisionManager;
+    ConfigReader *configReader;
+    Console *console;
+
+    //This struct is used for comparing entity depth values when sorting.
+    struct entityDepthCompare
+    {
+        inline bool operator() (Entity *a, Entity *b)
+        {
+            return (a->getDepth() > b->getDepth());
+        }
+    };
+
+    //This struct is used for comparing tile depth values when sorting.
+    struct tileDepthCompare
+    {
+        inline bool operator() (Tile *a, Tile *b)
+        {
+            return (a->getDepth() > b->getDepth());
+        }
+    };
 };
 };
 

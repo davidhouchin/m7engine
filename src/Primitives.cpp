@@ -19,6 +19,7 @@
 void M7engine::drawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
     SDL_SetRenderDrawColor(Engine::getInstance()->getRenderer(), r, g, b, a);
+    SDL_SetRenderDrawBlendMode(Engine::getInstance()->getRenderer(), SDL_BLENDMODE_BLEND);
     SDL_RenderDrawLine(Engine::getInstance()->getRenderer(), x1- Engine::getInstance()->getViewportX(), y1 - Engine::getInstance()->getViewportY(),
                        x2 - Engine::getInstance()->getViewportX(), y2 - Engine::getInstance()->getViewportY());
 }
@@ -27,6 +28,7 @@ void M7engine::drawRectangle(int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8
 {
     SDL_Rect drawRect = { x- Engine::getInstance()->getViewportX(), y - Engine::getInstance()->getViewportY(), w, h };
     SDL_SetRenderDrawColor(Engine::getInstance()->getRenderer(), r, g, b, a);
+    SDL_SetRenderDrawBlendMode(Engine::getInstance()->getRenderer(), SDL_BLENDMODE_BLEND);
     SDL_RenderDrawRect(Engine::getInstance()->getRenderer(), &drawRect);
 }
 
@@ -34,5 +36,6 @@ void M7engine::drawFilledRectangle(int x, int y, int w, int h, Uint8 r, Uint8 g,
 {
     SDL_Rect drawRect = { x - Engine::getInstance()->getViewportX(), y - Engine::getInstance()->getViewportY(), w, h };
     SDL_SetRenderDrawColor(Engine::getInstance()->getRenderer(), r, g, b, a);
+    SDL_SetRenderDrawBlendMode(Engine::getInstance()->getRenderer(), SDL_BLENDMODE_BLEND);
     SDL_RenderFillRect(Engine::getInstance()->getRenderer(), &drawRect);
 }

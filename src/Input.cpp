@@ -52,6 +52,9 @@ bool InputManager::init()
         oldMouseKeys[i] = false;
     }
 
+    isWatchingText = false;
+    textInput = "";
+
     return true;
 }
 
@@ -73,6 +76,18 @@ void InputManager::update()
             keys[ev.key.keysym.scancode] = true;
             keyLast = ev.key.keysym.scancode;
             Logger::getInstance()->logMessage(98, "Key %i Pressed", ev.key.keysym.scancode);
+            //Handle backspace and copy/paste for text input
+            if (isWatchingText) {
+                if (ev.key.keysym.sym == SDLK_BACKSPACE && textInput.length() > 0) {
+                    textInput.pop_back();
+                }
+                else if (ev.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL) {
+                    textInput = SDL_SetClipboardText(textInput.c_str());
+                }
+                else if (ev.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL) {
+                    textInput = SDL_GetClipboardText();
+                }
+            }
             break;
         case SDL_KEYUP:
             keyboardState = SDL_GetKeyboardState(NULL);
@@ -102,6 +117,15 @@ void InputManager::update()
             break;
         case SDL_MOUSEWHEEL: break;
         case SDL_QUIT: quit = true; break;
+        case SDL_TEXTINPUT:
+            if (isWatchingText) {
+                //Make sure copy and pasting is not happening..
+                if (!((ev.text.text[0] == 'c' || ev.text.text[0] == 'C') &&
+                      (ev.text.text[0] == 'v' || ev.text.text[0] == 'V') &&
+                      SDL_GetModState() & KMOD_CTRL)) {
+                    textInput += ev.text.text;
+                }
+            }
         default: break;
         }
     }

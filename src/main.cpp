@@ -8,52 +8,6 @@ ResourceManager *resources = ResourceManager::getInstance();
 CollisionManager *cManager = engine->getCollisionManager();
 ConfigReader *oConfig = new ConfigReader;
 
-class Controller : public Entity {
-private:
-    Font *f, *f2;
-    bool showInfo, aDir;
-    int a;
-public:
-    Controller()
-    {
-        f = resources->getFont("elgethy");
-        f->setColor(255, 185, 85);
-        f2 = resources->getFont("oldpix");
-        showInfo = true;
-        a = 0;
-        aDir = true;
-    }
-
-    void update()
-    {
-        if (input->getKeyReleased(KEY_TAB)) {
-            showInfo = !showInfo;
-        }
-
-        //Performance Text
-        if (showInfo) {
-            //drawFilledRectangle(engine->getViewportX(), engine->getViewportY(), engine->getViewportW(), 32, 200, 200, 200, 95);
-            engine->renderTextF(engine->getViewportX() + 20, engine->getViewportY() + 10, f, "FPS: %i", engine->getFPS());
-            engine->renderTextF(engine->getViewportX() + 96, engine->getViewportY() + 10, f, "MOUSE XY: %i %i", input->getMouseX(), input->getMouseY());
-        }
-
-        if (aDir) {
-            a++;
-        } else {
-            a--;
-        }
-
-        if (a >= 255) {
-            aDir = false;
-        } else if (a <= 0) {
-            aDir = true;
-        }
-
-        f2->setAlpha(a);
-    }
-
-};
-
 class Player : public Entity {
 private:
     int speed;
@@ -121,8 +75,8 @@ public:
             image->setDelay(-1);
         }}
 
-        engine->setViewport((getX()) - (engine->getScreenWidth()/2),
-                            (getY()) - (engine->getScreenHeight()/2),
+        engine->setViewport((getX() + getXOffset()) - (engine->getScreenWidth()/2),
+                            (getY() + getYOffset()) - (engine->getScreenHeight()/2),
                             engine->getScreenWidth(),
                             engine->getScreenHeight());
 
@@ -367,6 +321,9 @@ bool initEngine()
     //Start monitoring input
     input->init();
 
+    //Give the console it's font
+    engine->getConsole()->setFont(resources->getFont("veramono"));
+
     return true;
 }
 
@@ -375,8 +332,6 @@ bool initObjects()
     oConfig->loadConfig("../resources/objects.ini");
 
     //Game objects
-    Controller *controller = new Controller;
-
     Level *level = new Level;
     level->load("../resources/maps/test.map");
 
@@ -401,11 +356,11 @@ int main(int argc, char **argv)
         }
 
         if (input->getKeyReleased(KEY_SPACE)) {
-            switch (engine->getWindowMode()) {
+            /*switch (engine->getWindowMode()) {
             case 0: engine->setWindowMode(1); break;
             case 1: engine->setWindowMode(2); break;
             case 2: engine->setWindowMode(0); break;
-            }
+            }*/
         }
     }
 

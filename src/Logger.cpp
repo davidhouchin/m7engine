@@ -14,6 +14,7 @@
  */
 
 #include "Logger.h"
+#include "Console.h"
 
 namespace M7engine {
 Logger* Logger::loggerInstance = NULL;
@@ -52,13 +53,15 @@ bool Logger::setLogFile(const char* file)
 void Logger::logMessage(int level, std::string message, ...)
 {
     if ((level <= logLevel) && (filename != NULL)) {
-        char buffer[99];
+        char buffer[999];
         va_list args;
         va_start(args, message);
         vsprintf(buffer, message.c_str(), args);
         va_end(args);
 
         fprintf(stdout, "[%i] %s\n", SDL_GetTicks(), buffer);
+        SDL_Color color = { 50, 255, 50, 255};
+        Console::getInstance()->addLine(std::string(buffer), color);
 
         logFile.open(filename, std::ios::app);
         logFile << "[" << SDL_GetTicks() << "]" << " " << buffer << "\n";
@@ -70,13 +73,15 @@ void Logger::logMessage(int level, std::string message, ...)
 void Logger::logError(int level, std::string message, ...)
 {
     if ((level <= logLevel) && (filename != NULL)) {
-        char buffer[99];
+        char buffer[999];
         va_list args;
         va_start(args, message);
         vsprintf(buffer, message.c_str(), args);
         va_end(args);
 
         fprintf(stderr, "[%i] %s\n", SDL_GetTicks(), buffer);
+        SDL_Color color = { 255, 50, 50, 255};
+        Console::getInstance()->addLine(std::string(buffer), color);
 
         logFile.open(filename, std::ios::app);
         logFile << "[" << SDL_GetTicks() << "]" <<" " << buffer << "\n";

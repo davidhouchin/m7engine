@@ -17,6 +17,8 @@
 #define	INPUTMANAGER_H
 
 #include <stdio.h>
+#include <string>
+#include <sstream>
 #include <SDL2/SDL.h>
 
 #include "Logger.h"
@@ -117,6 +119,11 @@ public:
      */
     int getKeyLast() { return keyLast; }
 
+    void startTextInput() { isWatchingText = true; }
+    void stopTextInput() { isWatchingText = false; }
+    std::string getTextString() { return textInput; }
+    void eraseTextInput() { textInput = ""; }
+
     /**
      *  Returns if the user has initiated an SDL_QUIT event.
      *  @return Whether an SDL_QUIT event has occurred.
@@ -126,7 +133,9 @@ public:
 private:
     InputManager();
     static InputManager* managerInstance;
-    bool quit;
+    bool quit, isWatchingText;
+
+    std::string textInput;
 
     int mouseX, mouseY, mouseZ;
     const uint8_t* keyboardState;
