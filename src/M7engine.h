@@ -46,6 +46,8 @@
 #include <vector>
 #include <math.h>
 #include <algorithm>
+#include <string>
+#include <sstream>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -67,9 +69,11 @@
 #include "ResourceManager.h"
 #include "Primitives.h"
 #include "Console.h"
+#include "Widget.h"
+#include "Window.h"
 
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 1 //No definite versions at the alpha build point.
+#define VERSION_MINOR 3
 
 namespace M7engine {
 
@@ -403,7 +407,7 @@ public:
     /**
      *  Set whether or not to draw entity bounding boxes.
      */
-    void setDrawBoundingBoxes(bool value) { drawBoundingBoxes = value; }
+    void toggleDrawBoundingBoxes() { drawBoundingBoxes = !drawBoundingBoxes; }
 
     /**
       *  Returns pointer to collision manager.
@@ -418,6 +422,8 @@ public:
     ConfigReader* getConfigReader() { return configReader; }
 
     Console* getConsole() { return console; }
+
+    std::string getVersion();
 
 private:
     Engine();
@@ -449,14 +455,14 @@ private:
 
     Timer timer;
 
-    CollisionManager *collisionManager;
-    ConfigReader *configReader;
-    Console *console;
+    CollisionManager* collisionManager;
+    ConfigReader* configReader;
+    Console* console;
 
     //This struct is used for comparing entity depth values when sorting.
     struct entityDepthCompare
     {
-        inline bool operator() (Entity *a, Entity *b)
+        inline bool operator() (Entity* a, Entity* b)
         {
             return (a->getDepth() > b->getDepth());
         }
@@ -465,7 +471,7 @@ private:
     //This struct is used for comparing tile depth values when sorting.
     struct tileDepthCompare
     {
-        inline bool operator() (Tile *a, Tile *b)
+        inline bool operator() (Tile* a, Tile* b)
         {
             return (a->getDepth() > b->getDepth());
         }

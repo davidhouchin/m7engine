@@ -76,7 +76,7 @@ public:
      *  Function called upon collision. Must be implemented by child.
      *  @param *other Pointer to entity that was collided with.
      */
-    virtual void collision(Entity *other) {}
+    virtual void collision(Entity*) {}
 
     /**
      *  Main movement function called per frame. Adjusts position based on
@@ -93,7 +93,7 @@ public:
      *  Function called in event of timer going off. Called automatically by alarm.
      *  @param timerNum The number of the timer that went off.
      */
-    virtual void alarm(int timerNum) {}
+    virtual void alarm(int) {}
 
     /**
      *  Returns the name of the object.

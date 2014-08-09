@@ -117,39 +117,39 @@ bool ResourceManager::parseConfig() {
                 }
             }
 
-        sectIter = resourceReader->getNextSection(sectIter);
+        sectIter = resourceReader->getNextSection();
     }
 
     Logger::getInstance()->logMessage(0, "ResourceManager done parsing config file");
     return true;
 }
 
-Sprite* ResourceManager::getSprite(const char *name) {
+Sprite* ResourceManager::getSprite(std::string name) {
     Sprite *reqSprite = spriteList[name];
     if (reqSprite != NULL) {
         return reqSprite;
     } else {
-        Logger::getInstance()->logError(0, "Requested resource not found: '%s'", name);
+        Logger::getInstance()->logError(0, "Requested resource not found: '%s'", name.c_str());
         return NULL;
     }
 }
 
-Sound* ResourceManager::getSound(const char *name) {
+Sound* ResourceManager::getSound(std::string name) {
     Sound *reqSample = soundList[name];
     if (reqSample != NULL) {
         return reqSample;
     } else {
-        Logger::getInstance()->logError(0, "Requested resource not found: '%s'", name);
+        Logger::getInstance()->logError(0, "Requested resource not found: '%s'", name.c_str());
         return NULL;
     }
 }
 
-Font* ResourceManager::getFont(const char *name) {
+Font* ResourceManager::getFont(std::string name) {
     Font *reqFont = fontList[name];
     if (reqFont != NULL) {
         return reqFont;
     } else {
-        Logger::getInstance()->logError(0, "Requested resource not found: '%s'", name);
+        Logger::getInstance()->logError(0, "Requested resource not found: '%s'", name.c_str());
         return NULL;
     }
 }

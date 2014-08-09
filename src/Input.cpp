@@ -76,6 +76,7 @@ void InputManager::update()
             keys[ev.key.keysym.scancode] = true;
             keyLast = ev.key.keysym.scancode;
             Logger::getInstance()->logMessage(98, "Key %i Pressed", ev.key.keysym.scancode);
+
             //Handle backspace and copy/paste for text input
             if (isWatchingText) {
                 if (ev.key.keysym.sym == SDLK_BACKSPACE && textInput.length() > 0) {
@@ -89,40 +90,46 @@ void InputManager::update()
                 }
             }
             break;
+
         case SDL_KEYUP:
             keyboardState = SDL_GetKeyboardState(NULL);
             keys[ev.key.keysym.scancode] = false;
             keyLast = ev.key.keysym.scancode;
             Logger::getInstance()->logMessage(98, "Key %i Released", ev.key.keysym.scancode);
             break;
+
         case SDL_MOUSEMOTION:
             mouseX = ev.motion.x;
             mouseY = ev.motion.y;
             break;
+
         case SDL_MOUSEBUTTONDOWN:
-            mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+            //mouseState = SDL_GetMouseState(&mouseX, &mouseY);
             switch (ev.button.button) {
             case SDL_BUTTON_LEFT: mouseKeys[MOUSE_LEFT] = true; break;
             case SDL_BUTTON_RIGHT: mouseKeys[MOUSE_RIGHT] = true; break;
             default: break;
             }
             break;
+
         case SDL_MOUSEBUTTONUP:
-            mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+            //mouseState = SDL_GetMouseState(&mouseX, &mouseY);
             switch (ev.button.button) {
             case SDL_BUTTON_LEFT: mouseKeys[MOUSE_LEFT] = false; break;
             case SDL_BUTTON_RIGHT: mouseKeys[MOUSE_RIGHT] = false; break;
             default: break;
             }
             break;
-        case SDL_MOUSEWHEEL: break;
+
         case SDL_QUIT: quit = true; break;
+
         case SDL_TEXTINPUT:
             if (isWatchingText) {
-                //Make sure copy and pasting is not happening..
+                //Make sure copy and pasting is not happening, and the console is not being invoked..
                 if (!((ev.text.text[0] == 'c' || ev.text.text[0] == 'C') &&
                       (ev.text.text[0] == 'v' || ev.text.text[0] == 'V') &&
-                      SDL_GetModState() & KMOD_CTRL)) {
+                      SDL_GetModState() & KMOD_CTRL) &&
+                      !(ev.text.text[0] == '`')) {
                     textInput += ev.text.text;
                 }
             }

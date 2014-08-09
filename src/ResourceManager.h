@@ -65,19 +65,19 @@ public:
      *  Returns a pointer to the requested sprite. Returns NULL if not found.
      *  @return Pointer to requested sprite.
      */
-    Sprite* getSprite(const char *name);
+    Sprite* getSprite(std::string name);
 
     /**
      *  Returns a pointer to the requested sound. Returns NULL if not found.
      *  @return Pointer to requested sound.
      */
-    Sound* getSound(const char *name);
+    Sound* getSound(std::string name);
 
     /**
      *  Returns a pointer to the requested font. Returns NULL if not found.
      *  @return Pointer to requested font.
      */
-    Font* getFont(const char *name);
+    Font* getFont(std::string name);
 
 private:
     ResourceManager();

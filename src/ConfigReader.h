@@ -50,6 +50,8 @@ public:
      */
     bool reloadConfig();
 
+    void clearConfig() { config.clear(); }
+
     /**
      *  Check if a specific key exists.
      *  @param section The section to check for key.
@@ -76,7 +78,7 @@ public:
      *  @param section The section to check after.
      *  @return A string containing the name of the next section.
      */
-    std::string getNextSection(std::string section);
+    std::string getNextSection();
 
     /**
      *  Retrieve an int value from a loaded configuration file.
@@ -125,7 +127,7 @@ public:
      *  @param section The section to retrieve value from.
      *  @param key The specific key to retrieve value from.
      *  @param def The default value to return if the key is not found.
-     *  @return A stringcontaining the value of the key.
+     *  @return A string containing the value of the key.
      */
     std::string getString(std::string section, std::string key, std::string def);
 
@@ -136,6 +138,9 @@ private:
     //Stored in format section->key->value.
     typedef std::map<std::string, std::string> innerMap;
     std::map<std::string, innerMap> config;
+
+    //Iterator for cycling through sections.
+    std::map<std::string, innerMap>::iterator mapIter;
 };
 };
 

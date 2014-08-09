@@ -49,4 +49,18 @@ void Font::setFont(TTF_Font *font)
     }
 }
 
+int Font::getTextWidth(const char* text)
+{
+    int width;
+    TTF_SizeText(font, text, &width, NULL);
+    return width;
+}
+
+int Font::getTextHeight(const char* text)
+{
+    int height;
+    TTF_SizeText(font, text, NULL, &height);
+    return height;
+}
+
 }

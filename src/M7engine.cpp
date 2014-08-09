@@ -151,6 +151,9 @@ bool Engine::init(int width, int height, int mode)
 
 bool Engine::update()
 {
+    if (frameCount < 1) {
+    }
+
     Logger::getInstance()->logMessage(99, "Engine update cycle: %i", frameCount);
 
     //int deltaMS = this->getDelta();
@@ -175,6 +178,8 @@ bool Engine::update()
     drawEntities();
     updateCollisions();
     updateEntities();
+
+    WindowManager::getInstance()->update();
 
     console->update();
     console->draw();
@@ -214,7 +219,7 @@ void Engine::setViewport(int x, int y, int w, int h)
     viewport.h = h;
 }
 
-void Engine::renderTexture(SDL_Texture *texture, int x, int y)
+void Engine::renderTexture(SDL_Texture* texture, int x, int y)
 {
     if (texture == NULL) {
         Logger::getInstance()->logError(0, "renderTexture failed: Texture doesn't exist");
@@ -225,7 +230,7 @@ void Engine::renderTexture(SDL_Texture *texture, int x, int y)
     }
 }
 
-void Engine::renderTexture(SDL_Texture *texture, int x, int y, int w, int h)
+void Engine::renderTexture(SDL_Texture* texture, int x, int y, int w, int h)
 {
     if (texture == NULL) {
         Logger::getInstance()->logError(0, "renderTexture failed: Texture doesn't exist");
@@ -240,7 +245,7 @@ void Engine::renderTexture(SDL_Texture *texture, int x, int y, int w, int h)
     }
 }
 
-void Engine::renderText(float x, float y, Font *font, const char *text)
+void Engine::renderText(float x, float y, Font* font, const char* text)
 {
     if (font == NULL) {
         Logger::getInstance()->logError(0, "drawText failed: Font doesn't exist");
@@ -255,7 +260,7 @@ void Engine::renderText(float x, float y, Font *font, const char *text)
     }
 }
 
-void Engine::renderTextF(float x, float y, Font *font, const char *text, ...)
+void Engine::renderTextF(float x, float y, Font* font, const char* text, ...)
 {
     if (font == NULL) {
         Logger::getInstance()->logError(0, "drawTextF failed: Font doesn't exist");
@@ -481,6 +486,24 @@ void Engine::pauseMusic()
 void Engine::stopMusic()
 {
     Mix_HaltMusic();
+}
+
+std::string Engine::getVersion()
+{
+    std::stringstream version;
+
+    SDL_version compiled;
+    SDL_version linked;
+
+    SDL_VERSION(&compiled);
+    SDL_GetVersion(&linked);
+
+    version << "Engine: " << VERSION_MAJOR << "." << VERSION_MINOR <<
+               " " << __DATE__ << " " << __TIME__ << "  " <<
+               "SDL-Compiled: " << std::to_string(compiled.major) << "." << std::to_string(compiled.minor) << "." << std::to_string(compiled.patch) <<
+               " SDL-Linked: " << std::to_string(linked.major) << "." << std::to_string(linked.minor) << "." << std::to_string(linked.patch);
+
+    return version.str();
 }
 
 };

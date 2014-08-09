@@ -6,6 +6,7 @@ Logger *logger = Logger::getInstance();
 InputManager *input = InputManager::getInstance();
 ResourceManager *resources = ResourceManager::getInstance();
 CollisionManager *cManager = engine->getCollisionManager();
+WindowManager *wm = WindowManager::getInstance();
 ConfigReader *oConfig = new ConfigReader;
 
 class Player : public Entity {
@@ -312,7 +313,9 @@ bool initEngine()
     engine->setWindowTitle(config->getString("base", "title", "").c_str());
     engine->setWindowIcon(config->getString("base", "icon", "").c_str());
 
-    engine->setDrawBoundingBoxes(config->getBool("debug", "drawbboxes", false));
+    if (config->getBool("debug", "drawbboxes", false) == true) {
+        engine->toggleDrawBoundingBoxes();
+    }
 
     //Load resources
     resources->setPath(config->getString("base", "respath"));
@@ -320,6 +323,9 @@ bool initEngine()
 
     //Start monitoring input
     input->init();
+
+    //Load widget config
+    wm->loadConfig("../resources/widget.ini");
 
     //Give the console it's font
     engine->getConsole()->setFont(resources->getFont("veramono"));
@@ -335,10 +341,167 @@ bool initObjects()
     Level *level = new Level;
     level->load("../resources/maps/test.map");
 
+    //Test Window/Widgets
+    {
+    Window *win = new Window;
+    win->setX(100);
+    win->setY(100);
+    win->setWidth(240);
+    win->setHeight(155);
+    win->setTitle("Calculator");
+    wm->addWindow(win);
+
+    Label *resultLabel = new Label;
+    resultLabel->setX(win->getX()+2);
+    resultLabel->setY(win->getY()+18);
+    resultLabel->setWidth(236);
+    resultLabel->setHeight(32);
+    resultLabel->setBorder(true);
+    resultLabel->setText("0");
+
+    Button *oneBtn = new Button;
+    oneBtn->setX(win->getX()+2);
+    oneBtn->setY(win->getY()+52);
+    oneBtn->setWidth(32);
+    oneBtn->setHeight(32);
+    oneBtn->setText("1");
+
+    Button *twoBtn = new Button;
+    twoBtn->setX(win->getX()+2);
+    twoBtn->setY(win->getY()+86);
+    twoBtn->setWidth(32);
+    twoBtn->setHeight(32);
+    twoBtn->setText("2");
+
+    Button *threeBtn = new Button;
+    threeBtn->setX(win->getX()+2);
+    threeBtn->setY(win->getY()+120);
+    threeBtn->setWidth(32);
+    threeBtn->setHeight(32);
+    threeBtn->setText("3");
+
+    Button *fourBtn = new Button;
+    fourBtn->setX(win->getX()+36);
+    fourBtn->setY(win->getY()+52);
+    fourBtn->setWidth(32);
+    fourBtn->setHeight(32);
+    fourBtn->setText("4");
+
+    Button *fiveBtn = new Button;
+    fiveBtn->setX(win->getX()+36);
+    fiveBtn->setY(win->getY()+86);
+    fiveBtn->setWidth(32);
+    fiveBtn->setHeight(32);
+    fiveBtn->setText("5");
+
+    Button *sixBtn = new Button;
+    sixBtn->setX(win->getX()+36);
+    sixBtn->setY(win->getY()+120);
+    sixBtn->setWidth(32);
+    sixBtn->setHeight(32);
+    sixBtn->setText("6");
+
+    Button *sevenBtn = new Button;
+    sevenBtn->setX(win->getX()+70);
+    sevenBtn->setY(win->getY()+52);
+    sevenBtn->setWidth(32);
+    sevenBtn->setHeight(32);
+    sevenBtn->setText("7");
+
+    Button *eightBtn = new Button;
+    eightBtn->setX(win->getX()+70);
+    eightBtn->setY(win->getY()+86);
+    eightBtn->setWidth(32);
+    eightBtn->setHeight(32);
+    eightBtn->setText("8");
+
+    Button *nineBtn = new Button;
+    nineBtn->setX(win->getX()+70);
+    nineBtn->setY(win->getY()+120);
+    nineBtn->setWidth(32);
+    nineBtn->setHeight(32);
+    nineBtn->setText("9");
+
+    Button *zeroBtn = new Button;
+    zeroBtn->setX(win->getX()+104);
+    zeroBtn->setY(win->getY()+86);
+    zeroBtn->setWidth(32);
+    zeroBtn->setHeight(32);
+    zeroBtn->setText("0");
+
+    Button *decimalBtn = new Button;
+    decimalBtn->setX(win->getX()+104);
+    decimalBtn->setY(win->getY()+120);
+    decimalBtn->setWidth(32);
+    decimalBtn->setHeight(32);
+    decimalBtn->setText(".");
+
+    Button *clearBtn = new Button;
+    clearBtn->setX(win->getX()+104);
+    clearBtn->setY(win->getY()+52);
+    clearBtn->setWidth(32);
+    clearBtn->setHeight(32);
+    clearBtn->setText("C");
+
+    Button *plusBtn = new Button;
+    plusBtn->setX(win->getX()+172);
+    plusBtn->setY(win->getY()+52);
+    plusBtn->setWidth(32);
+    plusBtn->setHeight(32);
+    plusBtn->setText("+");
+
+    Button *minusBtn = new Button;
+    minusBtn->setX(win->getX()+172);
+    minusBtn->setY(win->getY()+86);
+    minusBtn->setWidth(32);
+    minusBtn->setHeight(32);
+    minusBtn->setText("-");
+
+    Button *multiplyBtn = new Button;
+    multiplyBtn->setX(win->getX()+206);
+    multiplyBtn->setY(win->getY()+52);
+    multiplyBtn->setWidth(32);
+    multiplyBtn->setHeight(32);
+    multiplyBtn->setText("*");
+
+    Button *divideBtn = new Button;
+    divideBtn->setX(win->getX()+206);
+    divideBtn->setY(win->getY()+86);
+    divideBtn->setWidth(32);
+    divideBtn->setHeight(32);
+    divideBtn->setText("/");
+
+    Button *equalsBtn = new Button;
+    equalsBtn->setX(win->getX()+172);
+    equalsBtn->setY(win->getY()+120);
+    equalsBtn->setWidth(66);
+    equalsBtn->setHeight(32);
+    equalsBtn->setText("=");
+
+    win->addWidget(resultLabel);
+    win->addWidget(oneBtn);
+    win->addWidget(twoBtn);
+    win->addWidget(threeBtn);
+    win->addWidget(fourBtn);
+    win->addWidget(fiveBtn);
+    win->addWidget(sixBtn);
+    win->addWidget(sevenBtn);
+    win->addWidget(eightBtn);
+    win->addWidget(nineBtn);
+    win->addWidget(zeroBtn);
+    win->addWidget(decimalBtn);
+    win->addWidget(clearBtn);
+    win->addWidget(plusBtn);
+    win->addWidget(minusBtn);
+    win->addWidget(multiplyBtn);
+    win->addWidget(divideBtn);
+    win->addWidget(equalsBtn);
+    }
+
     return true;
 }
 
-int main(int argc, char **argv)
+int main()
 {
     initEngine();
     initObjects();
@@ -355,12 +518,12 @@ int main(int argc, char **argv)
             running = false;
         }
 
-        if (input->getKeyReleased(KEY_SPACE)) {
-            /*switch (engine->getWindowMode()) {
+        if (input->getKeyReleased(KEY_F4)) {
+            switch (engine->getWindowMode()) {
             case 0: engine->setWindowMode(1); break;
             case 1: engine->setWindowMode(2); break;
             case 2: engine->setWindowMode(0); break;
-            }*/
+            }
         }
     }
 

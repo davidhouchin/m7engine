@@ -37,11 +37,15 @@ public:
 
     virtual ~Console();
 
-    bool init();
-
     void update();
 
     void draw();
+
+    void openConsole() { isOpen = true; }
+
+    void closeConsole() { isOpen = false; }
+
+    void toggleDebug() { showDebug = !showDebug; }
 
     void addLine(std::string text, SDL_Color color);
 
@@ -53,16 +57,26 @@ private:
     Console();
     static Console* consoleInstance;
 
-    bool isOpen;
+    bool isOpen, showDebug;
 
     std::string text, prompt;
 
     std::string lines[LINE_NUM];
     SDL_Color lineColors[LINE_NUM];
 
-    SDL_Color defaultColor;
+    SDL_Color defaultColor, inputColor, systemColor, errorColor;
 
     Font* font;
+
+    enum command {
+        eVersion,
+        eHelp,
+        eDrawBBox,
+        eDebug,
+        eNone
+    };
+
+    Console::command translateString(std::string const& str);
 };
 }
 

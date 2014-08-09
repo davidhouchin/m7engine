@@ -85,6 +85,10 @@ public:
      */
     int getSize(){ return size; }
 
+    int getTextWidth(const char* text);
+
+    int getTextHeight(const char* text);
+
     /**
      *  Returns the resource name of the font.
      *  @return Char array containing name.

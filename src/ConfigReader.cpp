@@ -22,6 +22,7 @@ ConfigReader::ConfigReader()
 
 ConfigReader::~ConfigReader()
 {
+    config.clear();
 }
 
 bool ConfigReader::loadConfig(std::string filename)
@@ -130,26 +131,19 @@ std::string ConfigReader::getFirstSection()
         return "";
     }
 
-    std::map<std::string, innerMap>::iterator sectIter = config.begin();
+    mapIter = config.begin();
 
-    return (*sectIter).first;
+    return (*mapIter).first;
 }
 
-std::string ConfigReader::getNextSection(std::string section)
+std::string ConfigReader::getNextSection()
 {
-    std::map<std::string, innerMap>::iterator sectIter = config.find(section);
+    ++mapIter;
 
-    if (sectIter == config.end()) {
-        Logger::getInstance()->logError(0, "ConfigReader tried to find nonexistent section '%s'", section.c_str());
-        return "";
-    }
-
-    ++sectIter;
-
-    if (sectIter == config.end()) {
+    if (mapIter == config.end()) {
         return "";
     } else {
-        return (*sectIter).first;
+        return (*mapIter).first;
     }
 }
 
