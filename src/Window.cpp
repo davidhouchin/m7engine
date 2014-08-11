@@ -70,17 +70,19 @@ void WindowManager::addWindow(Window *window)
     id++;
 }
 
-Window::Window()
+Window::Window(int x, int y, int width, int height)
 {
     active             = true;
     isMoving           = false;
     id                 = -1;
-    x                  = 0;
-    y                  = 0;
+    this->x            = x;
+    this->y            = y;
     xOffset            = 0;
     yOffset            = 0;
-    width              = 100;
-    height             = 100;
+    xStartOffset       = x - Engine::getInstance()->getViewportX();
+    yStartOffset       = y - Engine::getInstance()->getViewportY();
+    this->width        = width;
+    this->height       = height;
     depth              = 0;
     title              = "";
 
@@ -144,22 +146,10 @@ void Window::update()
     ty = y - vy;
 
     //If user clicked inside title:
-    if ((mx > tx) && (mx < (tx+width)) && (my > ty) && (my < (ty+titleHeight+2)) && InputManager::getInstance()->getMousePressed(MOUSE_LEFT)) {
+    if ((!sticky) && (mx > tx) && (mx < (tx+width)) && (my > ty) && (my < (ty+titleHeight+2)) && InputManager::getInstance()->getMousePressed(MOUSE_LEFT)) {
         isMoving = true;
         xOffset = mx - tx;
         yOffset = my - ty;
-
-        std::vector<Widget*>::iterator iter;
-        Widget *widget;
-        iter = children.begin();
-        while (iter != children.end()) {
-            widget = *iter;
-
-            widget->setXOffset(widget->getX() - mx);
-            widget->setYOffset(widget->getY() - my);
-
-            iter++;
-        }
     }
     else if (InputManager::getInstance()->getMouseReleased(MOUSE_LEFT)) {
         isMoving = false;
@@ -170,16 +160,19 @@ void Window::update()
         y = my - yOffset + vy;
     }
 
+    if (sticky) {
+        setX(vx + xStartOffset);
+        setY(vy + yStartOffset);
+    }
+
     std::vector<Widget*>::iterator iter;
-    Widget *widget;
+    Widget* widget;
     iter = children.begin();
     while (iter != children.end()) {
         widget = *iter;
 
-        if (isMoving) {
-            widget->setX(mx + widget->getXOffset());
-            widget->setY(my + widget->getYOffset());
-        }
+        widget->setX(this->x + widget->getXOffset());
+        widget->setY(this->y + widget->getYOffset());
 
         widget->update();
         iter++;
@@ -214,7 +207,7 @@ void Window::draw()
     }
 
     //Draw title text.
-    if (title != "") {
+    if ((title != "") && (titleHeight != 0)) {
         font->setSDLColor(textColor);
 
         Engine::getInstance()->renderText(x + (width/2) - font->getTextWidth(title.c_str())/2,
@@ -224,7 +217,7 @@ void Window::draw()
 
     //Draw child widgets
     std::vector<Widget*>::iterator iter;
-    Widget *widget;
+    Widget* widget;
     iter = children.begin();
     while (iter != children.end()) {
         widget = *iter;
@@ -233,13 +226,68 @@ void Window::draw()
     }
 }
 
-void Window::addWidget(Widget *widget)
+int Window::addWidget(Widget *widget)
 {
     int newId = idCount;
     widget->setID(newId);
+    widget->setParent(this);
+    widget->setXOffset(widget->getX() - this->x);
+    widget->setYOffset(widget->getY() - this->y);
     children.push_back(widget);
     Logger::getInstance()->logMessage(1, "Window %i added widget id: %i", id, idCount);
     idCount++;
+    return idCount-1;
 }
 
+bool Window::removeWidget(int id)
+{
+    std::vector<Widget*>::iterator iter;
+    Widget* widget;
+    iter = children.begin();
+    while (iter != children.end()) {
+        widget = *iter;
+        if (widget->getID() == id) {
+            children.erase(iter);
+            return true;
+        } else {
+            iter++;
+        }
+    }
+
+    return false;
+}
+
+Widget* Window::findWidget(std::string name)
+{
+    std::vector<Widget*>::iterator iter;
+    Widget* widget;
+    iter = children.begin();
+    while (iter != children.end()) {
+        widget = *iter;
+        if (widget->getName() == name) {
+            return widget;
+        } else {
+            iter++;
+        }
+    }
+
+    return NULL;
+}
+
+Widget* Window::findWidget(int id)
+{
+    std::vector<Widget*>::iterator iter;
+    Widget* widget;
+    iter = children.begin();
+    while (iter != children.end()) {
+        widget = *iter;
+        if (widget->getID() == id) {
+            return widget;
+        } else {
+            iter++;
+        }
+    }
+
+    return NULL;
+}
 }

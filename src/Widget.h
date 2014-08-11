@@ -27,6 +27,7 @@
 #include "Logger.h"
 
 namespace M7engine {
+class Window;
 class Widget {
 public:
     Widget();
@@ -37,6 +38,9 @@ public:
      */
     virtual void draw() = 0;
 
+    /**
+     *  Main update function called per frame. Implemented by child classes.
+     */
     virtual void update() {}
 
     /**
@@ -136,30 +140,84 @@ public:
      */
     void setDepth(int depth) { this->depth = depth; }
 
+    /**
+     *  Returns the parent window the widget is contained in.
+     *  @return Pointer to parent window, or NULL if currently none.
+     */
+    Window* getParent() { return this->parent; }
+
+    /**
+     *  Set the parent window for the widget to be contained in.
+     *  @param window Pointer to window to set parent as.
+     */
+    void setParent(Window* window) { this->parent = window; }
+
+    /**
+     *  Set the name of the widget. Used currently for passing information to parent window.
+     *  @param name The name to use.
+     */
+    void setName(std::string name) { this->name = name; }
+
+    /**
+     *  Returns the current name of the widget.
+     *  @return String containing the widget name.
+     */
+    std::string getName() { return this->name; }
+
 protected:
     int x, y, xOffset, yOffset, width, height, depth, id;
+
+    std::string name;
+
+    Window* parent;
 };
 
 class Label : public Widget {
 public:
-    Label();
-    virtual ~Label();
+    Label(int x, int y, int width, int height);
 
+    /**
+     *  Main drawing function called per frame.
+     */
     void draw();
 
-    void load();
-
+    /**
+     *  Set whether to draw the borders around the bounds of the label.
+     *  @param useBorder Whether to draw a border or not.
+     */
     void setBorder(bool useBorder) { drawBorder = useBorder; }
 
+    /**
+     *  Set whether to draw a body for the widget.
+     *  @param useBody Whether to draw a body or not.
+     */
     void setBody(bool useBody) { drawBody = useBody; }
 
+    /**
+     *  Set the text to display in the label.
+     *  @param text The text to display.
+     */
     void setText(std::string text) { this->text = text; }
 
+    /**
+     *  Returns the text currently set to display in the label.
+     *  @return String containing current text to display.
+     */
     std::string getText() { return this->text; }
 
+    /**
+     *  Set the image to display in place of text. Will cause the widget to use the image by default.
+     *  @param image Pointer to sprite to use for image.
+     */
     void setImage(Sprite* image) { useImage = true; this->image = image; }
 
-private:
+    /**
+     *  Set whether to use an image or display text.
+     *  @param useImage Whether to use the image or not.
+     */
+    void setUseImage(bool useImage) { this->useImage = useImage; }
+
+protected:
     std::string text;
 
     bool useImage, drawBorder, drawBody;
@@ -174,24 +232,48 @@ private:
 
 class Button : public Widget {
 public:
-    Button();
-    virtual ~Button();
+    Button(int x, int y, int width, int height);
 
+    /**
+     *  Main update function called per frame.
+     */
     void update();
 
+    /**
+     *  main drawing function called per frame.
+     */
     void draw();
 
-    void load();
-
+    /**
+     *  Function called when button is clicked.
+     */
     void onClick();
 
+    /**
+     *  Set the text to display in the label.
+     *  @param text The text to display.
+     */
     void setText(std::string text) { this->text = text; }
 
+    /**
+     *  Returns the text currently set to display in the label.
+     *  @return String containing current text to display.
+     */
     std::string getText() { return this->text; }
 
+    /**
+     *  Set the image to display in place of text. Will cause the widget to use the image by default.
+     *  @param image Pointer to sprite to use for image.
+     */
     void setImage(Sprite* image) { useImage = true; this->image = image; }
 
-private:
+    /**
+     *  Set whether to use an image or display text.
+     *  @param useImage Whether to use the image or not.
+     */
+    void setUseImage(bool useImage) { this->useImage = useImage; }
+
+protected:
     std::string text;
 
     bool useImage;

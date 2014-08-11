@@ -30,13 +30,23 @@ Widget::Widget()
 
 Widget::~Widget()
 {
+    if (parent != NULL) {
+        parent->removeWidget(this->id);
+    }
 }
 
-Label::Label()
+Label::Label(int x, int y, int width, int height)
 {
-    text = "TEST";
+    this->x = x;
+    this->y = y;
+    this->width = width;
+    this->height = height;
+
+    name = "";
+    text = "";
     useImage = false;
     image = NULL;
+    parent = NULL;
 
     ConfigReader* c = WindowManager::getInstance()->getConfig();
 
@@ -72,10 +82,6 @@ Label::Label()
 
     font = ResourceManager::getInstance()->getFont(
                 c->getString("label", "font"));
-}
-
-Label::~Label()
-{
 }
 
 void Label::draw()
@@ -117,12 +123,19 @@ void Label::draw()
     }
 }
 
-Button::Button()
+Button::Button(int x, int y, int width, int height)
 {
-    text = "TEST";
+    this->x = x;
+    this->y = y;
+    this->width = width;
+    this->height = height;
+
+    name = "";
+    text = "";
     useImage = false;
     image = NULL;
     state = 0;
+    parent = NULL;
 
     ConfigReader* c = WindowManager::getInstance()->getConfig();
 
@@ -172,10 +185,6 @@ Button::Button()
 
     font = ResourceManager::getInstance()->getFont(
                 c->getString("button", "font"));
-}
-
-Button::~Button()
-{
 }
 
 void Button::update()
@@ -267,6 +276,9 @@ void Button::draw()
 
 void Button::onClick()
 {
+    if (parent != NULL) {
+        parent->handleInput(getName());
+    }
 }
 
 }

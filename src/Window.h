@@ -31,7 +31,7 @@
 namespace M7engine {
 class Window {
 public:
-    Window();
+    Window(int x, int y, int width, int height);
     virtual ~Window();
 
     /**
@@ -39,9 +39,29 @@ public:
      */
     void draw();
 
+    /**
+     *  Main update function called per frame.
+     */
     void update();
 
-    void addWidget(Widget* widget);
+    /**
+     *  Function to handle the input when a widget is interacted with through passing the widget's name. To be implemented by user-defined windows.
+     */
+    virtual void handleInput(std::string name) {
+        Logger::getInstance()->logMessage(1, "Window %i recieved input from widget %s", this->id, name.c_str());
+    }
+
+    /**
+     *  Add a widget to the group of tracked widgets.
+     *  @return The ID assigned to the widget.
+     */
+    int addWidget(Widget* widget);
+
+    /**
+     *  Removes a widget from the tracked widgets based on it's ID.
+     *  @return Whether the requested id was found and removed or not.
+     */
+    bool removeWidget(int id);
 
     /**
      *  Manually set the window ID.
@@ -55,7 +75,40 @@ public:
      */
     int getID() { return id; }
 
+    /**
+     *  Set the window to be active or inactive.
+     *  @param active Whether active or not.
+     */
+    void setActive(bool active) { this->active = active; }
+
+    /**
+     *  Returns whether the window is active or not.
+     *  @return Whether active or not.
+     */
+    bool getActive() { return this->active; }
+
+    /**
+     *  Find a widget based on it's name.
+     *  @return Pointer to widget, if found. Otherwise NULL.
+     */
+    Widget* findWidget(std::string name);
+
+    /**
+     *  Find a widget based on it's id.
+     *  @return Pointer to widget, if found. Otherwise NULL.
+     */
+    Widget* findWidget(int id);
+
+    /**
+     *  Set the window title using a string.
+     *  @param text String specifying new title.
+     */
     void setTitle(std::string text) { title = text; }
+
+    /**
+     *  Returns the current window title.
+     *  @return String containing current title.
+     */
     std::string getTitle() { return title; }
 
     /**
@@ -106,6 +159,17 @@ public:
      */
     void setHeight(int height) { this->height = height; }
 
+    /**
+     *  Returns the current height of the title bar.
+     *  @return Current height of the title bar.
+     */
+    int getTitleBarHeight() { return this->titleHeight; }
+
+    /**
+     *  Set the height of the title bar. 0 means no bar displayed.
+     *  @param height The new height of the title bar.
+     */
+    void setTitleBarHeight(int height) { titleHeight = height; }
 
     /**
      *  Return the current drawing depth.
@@ -114,15 +178,27 @@ public:
     int getDepth() { return depth; }
 
     /**
-     *  Sets the drawing depth. This sets the order in which this tile is drawn. Lower numbers are drawn over higher numbers.
+     *  Sets the drawing depth. This sets the order in which this window is drawn. Lower numbers are drawn over higher numbers.
      *  @param depth The drawing depth to set this tile to.
      */
     void setDepth(int depth) { this->depth = depth; }
 
-private:
-    int x, y, xOffset, yOffset, width, height, titleHeight, depth, id, idCount;
+    /**
+     *  Sets whether the window is static in the viewport, following the screen around without being clicked and dragged.
+     *  @param sticky Whether to keep window in a relative spot on the viewport.
+     */
+    void setSticky(bool sticky) { this->sticky = sticky; }
 
-    bool active, isMoving;
+    /**
+     *  Returns whether window is currently set to be sticky or not.
+     *  @return Whether currently sticky.
+     */
+    bool getSticky() { return this->sticky; }
+
+protected:
+    int x, y, xOffset, yOffset, xStartOffset, yStartOffset, width, height, titleHeight, depth, id, idCount;
+
+    bool active, isMoving, sticky;
 
     std::vector<Widget*> children;
 
@@ -141,12 +217,28 @@ public:
     virtual ~WindowManager();
     static WindowManager* getInstance();
 
+    /**
+     *  Main update function called per frame.
+     */
     void update();
 
+    /**
+     *  Add a window to the group of tracked windows.
+     *  @param window Pointer to the window to be added.
+     */
     void addWindow(Window* window);
 
+    /**
+     *  Loads widget definitions from a file, specifying colors, sprites, etc.
+     *  @param filename Config file to load.
+     *  @return Whether file was successfully loaded or not.
+     */
     bool loadConfig(std::string filename);
 
+    /**
+     *  Returns a pointer to the config reader used to load the definition file. Used currently by widgets to get default style settings.
+     *  @return Pointer to the config reader used by the window manager.
+     */
     ConfigReader* getConfig() { return this->config; }
 
 private:
