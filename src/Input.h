@@ -130,6 +130,11 @@ public:
      */
     bool hasQuit() {return quit; }
 
+    /**
+     *  Initiates a quit event.
+     */
+    void setQuit() { quit = true; }
+
 private:
     InputManager();
     static InputManager* managerInstance;

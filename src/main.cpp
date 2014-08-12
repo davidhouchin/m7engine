@@ -345,6 +345,7 @@ bool initObjects()
     {
     Window *win = new Window(275, 200, 240, 155);
     win->setTitle("Calculator");
+    win->setSticky(true);
     wm->addWindow(win);
 
     Label *resultLabel = new Label(win->getX()+2, win->getY()+18, 236, 32);

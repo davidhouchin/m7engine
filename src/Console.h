@@ -30,8 +30,8 @@ namespace M7engine {
 class Console {
 public:
     /**
-     *  Returns a pointer to the input manager.
-     *  @return Pointer to input manager.
+     *  Returns a pointer to the console.
+     *  @return Pointer to console.
      */
     static Console* getInstance();
 
@@ -70,9 +70,11 @@ private:
 
     enum command {
         eVersion,
+        eQuit,
         eHelp,
         eDrawBBox,
         eDebug,
+        eLog,
         eNone
     };
 

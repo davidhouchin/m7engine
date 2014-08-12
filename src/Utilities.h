@@ -43,6 +43,8 @@ std::string& removeWhitespace(std::string &str);
  *  @return A vector containing the 2 new strings.
  */
 std::vector<std::string> split(const std::string& str, char delim);
+
+std::vector<std::string> chunkify(const std::string& str, const char& delim);
 };
 
 #endif

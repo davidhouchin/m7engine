@@ -55,9 +55,12 @@ Console::~Console()
 Console::command Console::translateString(std::string const& str)
 {
     if (str == "version") return eVersion;
+    else if (str == "quit") return eQuit;
+    else if (str == "exit") return eQuit;
     else if (str == "help") return eHelp;
     else if (str == "drawbbox") return eDrawBBox;
     else if (str == "showdebug") return eDebug;
+    else if (str == "log") return eLog;
     else return eNone;
 }
 
@@ -66,11 +69,15 @@ void Console::parse(std::string text)
     std::string lineToAdd;
     SDL_Color colorToAdd = defaultColor;
 
-    switch (translateString(text)) {
+    std::vector<std::string> command = chunkify(text, ' ');
+
+    switch (translateString(command[0])) {
     case eVersion: lineToAdd = Engine::getInstance()->getVersion(); break;
-    case eHelp: lineToAdd = "version,help,drawbbox,showdebug"; break;
+    case eQuit: InputManager::getInstance()->setQuit(); break;
+    case eHelp: lineToAdd = "version,quit,help,drawbbox,showdebug,log"; break;
     case eDrawBBox: Engine::getInstance()->toggleDrawBoundingBoxes(); break;
     case eDebug: toggleDebug(); break;
+    case eLog: Logger::getInstance()->setLoggingLevel(stringToInt(command[1])); break;
     default: colorToAdd = errorColor; lineToAdd = "Unrecognized Command: " + text; break;
     }
 
