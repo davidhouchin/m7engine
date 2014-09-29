@@ -77,10 +77,10 @@ Window::Window(int x, int y, int width, int height)
     id                 = -1;
     this->x            = x;
     this->y            = y;
-    xOffset            = 0;
-    yOffset            = 0;
-    xStartOffset       = x - Engine::getInstance()->getViewportX();
-    yStartOffset       = y - Engine::getInstance()->getViewportY();
+    xMouseOffset       = 0;
+    yMouseOffset       = 0;
+    xOffset            = x - Engine::getInstance()->getViewportX();
+    yOffset            = y - Engine::getInstance()->getViewportY();
     this->width        = width;
     this->height       = height;
     depth              = 0;
@@ -148,21 +148,26 @@ void Window::update()
     //If user clicked inside title:
     if ((!sticky) && (mx > tx) && (mx < (tx+width)) && (my > ty) && (my < (ty+titleHeight+2)) && InputManager::getInstance()->getMousePressed(MOUSE_LEFT)) {
         isMoving = true;
-        xOffset = mx - tx;
-        yOffset = my - ty;
+        xMouseOffset = mx - tx;
+        yMouseOffset = my - ty;
     }
-    else if (InputManager::getInstance()->getMouseReleased(MOUSE_LEFT)) {
+    else if ((InputManager::getInstance()->getMouseReleased(MOUSE_LEFT)) && (isMoving)) {
         isMoving = false;
+        xOffset = tx;
+        yOffset = ty;
     }
 
     if (isMoving) {
-        x = mx - xOffset + vx;
-        y = my - yOffset + vy;
+        x = mx - xMouseOffset + vx;
+        y = my - yMouseOffset + vy;
+    } else {
+        setX(vx + xOffset);
+        setY(vy + yOffset);
     }
 
     if (sticky) {
-        setX(vx + xStartOffset);
-        setY(vy + yStartOffset);
+        setX(vx + xOffset);
+        setY(vy + yOffset);
     }
 
     std::vector<Widget*>::iterator iter;

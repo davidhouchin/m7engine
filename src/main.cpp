@@ -27,12 +27,14 @@ public:
 
     void update()
     {
+        //Do some startup work
         if (notStarted) {
             startx = getX();
             starty = getY();
             notStarted = false;
         }
 
+        //Key movement code
         if (!dead) {
         if (input->getKeyHeld(KEY_UP)) {
             if (!cManager->getPlaceMeetingSolid(getXBBox(), getYBBox() - speed, this->id)) {
@@ -70,17 +72,20 @@ public:
             hSpeed = 0;
         }
 
+        //Sprite animation
         if ((vSpeed != 0) || (hSpeed != 0)) {
             image->setDelay(10);
         } else {
             image->setDelay(-1);
         }}
 
+        //Move viewport along with character
         engine->setViewport((getX() + getXOffset()) - (engine->getScreenWidth()/2),
                             (getY() + getYOffset()) - (engine->getScreenHeight()/2),
                             engine->getScreenWidth(),
                             engine->getScreenHeight());
 
+        //Stop viewport at edges of screen
         if (engine->getViewportX() < 0) {
             engine->setViewport(0, engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
         }
@@ -101,9 +106,9 @@ public:
             if (!dead) {
                 dead = true;
                 setImage(resources->getSprite("explosion"));
+                engine->playSound(resources->getSound("boom"), 0);
                 xOffset = 0;
                 yOffset = 0;
-                engine->playSound(resources->getSound("boom"), 0);
                 hSpeed = 0;
                 vSpeed = 0;
                 timer[0] = (image->getMaxFrames()-1) * image->getDelay();
@@ -345,7 +350,7 @@ bool initObjects()
     {
     Window *win = new Window(275, 200, 240, 155);
     win->setTitle("Calculator");
-    win->setSticky(true);
+    win->setSticky(false);
     wm->addWindow(win);
 
     Label *resultLabel = new Label(win->getX()+2, win->getY()+18, 236, 32);

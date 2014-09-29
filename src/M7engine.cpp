@@ -29,7 +29,6 @@ Engine* Engine::getInstance()
 
 Engine::Engine()
 {
-    //frameRate = 30;
     frameDelay = 30;
     frameCount = 0;
     fps = 0;
@@ -151,12 +150,7 @@ bool Engine::init(int width, int height, int mode)
 
 bool Engine::update()
 {
-    if (frameCount < 1) {
-    }
-
     Logger::getInstance()->logMessage(99, "Engine update cycle: %i", frameCount);
-
-    //int deltaMS = this->getDelta();
 
     int frameTime = SDL_GetTicks();
     fps = (frameTime - oldTime);
@@ -202,7 +196,6 @@ bool Engine::update()
 void Engine::delayFramerate()
 {
     currentFrameDelta = timer.getDelta();
-    //std::cout << currentFrameDelta << std::endl;
 
     if ((currentFrameDelta) < (frameDelay)) {
         SDL_Delay(frameDelay - currentFrameDelta);

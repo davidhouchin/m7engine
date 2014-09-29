@@ -196,7 +196,7 @@ public:
     bool getSticky() { return this->sticky; }
 
 protected:
-    int x, y, xOffset, yOffset, xStartOffset, yStartOffset, width, height, titleHeight, depth, id, idCount;
+    int x, y, xOffset, yOffset, xMouseOffset, yMouseOffset, width, height, titleHeight, depth, id, idCount;
 
     bool active, isMoving, sticky;
 
