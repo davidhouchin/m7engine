@@ -75,6 +75,8 @@ private:
         eDrawBBox,
         eDebug,
         eLog,
+        eFps,
+        eCap,
         eNone
     };
 

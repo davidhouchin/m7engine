@@ -260,6 +260,12 @@ public:
     int getFPS() { return this->fps; }
 
     /**
+     *  Sets the frame delay to used per engine cycle.
+     *  @param delay The target delay.
+     */
+    void setFrameDelay(int delay) { this->frameDelay = delay; }
+
+    /**
      *  Delays the engine to keep the engine at a set frame rate.
      */
     void delayFramerate();
@@ -410,6 +416,11 @@ public:
     void toggleDrawBoundingBoxes() { drawBoundingBoxes = !drawBoundingBoxes; }
 
     /**
+     *  Set whether to cap the framerate or not.
+     */
+    void toggleFrameCap() { fpsCap = !fpsCap; }
+
+    /**
       *  Returns pointer to collision manager.
       *  @return Pointer to collision manager.
       */
@@ -429,9 +440,8 @@ private:
     Engine();
     static Engine* engineInstance;
 
-    bool redraw, drawBoundingBoxes;
-    int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext, frameDelay, currentFrameDelta, oldTime;
-    int fps;
+    bool redraw, drawBoundingBoxes, fpsCap;
+    int screenWidth, screenHeight, colorDepth, frameRate, frameCount, windowMode, displayContext, frameDelay, currentFrameDelta, oldTime, fps;
 
     const char* windowTitle;
     SDL_Surface* windowIcon;

@@ -88,6 +88,18 @@ public:
     bool getActive() { return this->active; }
 
     /**
+     *  Set the window to be visible or invisible.
+     *  @param active Whether visible or not.
+     */
+    void setVisible(bool visible) { this->visible = visible; }
+
+    /**
+     *  Returns whether the window is visible or not.
+     *  @return Whether visible or not.
+     */
+    bool getVisible() { return this->visible; }
+
+    /**
      *  Find a widget based on it's name.
      *  @return Pointer to widget, if found. Otherwise NULL.
      */
@@ -198,7 +210,7 @@ public:
 protected:
     int x, y, xOffset, yOffset, xMouseOffset, yMouseOffset, width, height, titleHeight, depth, id, idCount;
 
-    bool active, isMoving, sticky;
+    bool visible, active, isMoving, sticky;
 
     std::vector<Widget*> children;
 

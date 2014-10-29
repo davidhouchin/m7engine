@@ -1,8 +1,8 @@
 /**
  *  Timer
  *  Timer.h
- *  Purpose: General purpose timer class.
- *  @author Alex Dantas and David Houchin
+ *  Purpose: Generic timer class.
+ *  @author David Houchin
  */
 
 #ifndef TIMER_H
@@ -44,13 +44,13 @@ public:
      *  Returns whether the timer is still running.
      *  @return Whether the timer is still running.
      */
-    bool isRunning();
+    bool isRunning() { return this->running; }
 
     /**
      *  Returns whether the timer is paused.
      *  @return Whether the timer is paused.
      */
-    bool isPaused();
+    bool isPaused() { return this->paused; }
 
     /**
      *  Returns the timer's difference in milliseconds.
@@ -62,27 +62,24 @@ public:
      *  Returns the timer's difference in milliseconds.
      *  @return The delta time in milliseconds.
      */
-    uint32_t getDeltaMS();
+    uint32_t getDeltaMS() { return (this->getDelta() % 1000); }
 
     /**
      *  Returns the timer's difference in seconds.
      *  @return The delta time in seconds.
      */
-    uint32_t getDeltaS();
+    uint32_t getDeltaS() { return (this->getDelta() / 1000); }
 
     /**
      *  Returns the difference between starting and now.
      *  @return The difference between starting and now.
      */
-    uint32_t getCurrentTime();
+    uint32_t getCurrentTime() { return (SDL_GetTicks()) - (this->startMark); }
 
 protected:
-    uint32_t startMark;
-    uint32_t stopMark;
-    uint32_t pausedMark;
+    uint32_t startMark, stopMark, pausedMark;
 
-    bool running;
-    bool paused;
+    bool running, paused;
 };
 
 #endif

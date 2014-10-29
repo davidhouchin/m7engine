@@ -443,6 +443,8 @@ bool initObjects()
     win->addWidget(multiplyBtn);
     win->addWidget(divideBtn);
     win->addWidget(equalsBtn);
+
+    win->setVisible(false);
     }
 
     return true;

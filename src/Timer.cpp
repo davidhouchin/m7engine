@@ -1,8 +1,8 @@
 /**
  *  Timer
  *  Timer.cpp
- *  Purpose: General purpose timer class.
- *  @author Alex Dantas and David Houchin
+ *  Purpose: Generic timer class.
+ *  @author David Houchin
  */
 
 #include "Timer.h"
@@ -18,7 +18,9 @@ Timer::Timer()
 
 void Timer::start()
 {
-    if (this->running) return;
+    if (this->running) {
+        return;
+    }
 
     this->startMark  = SDL_GetTicks();
     this->stopMark   = 0;
@@ -29,7 +31,9 @@ void Timer::start()
 
 void Timer::stop()
 {
-    if (!this->running) return;
+    if (!this->running) {
+        return;
+    }
 
     this->stopMark = SDL_GetTicks();
     this->running  = false;
@@ -44,7 +48,9 @@ void Timer::restart()
 
 void Timer::pause()
 {
-    if (!running || paused) return;
+    if (!running || paused) {
+        return;
+    }
 
     this->running    = false;
     this->paused     = true;
@@ -53,7 +59,9 @@ void Timer::pause()
 
 void Timer::unpause()
 {
-    if (!paused || running) return;
+    if (!paused || running) {
+        return;
+    }
 
     this->running = true;
     this->paused  = false;
@@ -62,44 +70,15 @@ void Timer::unpause()
     this->pausedMark = 0;
 }
 
-bool Timer::isRunning()
-{
-    return this->running;
-}
-
-bool Timer::isPaused()
-{
-    return this->paused;
-}
-
 uint32_t Timer::getDelta()
 {
-    if (this->isRunning())
+    if (this->isRunning()) {
         return this->getCurrentTime();
-
-    if (this->paused) {
+    } else if (this->paused) {
         return this->pausedMark;
-    }
-
-    if (this->startMark == 0) {
+    } else if (this->startMark == 0) {
         return 0;
+    } else {
+        return (this->stopMark - this->startMark);
     }
-
-    return (this->stopMark - this->startMark);
 }
-
-uint32_t Timer::getDeltaMS()
-{
-    return (this->getDelta() % 1000);
-}
-
-uint32_t Timer::getDeltaS()
-{
-    return (this->getDelta() / 1000);
-}
-
-uint32_t Timer::getCurrentTime()
-{
-    return (SDL_GetTicks() - this->startMark);
-}
-

@@ -10,7 +10,7 @@ My goal is for a somewhat workable engine that can compile for Windows, Linux, a
 
 Currently it supports an entity management system, keyboard/mouse input, simple collision detection,
 simple sound playback, TTF rendering, INI-style read capability, vector maths, primitives drawing, some
-timing utilities, and a resource manager, off the top of my head.
+timing utilities, and a very simple resource manager, off the top of my head.
 
 Building
 ========

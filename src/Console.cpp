@@ -61,6 +61,8 @@ Console::command Console::translateString(std::string const& str)
     else if (str == "drawbbox") return eDrawBBox;
     else if (str == "showdebug") return eDebug;
     else if (str == "log") return eLog;
+    else if (str == "framedelay") return eFps;
+    else if (str == "framecap") return eCap;
     else return eNone;
 }
 
@@ -74,10 +76,12 @@ void Console::parse(std::string text)
     switch (translateString(command[0])) {
     case eVersion: lineToAdd = Engine::getInstance()->getVersion(); break;
     case eQuit: InputManager::getInstance()->setQuit(); break;
-    case eHelp: lineToAdd = "version,quit,help,drawbbox,showdebug,log"; break;
+    case eHelp: lineToAdd = "version,quit,help,drawbbox,showdebug,log,framedelay,framecap"; break;
     case eDrawBBox: Engine::getInstance()->toggleDrawBoundingBoxes(); break;
     case eDebug: toggleDebug(); break;
     case eLog: Logger::getInstance()->setLoggingLevel(stringToInt(command[1])); break;
+    case eFps: Engine::getInstance()->setFrameDelay(stringToInt(command[1])); break;
+    case eCap: Engine::getInstance()->toggleFrameCap(); break;
     default: colorToAdd = errorColor; lineToAdd = "Unrecognized Command: " + text; break;
     }
 

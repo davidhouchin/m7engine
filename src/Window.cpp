@@ -72,6 +72,7 @@ void WindowManager::addWindow(Window *window)
 
 Window::Window(int x, int y, int width, int height)
 {
+    visible            = true;
     active             = true;
     isMoving           = false;
     id                 = -1;
@@ -137,6 +138,10 @@ Window::~Window()
 
 void Window::update()
 {
+    if (!visible) {
+        return;
+    }
+
     int mx, my, tx, ty, vx, vy;
     mx = InputManager::getInstance()->getMouseX();
     my = InputManager::getInstance()->getMouseY();
@@ -186,6 +191,10 @@ void Window::update()
 
 void Window::draw()
 {
+    if (!visible) {
+        return;
+    }
+
     //Draw body.
     drawFilledRectangle(x + 1, y + 1, width-2, height-2, bodyColor.r, bodyColor.g, bodyColor.b, bodyColor.a);
 

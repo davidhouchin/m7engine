@@ -32,6 +32,7 @@ Engine::Engine()
     frameDelay = 30;
     frameCount = 0;
     fps = 0;
+    fpsCap = true;
 
     this->setScreenWidth(640);
     this->setScreenHeight(480);
@@ -119,8 +120,8 @@ bool Engine::init(int width, int height, int mode)
     }
 
     switch (mode) {
-    case 0: this->windowMode = 0; window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN); break; //Set windowed
-    case 1: this->windowMode = 1; window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN); break; //Set fullscreen
+        case 0: this->windowMode = 0; window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN); break; //Set windowed
+        case 1: this->windowMode = 1; window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN); break; //Set fullscreen
         case 2: this->windowMode = 2; window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_FULLSCREEN_DESKTOP); break; //Set fullscreen-windowed
     }
 
@@ -195,6 +196,10 @@ bool Engine::update()
 
 void Engine::delayFramerate()
 {
+    if (!fpsCap) {
+        return;
+    }
+
     currentFrameDelta = timer.getDelta();
 
     if ((currentFrameDelta) < (frameDelay)) {
