@@ -1,8 +1,16 @@
+/*
+* Copyright 2014 David Houchin
+* This file is part of m7engine, which is free software you probably
+* don't even want.. It is made available to you under the terms of
+* the ZLib license.
+* For more information, see COPYING.
+*/
 /**
  *  Timer
  *  Timer.h
  *  Purpose: Generic timer class.
  *  @author David Houchin
+ *  @version 1.0 7/17/14
  */
 
 #ifndef TIMER_H

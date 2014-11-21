@@ -49,21 +49,8 @@ Engine::~Engine()
 {
     Logger::getInstance()->logMessage(0, "Cleaning up resources...");
 
-    for (size_t i = 0; i < entities.size(); i++) {
-        if (entities[i] != NULL) {
-            delete entities[i];
-        }
-    }
-
-    entities.clear();
-
-    for (size_t i = 0; i < tiles.size(); i++) {
-        if (tiles[i] != NULL) {
-            delete tiles[i];
-        }
-    }
-
-    tiles.clear();
+    destroyAllEntities();
+    destroyAllTiles();
 
     SDL_FreeSurface(windowIcon);
     SDL_DestroyRenderer(renderer);
@@ -363,6 +350,34 @@ Entity* Engine::findEntity(int id)
     return NULL;
 }
 
+void Engine::destroyEntity(int id)
+{
+    std::vector<Entity*>::iterator iter;
+    Entity *entity;
+    iter = entities.begin();
+
+    while (iter != entities.end()) {
+        entity = *iter;
+        if (entity->getID() == id) {
+            entities.erase(iter);
+            delete entity;
+        } else {
+            iter++;
+        }
+    }
+}
+
+void Engine::destroyAllEntities()
+{
+    for (size_t i = 0; i < entities.size(); i++) {
+        if (entities[i] != NULL) {
+            delete entities[i];
+        }
+    }
+
+    entities.clear();
+}
+
 void Engine::sortEntitiesByDepth()
 {
     std::sort(entities.begin(), entities.end(), entityDepthCompare());
@@ -416,6 +431,17 @@ void Engine::drawTiles()
         tile->draw();
         iter++;
     }
+}
+
+void Engine::destroyAllTiles()
+{
+    for (size_t i = 0; i < tiles.size(); i++) {
+        if (tiles[i] != NULL) {
+            delete tiles[i];
+        }
+    }
+
+    tiles.clear();
 }
 
 bool Engine::setWindowMode(int value)

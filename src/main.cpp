@@ -114,6 +114,8 @@ public:
                 timer[0] = (image->getMaxFrames()-1) * image->getDelay();
                 setAlpha(200);
             }
+        } else if (other->getName() == "coin") {
+            //level->load("../resources/maps/test2.map");
         }
     }
 
@@ -185,6 +187,16 @@ public:
     }
 };
 
+class Coin : public Entity {
+private:
+public:
+    Coin()
+    {
+        setName("coin");
+        setProperties(oConfig, getName());
+    }
+};
+
 class Wall : public Entity {
 private:
 public:
@@ -237,6 +249,9 @@ public:
             return false;
         }
 
+        engine->destroyAllEntities();
+        engine->destroyAllTiles();
+
         int xx, yy;
         xx = 0;
         yy = 0;
@@ -275,6 +290,7 @@ public:
             case 4: entity = new EnemyV; entity->setPosition(xx, yy); break;
             case 5: tile = new Dirt; tile->setPosition(xx, yy); break;
             case 6: entity = new Tree; entity->setPosition(xx, yy); break;
+            case 7: entity = new Coin; entity->setPosition(xx, yy); break;
             default: break;
             }
 
@@ -444,7 +460,7 @@ bool initObjects()
     win->addWidget(divideBtn);
     win->addWidget(equalsBtn);
 
-    win->setVisible(false);
+    win->setVisible(true);
     }
 
     return true;

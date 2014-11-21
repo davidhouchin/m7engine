@@ -122,6 +122,17 @@ public:
     void addEntity(Entity *entity);
 
     /**
+     *  Deletes the entity with the passed entity ID.
+     *  @param id ID of entity to remove.
+     */
+    void destroyEntity(int id);
+
+    /**
+     *  Deletes all registered entities.
+     */
+    void destroyAllEntities();
+
+    /**
      *  Returns a pointer to a requested entity ID.
      *  @param id ID of entity to find.
      *  @return Pointer of entity, if found.
@@ -150,6 +161,11 @@ public:
      *  @param *tile Pointer to tile to register.
      */
     void addTile(Tile *tile);
+
+    /**
+     *  Deletes all registered tiles.
+     */
+    void destroyAllTiles();
 
     /**
      *  Returns a pointer to the list of registered tiles.

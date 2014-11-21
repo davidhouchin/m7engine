@@ -1,8 +1,16 @@
+/*
+* Copyright 2014 David Houchin
+* This file is part of m7engine, which is free software you probably
+* don't even want.. It is made available to you under the terms of
+* the ZLib license.
+* For more information, see COPYING.
+*/
 /**
  *  Input Key Definitions
  *  InputKeyDefinitions.h
  *  Purpose: Shortened definitions for SDL scancodes.
- *  @author Alex Dantas
+ *  @author David Houchin
+ *  @version 1.0 7/17/14
  */
 
 #ifndef INPUTDEFINITIONS_H_DEFINED
@@ -10,19 +18,8 @@
 
 #include <SDL2/SDL.h>
 
-/// The number of keys on a keyboard.
-///
-/// Taken from:
-/// http://wiki.libsdl.org/SDLScancodeLookup
-///
-/// According to it (on Fri Jan  3 20:04:28 BRST 2014), the
-/// maximum key value is 282.
-///
 #define KEYBOARD_SIZE 282
 
-/// I've made the following table according to this reference:
-/// http://wiki.libsdl.org/SDLScancodeLookup
-///
 enum KeyboardKey
 {
 	KEY_UNKNOWN               = SDL_SCANCODE_UNKNOWN,
@@ -138,8 +135,6 @@ enum KeyboardKey
 	KEY_F22                   = SDL_SCANCODE_F22,
 	KEY_F23                   = SDL_SCANCODE_F23,
 	KEY_F24                   = SDL_SCANCODE_F24,
-	//Causes issues under Windows, KEY_EXECUTE is already defined, plus this scancode is rarely even used.
-	//KEY_EXECUTE               = SDL_SCANCODE_EXECUTE,
 	KEY_HELP                  = SDL_SCANCODE_HELP,
 	KEY_MENU                  = SDL_SCANCODE_MENU,
 	KEY_SELECT                = SDL_SCANCODE_SELECT,
@@ -268,14 +263,12 @@ enum KeyboardKey
 	KEY_SLEEP                 = SDL_SCANCODE_SLEEP
 };
 
-/// All mouse buttons (except for the middle one).
 enum MouseButton
 {
 	MOUSE_LEFT,
 	MOUSE_RIGHT,
 
-	MOUSE_MAX   // No button, just to define max
-				// array size.
+	MOUSE_MAX   // This defines array size.
 };
 
 #endif
