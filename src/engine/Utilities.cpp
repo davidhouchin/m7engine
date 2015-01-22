@@ -1,8 +1,15 @@
+/*
+* Copyright 2014 David Houchin
+* This file is part of m7engine, which is free software you probably
+* don't even want.. It is made available to you under the terms of
+* the ZLib license.
+* For more information, see COPYING.
+*/
 /**
  *  Utilities
  *  Utilities.cpp
  *  Purpose: General purpose utility functions.
- *  @author Alex Dantas and David Houchin
+ *  @author David Houchin
  */
 
 #include "Utilities.h"

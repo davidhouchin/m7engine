@@ -3,9 +3,10 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wextra ${CMAKE_CXX_FLAGS}")
 
-aux_source_directory(./src SRC_LIST)
+aux_source_directory(./src GAME_SRC)
+aux_source_directory(./src/engine ENGINE_SRC)
 
-add_executable(${PROJECT_NAME} ${SRC_LIST})
+add_executable(${PROJECT_NAME} ${GAME_SRC} ${ENGINE_SRC})
 
 #Check if OSX, expects homebrew installed SDL2
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")

@@ -18,7 +18,7 @@ Building
 I will expand this later on, and try to clean up and automate the build process.
 
 The project requires SDL2, SDL2_Mixer, SDL2_Image, and SDL2_TTF.
-It should build as-is with cmake under Linux if you have the prerequisites installed.
+It should build as-is with cmake under Linux and OSX if you have the prerequisites installed.
 
 $ mkdir build && cd build
 $ cmake ..
@@ -27,3 +27,4 @@ $ make
 Under Visual Studio, it should build using the defaults as long as you add the SDL libraries.
 Compiling with debug flags is far too slow right now, so do release.
 Also, distributing this will require the msvcp and msvcr libraries associated with the Visual C++ version.
+I will try to get a VS solution up at some point to speed up the process.
