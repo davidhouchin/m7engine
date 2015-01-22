@@ -40,4 +40,10 @@ Dirt::Dirt(Game *game)
     setName("dirt");
     setProperties(game->getObjectConfig(), getName());
 }
+
+Grass::Grass(Game *game)
+{
+    setName("grass");
+    setProperties(game->getObjectConfig(), getName());
+}
 }

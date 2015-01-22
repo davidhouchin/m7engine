@@ -18,11 +18,12 @@
 
 #include "engine/M7engine.h"
 
-#include "Level.h"
-
 using namespace M7engine;
 
 namespace SampleGame {
+
+class Level;
+
 class Game {
 private:
     Engine *engine;
@@ -32,6 +33,7 @@ private:
     CollisionManager *cManager;
     WindowManager *wm;
     ConfigReader *oConfig;
+    Level *level;
 
 public:
     Game(std::string configFile);
@@ -40,6 +42,8 @@ public:
     bool initObjects();
 
     bool run();
+
+    bool loadLevel(std::string filename);
 
     Engine* getEngine(){return this->engine;}
     Logger* getLogger(){return this->logger;}

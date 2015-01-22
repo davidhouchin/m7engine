@@ -125,8 +125,8 @@ void Player::collision(Entity *other)
             timer[0] = (image->getMaxFrames()-1) * image->getDelay();
             setAlpha(200);
         }
-    } else if (other->getName() == "coin") {
-        //level->load("../resources/maps/test2.map");
+    } else if ((other->getName() == "coin") && (!notStarted)) {
+        game->loadLevel("../resources/maps/test2.map");
     }
 }
 

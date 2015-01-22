@@ -46,6 +46,12 @@ private:
 public:
     Dirt(Game *game);
 };
+
+class Grass : public Tile {
+private:
+public:
+    Grass(Game *game);
+};
 }
 
 #endif

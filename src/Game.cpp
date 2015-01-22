@@ -14,6 +14,7 @@
  */
 
 #include "Game.h"
+#include "Level.h"
 
 namespace SampleGame {
 Game::Game(std::string configFile)
@@ -74,11 +75,24 @@ Game::~Game()
 
 bool Game::initObjects()
 {
-    oConfig->loadConfig("../resources/objects.ini");
+    if (!oConfig->loadConfig("../resources/objects.ini")) {
+        return false;
+    }
 
     //Game objects
-    Level *level = new Level(this);
-    level->load("../resources/maps/test.map");
+    level = new Level(this);
+    if (!level->load("../resources/maps/test.map")) {
+        return false;
+    }
+
+    return true;
+}
+
+bool Game::loadLevel(std::string filename)
+{
+    if (!level->load(filename)) {
+        return false;
+    }
 
     return true;
 }
