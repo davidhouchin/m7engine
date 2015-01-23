@@ -17,33 +17,27 @@
 #include "Game.h"
 
 namespace SampleGame {
-Coin::Coin(Game *game)
+Floor_brick::Floor_brick(Game *game)
 {
-    setName("coin");
+    setName("floor_brick");
     setProperties(game->getObjectConfig(), getName());
 }
 
-Wall::Wall(Game *game)
+Floor_dirt::Floor_dirt(Game *game)
 {
-    setName("wall");
+    setName("floor_dirt");
     setProperties(game->getObjectConfig(), getName());
 }
 
-Tree::Tree(Game *game)
+Floor_grass::Floor_grass(Game *game)
 {
-    setName("tree");
+    setName("floor_grass");
     setProperties(game->getObjectConfig(), getName());
 }
 
-Dirt::Dirt(Game *game)
+Wall_brick::Wall_brick(Game *game)
 {
-    setName("dirt");
-    setProperties(game->getObjectConfig(), getName());
-}
-
-Grass::Grass(Game *game)
-{
-    setName("grass");
+    setName("wall_brick");
     setProperties(game->getObjectConfig(), getName());
 }
 }

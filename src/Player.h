@@ -25,8 +25,8 @@ class Game;
 
 class Player : public Entity {
 private:
-    int speed;
-    bool dead, notStarted;
+    int speed, runSpeed, runDelay, runCounter, runDelayCounter;
+    bool dead, notStarted, running;
     int startx, starty;
 
     Game *game;

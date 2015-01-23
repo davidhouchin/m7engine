@@ -68,13 +68,11 @@ bool Level::load(std::string filename)
 
         switch (stringToInt(line)) {
         case 1: entity = new Player(game); entity->setPosition(xx, yy); break;
-        case 2: entity = new Wall(game); entity->setPosition(xx, yy); break;
-        case 3: entity = new EnemyH(game); entity->setPosition(xx, yy); break;
-        case 4: entity = new EnemyV(game); entity->setPosition(xx, yy); break;
-        case 5: tile = new Dirt(game); tile->setPosition(xx, yy); break;
-        case 6: entity = new Tree(game); entity->setPosition(xx, yy); break;
-        case 7: entity = new Coin(game); entity->setPosition(xx, yy); break;
-        case 8: tile = new Grass(game); tile->setPosition(xx, yy); break;
+        case 2: entity = new Monster_skeleton(game); entity->setPosition(xx, yy); break;
+        case 3: entity = new Wall_brick(game); entity->setPosition(xx, yy); break;
+        case 4: tile = new Floor_dirt(game); entity->setPosition(xx, yy); break;
+        case 5: tile = new Floor_brick(game); tile->setPosition(xx, yy); break;
+        case 6: tile = new Floor_grass(game); entity->setPosition(xx, yy); break;
         default: break;
         }
 

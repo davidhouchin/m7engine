@@ -23,24 +23,14 @@ namespace SampleGame {
 
 class Game;
 
-class EnemyH : public Entity {
+class Monster_skeleton : public Entity {
 private:
     Game *game;
 
 public:
-    EnemyH(Game *game);
+    Monster_skeleton(Game *game);
     void update();
     void collision(Entity *other);
-};
-
-class EnemyV : public Entity {
-private:
-    Game *game;
-public:
-    EnemyV(Game *game);
-    void update();
-    void collision(Entity *other);
-
 };
 }
 

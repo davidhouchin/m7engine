@@ -23,34 +23,28 @@ namespace SampleGame {
 
 class Game;
 
-class Coin : public Entity {
+class Floor_brick : public Tile {
 private:
 public:
-    Coin(Game *game);
+    Floor_brick(Game *game);
 };
 
-class Wall : public Entity {
+class Floor_dirt : public Tile {
 private:
 public:
-    Wall(Game *game);
+    Floor_dirt(Game *game);
 };
 
-class Tree : public Entity {
+class Floor_grass : public Tile {
 private:
 public:
-    Tree(Game *game);
+    Floor_grass(Game *game);
 };
 
-class Dirt : public Tile {
+class Wall_brick : public Entity {
 private:
 public:
-    Dirt(Game *game);
-};
-
-class Grass : public Tile {
-private:
-public:
-    Grass(Game *game);
+    Wall_brick(Game *game);
 };
 }
 

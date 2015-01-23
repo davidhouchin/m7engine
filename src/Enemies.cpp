@@ -17,52 +17,22 @@
 #include "Game.h"
 
 namespace SampleGame {
-EnemyH::EnemyH(Game *game)
+Monster_skeleton::Monster_skeleton(Game *game)
 {
     this->game = game;
-    setName("zombie");
+    setName("monster_skeleton");
     setProperties(game->getObjectConfig(), getName());
-    setImage(game->getResourceManager()->getSprite("zombieright"));
-    hSpeed = 4;
+    hSpeed = 3;
 }
 
-void EnemyH::update()
+void Monster_skeleton::update()
 {
 }
 
-void EnemyH::collision(Entity *other)
+void Monster_skeleton::collision(Entity *other)
 {
     if (other->getSolid()) {
         hSpeed = (hSpeed * -1);
-        if (this->getSprite()->getName() != "zombieleft") {
-            setImage(game->getResourceManager()->getSprite("zombieleft"));
-        } else {
-            setImage(game->getResourceManager()->getSprite("zombieright"));
-        }
-    }
-}
-
-EnemyV::EnemyV(Game *game)
-{
-    this->game = game;
-    setName("zombie");
-    setProperties(game->getObjectConfig(), getName());
-    vSpeed = 4;
-}
-
-void EnemyV::update()
-{
-}
-
-void EnemyV::collision(Entity *other)
-{
-    if (other->getSolid()) {
-        vSpeed = (vSpeed * -1);
-        if (this->getSprite()->getName() != "zombieup") {
-            setImage(game->getResourceManager()->getSprite("zombieup"));
-        } else {
-            setImage(game->getResourceManager()->getSprite("zombiedown"));
-        }
     }
 }
 }

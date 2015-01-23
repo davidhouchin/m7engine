@@ -25,7 +25,14 @@ Player::Player(Game *game)
     setName("player");
     setProperties(game->getObjectConfig(), getName());
     
-    speed = 3;
+    speed = 32; //Interval which player snaps to
+
+    runSpeed = 5; //Time between moving while running (holding down an arrow key)
+    runDelay = 20; //Time before triggering running
+    runCounter = 0; //Utility variable to keep track of runSpeed
+    runDelayCounter = 0; //Utility variable to keep track of runDelay
+    running = false; //Is player running?
+
     dead = false;
     notStarted = true;
 }
@@ -46,47 +53,95 @@ void Player::update()
 
     //Key movement code
     if (!dead) {
-        if (input->getKeyHeld(KEY_UP)) {
+        if (input->getKeyPressed(KEY_UP)) {
             if (!collision->getPlaceMeetingSolid(getXBBox(), getYBBox() - speed, this->id)) {
-                vSpeed = speed * -1;
-                if (this->getSprite()->getName() != "playerup") {setImage(resources->getSprite("playerup")); }
-            } else {
-                vSpeed = 0;
+                setY(getY() - 32);
+            }
+        } else if (input->getKeyPressed(KEY_DOWN)) {
+            if (!collision->getPlaceMeetingSolid(getXBBox(), getYBBox() + speed, this->id)) {
+                setY(getY() + 32);
+            }
+        } else if (input->getKeyPressed(KEY_LEFT)) {
+            if (!collision->getPlaceMeetingSolid(getXBBox() - speed, getYBBox(), this->id)) {
+                setX(getX() - 32);
+            }
+        } else if (input->getKeyPressed(KEY_RIGHT)) {
+            if (!collision->getPlaceMeetingSolid(getXBBox() + speed, getYBBox(), this->id)) {
+                setX(getX() + 32);
+            }
+        }
+
+        if ((input->getKeyReleased(KEY_UP)) ||
+                (input->getKeyReleased(KEY_DOWN)) ||
+                (input->getKeyReleased(KEY_LEFT)) ||
+                (input->getKeyReleased(KEY_RIGHT))) {
+            running = false;
+        }
+
+        if (input->getKeyHeld(KEY_UP)) {
+            if (!running) {
+                if (runDelayCounter < runDelay) {
+                    runDelayCounter++;
+                } else {
+                    running = true;
+                    runDelayCounter = 0;
+                }
+            } else if (!collision->getPlaceMeetingSolid(getXBBox(), getYBBox() - speed, this->id)) {
+                if (runCounter < runSpeed) {
+                    runCounter++;
+                } else {
+                    setY(getY() - 32);
+                    runCounter = 0;
+                }
             }
         } else if (input->getKeyHeld(KEY_DOWN)) {
-            if (!collision->getPlaceMeetingSolid(getXBBox(), getYBBox() + speed, this->id)) {
-                vSpeed = speed;
-                if (this->getSprite()->getName() != "playerdown") {setImage(resources->getSprite("playerdown")); }
-            } else {
-                vSpeed = 0;
+            if (!running) {
+                if (runDelayCounter < runDelay) {
+                     runDelayCounter++;
+                } else {
+                    running = true;
+                    runDelayCounter = 0;
+                }
+            } else if (!collision->getPlaceMeetingSolid(getXBBox(), getYBBox() + speed, this->id)) {
+                if (runCounter < runSpeed) {
+                    runCounter++;
+                } else {
+                    setY(getY() + 32);
+                    runCounter = 0;
+                }
             }
-        } else {
-            vSpeed = 0;
-        }
-
-        if (input->getKeyHeld(KEY_LEFT)) {
-            if (!collision->getPlaceMeetingSolid(getXBBox() - speed, getYBBox(), this->id)) {
-                hSpeed = speed * -1;
-                if (this->getSprite()->getName() != "playerleft") {setImage(resources->getSprite("playerleft")); }
-            } else {
-                hSpeed = 0;
+        } else if (input->getKeyHeld(KEY_LEFT)) {
+            if (!running) {
+                if (runDelayCounter < runDelay) {
+                    runDelayCounter++;
+                } else {
+                    running = true;
+                    runDelayCounter = 0;
+                }
+            } else if (!collision->getPlaceMeetingSolid(getXBBox() - speed, getYBBox(), this->id)) {
+                if (runCounter < runSpeed) {
+                    runCounter++;
+                } else {
+                    setX(getX() - 32);
+                    runCounter = 0;
+                }
             }
         } else if (input->getKeyHeld(KEY_RIGHT)) {
-            if (!collision->getPlaceMeetingSolid(getXBBox() + speed, getYBBox(), this->id)) {
-                hSpeed = speed;
-                if (this->getSprite()->getName() != "playerright") {setImage(resources->getSprite("playerright")); }
-            } else {
-                hSpeed = 0;
+            if (!running) {
+                if (runDelayCounter < runDelay) {
+                    runDelayCounter++;
+                } else {
+                    running = true;
+                    runDelayCounter = 0;
+                }
+            } else if (!collision->getPlaceMeetingSolid(getXBBox() + speed, getYBBox(), this->id)) {
+                if (runCounter < runSpeed) {
+                    runCounter++;
+                } else {
+                    setX(getX() + 32);
+                    runCounter = 0;
+                }
             }
-        } else {
-            hSpeed = 0;
-        }
-
-        //Sprite animation
-        if ((vSpeed != 0) || (hSpeed != 0)) {
-            image->setDelay(10);
-        } else {
-            image->setDelay(-1);
         }
     }
 
@@ -106,34 +161,31 @@ void Player::update()
     if (engine->getViewportX() > 640 - engine->getViewportW()) {
         engine->setViewport(640 - engine->getViewportW(), engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
     }
-    if (engine->getViewportY() > 1920 - engine->getViewportH()) {
-        engine->setViewport(engine->getViewportX(), 1920 - engine->getViewportH(), engine->getViewportW(), engine->getViewportH());
+    if (engine->getViewportY() > 480 - engine->getViewportH()) {
+        engine->setViewport(engine->getViewportX(), 512 - engine->getViewportH(), engine->getViewportW(), engine->getViewportH());
     }
 }
 
 void Player::collision(Entity *other)
 {
-    if ((other->getFamily() == "enemy") && (!notStarted)) {
+    //Some bug is causing player to trigger collision with everything on very first frame, need to figure out what causes this...
+    if (notStarted) {
+        return;
+    }
+
+    if (other->getFamily() == "monster") {
         if (!dead) {
             dead = true;
-            setImage(game->getResourceManager()->getSprite("explosion"));
             game->getEngine()->playSound(game->getResourceManager()->getSound("boom"), 0);
-            xOffset = 0;
-            yOffset = 0;
-            hSpeed = 0;
-            vSpeed = 0;
-            timer[0] = (image->getMaxFrames()-1) * image->getDelay();
-            setAlpha(200);
+            timer[0] = 60;
+            setAlpha(120);
         }
-    } else if ((other->getName() == "coin") && (!notStarted)) {
-        game->loadLevel("../resources/maps/test2.map");
     }
 }
 
 void Player::alarm(int timerNum)
 {
     if (timerNum == 0) {
-        setImage(game->getResourceManager()->getSprite("playerdown"));
         setOriginToImageCenter();
         setX(startx);
         setY(starty);
