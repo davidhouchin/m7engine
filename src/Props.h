@@ -29,6 +29,42 @@ public:
     Floor_brick(Game *game);
 };
 
+class Floor_brickVines : public Tile {
+private:
+public:
+    Floor_brickVines(Game *game);
+};
+
+class Floor_brickMold : public Tile {
+private:
+public:
+    Floor_brickMold(Game *game);
+};
+
+class Floor_water : public Tile {
+private:
+public:
+    Floor_water(Game *game);
+};
+
+class Floor_water2 : public Tile {
+private:
+public:
+    Floor_water2(Game *game);
+};
+
+class Floor_lava : public Tile {
+private:
+public:
+    Floor_lava(Game *game);
+};
+
+class Floor_lava2 : public Tile {
+private:
+public:
+    Floor_lava2(Game *game);
+};
+
 class Floor_dirt : public Tile {
 private:
 public:
@@ -45,6 +81,60 @@ class Wall_brick : public Entity {
 private:
 public:
     Wall_brick(Game *game);
+};
+
+class Wall_brickVines : public Entity {
+private:
+public:
+    Wall_brickVines(Game *game);
+};
+
+class Wall_brickMold : public Entity {
+private:
+public:
+    Wall_brickMold(Game *game);
+};
+
+class Wall_brickStairsDown : public Entity {
+private:
+public:
+    Wall_brickStairsDown(Game *game);
+};
+
+class Wall_brickStairsUp : public Entity {
+private:
+public:
+    Wall_brickStairsUp(Game *game);
+};
+
+class Wall_brickDoorClosed : public Entity {
+private:
+public:
+    Wall_brickDoorClosed(Game *game);
+};
+
+class Wall_brickDoorOpen : public Entity {
+private:
+public:
+    Wall_brickDoorOpen(Game *game);
+};
+
+class Wall_brickGateClosed : public Entity {
+private:
+public:
+    Wall_brickGateClosed(Game *game);
+};
+
+class Wall_brickGateOpen : public Entity {
+private:
+public:
+    Wall_brickGateOpen(Game *game);
+};
+
+class Wall_brickGrate : public Entity {
+private:
+public:
+    Wall_brickGrate(Game *game);
 };
 }
 

@@ -23,12 +23,82 @@ namespace SampleGame {
 
 class Game;
 
+class Monster_ghost : public Entity {
+private:
+    Game *game;
+
+public:
+    Monster_ghost(Game *game);
+    void update();
+    void collision(Entity *other);
+};
+
+class Monster_wraith : public Entity {
+private:
+    Game *game;
+
+public:
+    Monster_wraith(Game *game);
+    void update();
+    void collision(Entity *other);
+};
+
+class Monster_specter : public Entity {
+private:
+    Game *game;
+
+public:
+    Monster_specter(Game *game);
+    void update();
+    void collision(Entity *other);
+};
+
+class Monster_zombie : public Entity {
+private:
+    Game *game;
+
+public:
+    Monster_zombie(Game *game);
+    void update();
+    void collision(Entity *other);
+};
+
 class Monster_skeleton : public Entity {
 private:
     Game *game;
 
 public:
     Monster_skeleton(Game *game);
+    void update();
+    void collision(Entity *other);
+};
+
+class Monster_skeletonCaptain : public Entity {
+private:
+    Game *game;
+
+public:
+    Monster_skeletonCaptain(Game *game);
+    void update();
+    void collision(Entity *other);
+};
+
+class Monster_skeletonMage : public Entity {
+private:
+    Game *game;
+
+public:
+    Monster_skeletonMage(Game *game);
+    void update();
+    void collision(Entity *other);
+};
+
+class Monster_vampire : public Entity {
+private:
+    Game *game;
+
+public:
+    Monster_vampire(Game *game);
     void update();
     void collision(Entity *other);
 };

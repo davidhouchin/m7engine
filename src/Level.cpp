@@ -19,9 +19,43 @@ namespace SampleGame {
 Level::Level(Game *game)
 {
     this->game = game;
-    interval = 0;
     width = 0;
     height = 0;
+}
+
+Level::mapObject Level::translateString(std::string const& str)
+{
+    if (str == "width") return eWidth;
+    else if (str == "height") return eHeight;
+    else if (str == "player") return ePlayer;
+    else if (str == "monster_ghost") return eMonster_ghost;
+    else if (str == "monster_wraith") return eMonster_wraith;
+    else if (str == "monster_specter") return eMonster_specter;
+    else if (str == "monster_zombie") return eMonster_zombie;
+    else if (str == "monster_skeleton") return eMonster_skeleton;
+    else if (str == "monster_skeletonCaptain") return eMonster_skeletonCaptain;
+    else if (str == "monster_skeletonMage") return eMonster_skeletonMage;
+    else if (str == "monster_vampire") return eMonster_vampire;
+    else if (str == "floor_brick") return eFloor_brick;
+    else if (str == "floor_brickVines") return eFloor_brickVines;
+    else if (str == "floor_brickMold") return eFloor_brickMold;
+    else if (str == "floor_dirt") return eFloor_dirt;
+    else if (str == "floor_grass") return eFloor_grass;
+    else if (str == "floor_water") return eFloor_water;
+    else if (str == "floor_water2") return eFloor_water2;
+    else if (str == "floor_lava") return eFloor_lava;
+    else if (str == "floor_lava2") return eFloor_lava2;
+    else if (str == "wall_brick") return eWall_brick;
+    else if (str == "wall_brickVines") return eWall_brickVines;
+    else if (str == "wall_brickMold") return eWall_brickMold;
+    else if (str == "wall_brickStairsDown") return eWall_brickStairsDown;
+    else if (str == "wall_brickStairsUp") return eWall_brickStairsUp;
+    else if (str == "wall_brickDoorClosed") return eWall_brickDoorClosed;
+    else if (str == "wall_brickDoorOpen") return eWall_brickDoorOpen;
+    else if (str == "wall_brickGateClosed") return eWall_brickGateClosed;
+    else if (str == "wall_brickGateOpen") return eWall_brickGateOpen;
+    else if (str == "wall_brickGrate") return eWall_brickGrate;
+    else return eNone;
 }
 
 bool Level::load(std::string filename)
@@ -35,14 +69,11 @@ bool Level::load(std::string filename)
     game->getEngine()->destroyAllEntities();
     game->getEngine()->destroyAllTiles();
 
-    int xx, yy;
-    xx = 0;
-    yy = 0;
-
     Entity *entity;
     Tile *tile;
 
     while (!file.eof()) {
+        std::vector<std::string> input;
         std::string line;
         std::getline(file, line, '\n');
 
@@ -50,35 +81,74 @@ bool Level::load(std::string filename)
             continue;
         }
 
-        if (line[0] == 's') {
-            interval = stringToInt(split(line, ':').back());
-            yy = interval;
-            continue;
-        }
+        if (line.length() > 0) {
+            input = chunkify(line, ' ');
 
-        if (line[0] == 'w') {
-            width = stringToInt(split(line, ':').back());
-            continue;
-        }
+            switch (translateString(input[0])) {
+            case eWidth: width = stringToInt(input[1]); break;
+            case eHeight: height = stringToInt(input[1]); break;
 
-        if (line[0] == 'h') {
-            height = stringToInt(split(line, ':').back());
-            continue;
-        }
+            case ePlayer: entity = new Player(game);
 
-        switch (stringToInt(line)) {
-        case 1: entity = new Player(game); entity->setPosition(xx, yy); break;
-        case 2: entity = new Monster_skeleton(game); entity->setPosition(xx, yy); break;
-        case 3: entity = new Wall_brick(game); entity->setPosition(xx, yy); break;
-        case 4: tile = new Floor_dirt(game); entity->setPosition(xx, yy); break;
-        case 5: tile = new Floor_brick(game); tile->setPosition(xx, yy); break;
-        case 6: tile = new Floor_grass(game); entity->setPosition(xx, yy); break;
-        default: break;
-        }
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_ghost: entity = new Monster_ghost(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_wraith: entity = new Monster_wraith(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_specter: entity = new Monster_specter(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_zombie: entity = new Monster_zombie(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_skeleton: entity = new Monster_skeleton(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_skeletonCaptain: entity = new Monster_skeletonCaptain(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_skeletonMage: entity = new Monster_skeletonMage(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_vampire: entity = new Monster_vampire(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
 
-        xx += interval;
-        if (xx >= width) {
-            xx = 0; yy += interval;
+            case eFloor_brick: tile = new Floor_brick(game);
+                tile->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eFloor_brickVines: tile = new Floor_brickVines(game);
+                tile->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eFloor_brickMold: tile = new Floor_brickMold(game);
+                tile->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eFloor_dirt: tile = new Floor_dirt(game);
+                tile->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eFloor_grass: tile = new Floor_grass(game);
+                tile->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eFloor_water: tile = new Floor_water(game);
+                tile->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eFloor_water2: tile = new Floor_water2(game);
+                tile->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eFloor_lava: tile = new Floor_lava(game);
+                tile->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eFloor_lava2: tile = new Floor_lava2(game);
+                tile->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+
+            case eWall_brick: entity = new Wall_brick(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eWall_brickVines: entity = new Wall_brickVines(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eWall_brickMold: entity = new Wall_brickMold(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eWall_brickStairsDown: entity = new Wall_brickStairsDown(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eWall_brickStairsUp: entity = new Wall_brickStairsUp(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eWall_brickDoorClosed: entity = new Wall_brickDoorClosed(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eWall_brickDoorOpen: entity = new Wall_brickDoorOpen(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eWall_brickGateClosed: entity = new Wall_brickGateClosed(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eWall_brickGateOpen: entity = new Wall_brickGateOpen(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eWall_brickGrate: entity = new Wall_brickGrate(game);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            default: break;
+            }
         }
 
         continue;

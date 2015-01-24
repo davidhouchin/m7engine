@@ -17,12 +17,88 @@
 #include "Game.h"
 
 namespace SampleGame {
+Monster_ghost::Monster_ghost(Game *game)
+{
+    this->game = game;
+    setName("monster_ghost");
+    setProperties(game->getObjectConfig(), getName());
+    //hSpeed = 3;
+}
+
+void Monster_ghost::update()
+{
+}
+
+void Monster_ghost::collision(Entity *other)
+{
+    if (other->getSolid()) {
+        hSpeed = (hSpeed * -1);
+    }
+}
+
+Monster_wraith::Monster_wraith(Game *game)
+{
+    this->game = game;
+    setName("monster_wraith");
+    setProperties(game->getObjectConfig(), getName());
+    //hSpeed = 3;
+}
+
+void Monster_wraith::update()
+{
+}
+
+void Monster_wraith::collision(Entity *other)
+{
+    if (other->getSolid()) {
+        hSpeed = (hSpeed * -1);
+    }
+}
+
+Monster_specter::Monster_specter(Game *game)
+{
+    this->game = game;
+    setName("monster_specter");
+    setProperties(game->getObjectConfig(), getName());
+    //hSpeed = 3;
+}
+
+void Monster_specter::update()
+{
+}
+
+void Monster_specter::collision(Entity *other)
+{
+    if (other->getSolid()) {
+        hSpeed = (hSpeed * -1);
+    }
+}
+
+Monster_zombie::Monster_zombie(Game *game)
+{
+    this->game = game;
+    setName("monster_zombie");
+    setProperties(game->getObjectConfig(), getName());
+    //hSpeed = 3;
+}
+
+void Monster_zombie::update()
+{
+}
+
+void Monster_zombie::collision(Entity *other)
+{
+    if (other->getSolid()) {
+        hSpeed = (hSpeed * -1);
+    }
+}
+
 Monster_skeleton::Monster_skeleton(Game *game)
 {
     this->game = game;
     setName("monster_skeleton");
     setProperties(game->getObjectConfig(), getName());
-    hSpeed = 3;
+    //hSpeed = 3;
 }
 
 void Monster_skeleton::update()
@@ -30,6 +106,63 @@ void Monster_skeleton::update()
 }
 
 void Monster_skeleton::collision(Entity *other)
+{
+    if (other->getSolid()) {
+        hSpeed = (hSpeed * -1);
+    }
+}
+
+Monster_skeletonCaptain::Monster_skeletonCaptain(Game *game)
+{
+    this->game = game;
+    setName("monster_skeletonCaptain");
+    setProperties(game->getObjectConfig(), getName());
+    //hSpeed = 3;
+}
+
+void Monster_skeletonCaptain::update()
+{
+}
+
+void Monster_skeletonCaptain::collision(Entity *other)
+{
+    if (other->getSolid()) {
+        hSpeed = (hSpeed * -1);
+    }
+}
+
+Monster_skeletonMage::Monster_skeletonMage(Game *game)
+{
+    this->game = game;
+    setName("monster_skeletonMage");
+    setProperties(game->getObjectConfig(), getName());
+    //hSpeed = 3;
+}
+
+void Monster_skeletonMage::update()
+{
+}
+
+void Monster_skeletonMage::collision(Entity *other)
+{
+    if (other->getSolid()) {
+        hSpeed = (hSpeed * -1);
+    }
+}
+
+Monster_vampire::Monster_vampire(Game *game)
+{
+    this->game = game;
+    setName("monster_vampire");
+    setProperties(game->getObjectConfig(), getName());
+    //hSpeed = 3;
+}
+
+void Monster_vampire::update()
+{
+}
+
+void Monster_vampire::collision(Entity *other)
 {
     if (other->getSolid()) {
         hSpeed = (hSpeed * -1);
