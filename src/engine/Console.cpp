@@ -34,6 +34,8 @@ Console::Console()
 
     showDebug = true;
 
+    gridWidth = 1;
+
     text = "";
     prompt = "$ ";
 
@@ -63,6 +65,7 @@ Console::command Console::translateString(std::string const& str)
     else if (str == "log") return eLog;
     else if (str == "framedelay") return eFps;
     else if (str == "framecap") return eCap;
+    else if (str == "grid") return eGrid;
     else return eNone;
 }
 
@@ -76,12 +79,13 @@ void Console::parse(std::string text)
     switch (translateString(command[0])) {
     case eVersion: lineToAdd = Engine::getInstance()->getVersion(); break;
     case eQuit: InputManager::getInstance()->setQuit(); break;
-    case eHelp: lineToAdd = "version,quit,help,drawbbox,showdebug,log,framedelay,framecap"; break;
+    case eHelp: lineToAdd = "version,quit,help,drawbbox,showdebug,log,framedelay,framecap,grid"; break;
     case eDrawBBox: Engine::getInstance()->toggleDrawBoundingBoxes(); break;
     case eDebug: toggleDebug(); break;
     case eLog: Logger::getInstance()->setLoggingLevel(stringToInt(command[1])); break;
     case eFps: Engine::getInstance()->setFrameDelay(stringToInt(command[1])); break;
     case eCap: Engine::getInstance()->toggleFrameCap(); break;
+    case eGrid: if (stringToInt(command[1]) != 0) {gridWidth = stringToInt(command[1]);} break;
     default: colorToAdd = errorColor; lineToAdd = "Unrecognized Command: " + text; break;
     }
 
@@ -107,6 +111,10 @@ void Console::update()
         isOpen = !isOpen;
         text = "";
         InputManager::getInstance()->eraseTextInput();
+
+        if (!isOpen) {
+            InputManager::getInstance()->stopTextInput();
+        }
     }
 
     if (isOpen) {
@@ -132,8 +140,6 @@ void Console::update()
             InputManager::getInstance()->eraseTextInput();
             text = "";
         }
-    } else {
-        InputManager::getInstance()->stopTextInput();
     }
 }
 
@@ -145,7 +151,7 @@ void Console::draw()
         Engine::getInstance()->renderTextF(Engine::getInstance()->getViewportX() + Engine::getInstance()->getViewportW() - 50, Engine::getInstance()->getViewportY() + 10, font,
                                            "FPS: %i", Engine::getInstance()->getFPS());
         Engine::getInstance()->renderTextF(Engine::getInstance()->getViewportX() + Engine::getInstance()->getViewportW() - 110, Engine::getInstance()->getViewportY() + 20, font,
-                                           "MOUSE XY: %i %i", InputManager::getInstance()->getMouseX(), InputManager::getInstance()->getMouseY());
+                                           "MOUSE XY: %i %i", snapToGrid(InputManager::getInstance()->getMouseX(), gridWidth), snapToGrid(InputManager::getInstance()->getMouseY(), gridWidth));
     }
 
     if (isOpen) {

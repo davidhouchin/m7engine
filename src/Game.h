@@ -23,6 +23,7 @@ using namespace M7engine;
 namespace SampleGame {
 
 class Level;
+class LevelEditor;
 
 class Game {
 private:
@@ -34,6 +35,7 @@ private:
     WindowManager *wm;
     ConfigReader *oConfig;
     Level *level;
+    LevelEditor *levelEditor;
 
 public:
     Game(std::string configFile);

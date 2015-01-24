@@ -26,6 +26,11 @@ int M7engine::stringToInt(std::string text)
     return std::atoi(text.c_str());
 }
 
+int M7engine::snapToGrid(int num, int grid)
+{
+    return num - (num % grid);
+}
+
 std::string& M7engine::removeWhitespace(std::string &str)
 {
     str.erase(std::remove(str.begin(), str.end(), ' '), str.end());

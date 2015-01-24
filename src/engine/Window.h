@@ -32,6 +32,8 @@ namespace M7engine {
 class Window {
 public:
     Window(int x, int y, int width, int height);
+    Window();
+
     virtual ~Window();
 
     /**

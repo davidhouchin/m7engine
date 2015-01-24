@@ -281,4 +281,125 @@ void Button::onClick()
     }
 }
 
+
+TextBox::TextBox(int x, int y, int width, int height)
+{
+    this->x = x;
+    this->y = y;
+    this->width = width;
+    this->height = height;
+
+    selected = false;
+
+    name = "";
+    text = "";
+    parent = NULL;
+
+    ConfigReader* c = WindowManager::getInstance()->getConfig();
+
+    drawBorder = c->getBool("textbox", "draw_border", false);
+    drawBody = c->getBool("textbox", "draw_body", false);
+
+    textColor = { static_cast<Uint8>(c->getInt("textbox", "text_r", 0)),
+                  static_cast<Uint8>(c->getInt("textbox", "text_g", 0)),
+                  static_cast<Uint8>(c->getInt("textbox", "text_b", 0)),
+                  static_cast<Uint8>(c->getInt("textbox", "text_a", 255))};
+
+    bodyColor = { static_cast<Uint8>(c->getInt("textbox", "body_r", 192)),
+                  static_cast<Uint8>(c->getInt("textbox", "body_g", 192)),
+                  static_cast<Uint8>(c->getInt("textbox", "body_b", 192)),
+                  static_cast<Uint8>(c->getInt("textbox", "body_a", 255))};
+
+    spriteTopLeft = ResourceManager::getInstance()->getSprite(
+                c->getString("textbox", "topleft"));
+    spriteTopRight = ResourceManager::getInstance()->getSprite(
+                c->getString("textbox", "topright"));
+    spriteBottomLeft = ResourceManager::getInstance()->getSprite(
+                c->getString("textbox", "bottomleft"));
+    spriteBottomRight = ResourceManager::getInstance()->getSprite(
+                c->getString("textbox", "bottomright"));
+    spriteTopCenter = ResourceManager::getInstance()->getSprite(
+                c->getString("textbox", "topcenter"));
+    spriteBottomCenter = ResourceManager::getInstance()->getSprite(
+                c->getString("textbox", "bottomcenter"));
+    spriteLeftCenter = ResourceManager::getInstance()->getSprite(
+                c->getString("textbox", "leftcenter"));
+    spriteRightCenter = ResourceManager::getInstance()->getSprite(
+                c->getString("textbox", "rightcenter"));
+
+    font = ResourceManager::getInstance()->getFont(
+                c->getString("textbox", "font"));
+}
+
+void TextBox::update()
+{
+    int mx, my, tx, ty;
+    mx = InputManager::getInstance()->getMouseX();
+    my = InputManager::getInstance()->getMouseY();
+    tx = x - Engine::getInstance()->getViewportX();
+    ty = y - Engine::getInstance()->getViewportY();
+
+    //If user clicked inside textbox:
+    if ((mx > tx) && (mx < (tx+width)) && (my > ty) && (my < (ty+height)) && InputManager::getInstance()->getMouseReleased(MOUSE_LEFT)) {
+        selected = true;
+        text = "";
+
+    }
+    //If user clicked outside textbox:
+    else if ((selected) && ((mx < tx) || (mx > (tx+width)) || (my < ty) || (my > (ty+height))) && InputManager::getInstance()->getMouseReleased(MOUSE_LEFT)) {
+        selected = false;
+        InputManager::getInstance()->eraseTextInput();
+        InputManager::getInstance()->stopTextInput();
+    }
+
+    if (cursorFlash) {
+        cursorTimer++;
+        if (cursorTimer >= cursorInterval) {
+            cursorIsFlashing = !cursorIsFlashing;
+            cursorTimer = 0;
+        }
+    }
+
+    if (selected) {
+        InputManager::getInstance()->startTextInput();
+
+        if (InputManager::getInstance()->getTextString() != "") {
+            text = InputManager::getInstance()->getTextString();
+        }
+    }
+}
+
+void TextBox::draw()
+{
+    //Draw body.
+    if ((selected) && (drawBody)) {
+        drawFilledRectangle(x + 1, y + 1, width-2, height-2, bodyColor.r, bodyColor.g, bodyColor.b, bodyColor.a);
+    }
+
+    //Draw borders, adjust position if clicked.
+    if (drawBorder) {
+        spriteTopLeft->draw(x, y);
+        spriteTopRight->draw(x + (width-3), y);
+        spriteBottomLeft->draw(x, y + (height-3));
+        spriteBottomRight->draw(x + (width-3), y + (height-3));
+
+        spriteTopCenter->setWidth(width - 6);
+        spriteTopCenter->draw(x + 3, y);
+        spriteBottomCenter->setWidth(width - 6);
+        spriteBottomCenter->draw(x + 3, y + (height-3));
+        spriteLeftCenter->setHeight(height - 6);
+        spriteLeftCenter->draw(x, y + 3);
+        spriteRightCenter->setHeight(height - 6);
+        spriteRightCenter->draw(x + (width-3), y + 3);
+    }
+
+    //Draw the text
+    if (text != "") {
+        font->setSDLColor(textColor);
+
+        Engine::getInstance()->renderText(x + (width/2) - font->getTextWidth(text.c_str())/2,
+                                          y + (height/2) - font->getTextHeight(text.c_str())/2,
+                                          font, text.c_str());
+    }
+}
 }

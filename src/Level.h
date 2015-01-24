@@ -13,7 +13,6 @@
  *  @version 1.0 1/21/15
  */
 
-
 #ifndef LEVEL_H
 #define LEVEL_H
 

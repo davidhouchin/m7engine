@@ -289,6 +289,56 @@ protected:
     Font* font;
 };
 
+class TextBox : public Widget {
+public:
+    TextBox(int x, int y, int width, int height);
+
+    void update();
+
+    /**
+     *  Main drawing function called per frame.
+     */
+    void draw();
+
+    /**
+     *  Set whether to draw the borders around the bounds of the label.
+     *  @param useBorder Whether to draw a border or not.
+     */
+    void setBorder(bool useBorder) { drawBorder = useBorder; }
+
+    /**
+     *  Set whether to draw a body for the widget.
+     *  @param useBody Whether to draw a body or not.
+     */
+    void setBody(bool useBody) { drawBody = useBody; }
+
+    /**
+     *  Set the text to display in the label.
+     *  @param text The text to display.
+     */
+    void setText(std::string text) { this->text = text; }
+
+    /**
+     *  Returns the text currently set to display in the label.
+     *  @return String containing current text to display.
+     */
+    std::string getText() { return this->text; }
+
+protected:
+    std::string text;
+
+    bool selected, drawBorder, drawBody, cursorFlash, cursorIsFlashing;
+
+    int cursorInterval, cursorTimer, cursorPosition, cursorX, cursorY;
+
+    Sprite  *spriteTopLeft, *spriteTopRight, *spriteBottomLeft, *spriteBottomRight,
+             *spriteTopCenter, *spriteBottomCenter, *spriteLeftCenter, *spriteRightCenter;
+
+    SDL_Color bodyColor, textColor;
+
+    Font* font;
+};
+
 }
 
 #endif

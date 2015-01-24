@@ -59,6 +59,8 @@ private:
 
     bool isOpen, showDebug;
 
+    int gridWidth;
+
     std::string text, prompt;
 
     std::string lines[LINE_NUM];
@@ -77,6 +79,7 @@ private:
         eLog,
         eFps,
         eCap,
+        eGrid,
         eNone
     };
 

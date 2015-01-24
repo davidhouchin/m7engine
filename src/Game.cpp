@@ -15,6 +15,7 @@
 
 #include "Game.h"
 #include "Level.h"
+#include "LevelEditor.h"
 
 namespace SampleGame {
 Game::Game(std::string configFile)
@@ -85,6 +86,9 @@ bool Game::initObjects()
         return false;
     }
 
+    levelEditor = new LevelEditor(this);
+    levelEditor->getWindow()->setVisible(false);
+
     return true;
 }
 
@@ -113,6 +117,10 @@ bool Game::run()
         case 1: engine->setWindowMode(2); break;
         case 2: engine->setWindowMode(0); break;
         }
+    }
+
+    if ((input->getKeyHeld(KEY_LEFT_SHIFT)) && (input->getKeyReleased(KEY_E))) {
+        levelEditor->getWindow()->setVisible(!levelEditor->getWindow()->getVisible());
     }
 
     return true;

@@ -35,6 +35,13 @@ WindowManager::WindowManager()
 
 WindowManager::~WindowManager()
 {
+    for (size_t i = 0; i < windows.size(); i++) {
+        if (windows[i] != NULL) {
+            delete windows[i];
+        }
+    }
+
+    windows.clear();
 }
 
 bool WindowManager::loadConfig(std::string filename){
@@ -68,6 +75,10 @@ void WindowManager::addWindow(Window *window)
     windows.push_back(window);
     Logger::getInstance()->logMessage(1, "WM added window id: %i", id);
     id++;
+}
+
+Window::Window()
+{
 }
 
 Window::Window(int x, int y, int width, int height)
@@ -134,6 +145,13 @@ Window::Window(int x, int y, int width, int height)
 
 Window::~Window()
 {
+    for (size_t i = 0; i < children.size(); i++) {
+        if (children[i] != NULL) {
+            delete children[i];
+        }
+    }
+
+    children.clear();
 }
 
 void Window::update()
