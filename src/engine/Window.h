@@ -39,18 +39,18 @@ public:
     /**
      *  Main drawing function called per frame.
      */
-    void draw();
+    virtual void draw();
 
     /**
      *  Main update function called per frame.
      */
-    void update();
+    virtual void update();
 
     /**
      *  Function to handle the input when a widget is interacted with through passing the widget's name. To be implemented by user-defined windows.
      */
-    virtual void handleInput(std::string name) {
-        Logger::getInstance()->logMessage(1, "Window %i recieved input from widget %s", this->id, name.c_str());
+    virtual void handleInput(Button *button) {
+        Logger::getInstance()->logMessage(1, "Window %i recieved input from widget %s", this->id, button->getName().c_str());
     }
 
     /**

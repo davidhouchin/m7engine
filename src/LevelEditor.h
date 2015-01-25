@@ -20,21 +20,18 @@
 #include "Level.h"
 
 namespace SampleGame {
-class EditorWindow : public Window {
+class LevelEditor : public Window {
 private:
     Game *game;
-public:
-    EditorWindow(Game *game, int x, int y, int width, int height);
-    void handleInput(std::string name);
-};
+    Label *objLabel, *lvlLabel;
+    TextBox *objTextBox, *lvlTextBox;
+    Button *objButton, *lvlButton;
 
-class LevelEditor {
-private:
-    Game *game;
-    Window *editorWindow;
+    bool drawSquare;
 public:
-    LevelEditor(Game *game);
-    Window* getWindow() {return this->editorWindow;}
+    LevelEditor(Game *game, int x, int y, int width, int height);
+    void handleInput(Button *button);
+    void draw();
 };
 }
 

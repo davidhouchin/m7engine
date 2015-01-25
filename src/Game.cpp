@@ -86,8 +86,13 @@ bool Game::initObjects()
         return false;
     }
 
-    levelEditor = new LevelEditor(this);
-    levelEditor->getWindow()->setVisible(false);
+    levelEditor = new LevelEditor(this,
+                                  engine->getViewportX()+64,
+                                  engine->getViewportY()+64,
+                                  200,
+                                  200);
+    levelEditor->setVisible(false);
+    wm->addWindow(levelEditor);
 
     return true;
 }
@@ -120,7 +125,7 @@ bool Game::run()
     }
 
     if ((input->getKeyHeld(KEY_LEFT_SHIFT)) && (input->getKeyReleased(KEY_E))) {
-        levelEditor->getWindow()->setVisible(!levelEditor->getWindow()->getVisible());
+        levelEditor->setVisible(!levelEditor->getVisible());
     }
 
     return true;

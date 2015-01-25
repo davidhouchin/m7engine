@@ -277,7 +277,7 @@ void Button::draw()
 void Button::onClick()
 {
     if (parent != NULL) {
-        parent->handleInput(getName());
+        parent->handleInput(this);
     }
 }
 
