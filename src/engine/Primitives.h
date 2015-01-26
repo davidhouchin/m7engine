@@ -21,7 +21,7 @@
 namespace M7engine {
 
     /**
-     *  Draws a line.
+     *  @brief Draws a line.
      *  @param x1 The originating X point.
      *  @param y1 The originating Y point.
      *  @param x2 The destination X point.
@@ -34,7 +34,7 @@ namespace M7engine {
     void drawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
     /**
-     *  Draws an outlined rectangle.
+     *  @brief Draws an outlined rectangle.
      *  @param x1 The upper left X point.
      *  @param y1 The upper left Y point.
      *  @param w The width of the rectangle.
@@ -47,7 +47,7 @@ namespace M7engine {
     void drawRectangle(int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
     /**
-     *  Draws a filled rectangle.
+     *  @brief Draws a filled rectangle.
      *  @param x1 The upper left X point.
      *  @param y1 The upper left Y point.
      *  @param w The width of the rectangle.

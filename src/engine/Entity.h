@@ -34,14 +34,14 @@ public:
     virtual ~Entity();
 
     /**
-     *  Load bitmap to use as sprite.
+     *  @brief Load bitmap to use as sprite.
      *  This mainly passes to the sprite's loading functions.
      *  @param *filename The filename to load.
      */
     virtual bool loadImage(const char *filename);
 
     /**
-     *  Load bitmap to use as sprite, specifying parameters for animation.
+     *  @brief Load bitmap to use as sprite, specifying parameters for animation.
      *  This mainly passes to the sprite's loading functions.
      *  @param *filename The filename to load.
      *  @param width Width of an individual frame.
@@ -52,142 +52,142 @@ public:
     virtual bool loadImage(const char *filename, int width, int height, int columns, int frames);
 
     /**
-     *  Directly set a sprite as the attached sprite.
+     *  @brief Directly set a sprite as the attached sprite.
      *  @param *image Pointer to sprite to use.
      */
     virtual void setImage(Sprite* image);
 
     /**
-     *  Reload bitmap from disk.
+     *  @brief Reload bitmap from disk.
      */
     virtual void reloadImage();
 
     /**
-     *  Main update function to be called per frame. Must be implemented by child.
+     *  @brief Main update function to be called per frame. Must be implemented by child.
      */
     virtual void update() {}
 
     /**
-     *  Updates timers for ticking alarms.
+     *  @brief Updates timers for ticking alarms.
      */
     void updateTimers();
 
     /**
-     *  Function called upon collision. Must be implemented by child.
+     *  @brief Function called upon collision. Must be implemented by child.
      *  @param *other Pointer to entity that was collided with.
      */
     virtual void collision(Entity*) {}
 
     /**
-     *  Main movement function called per frame. Adjusts position based on
+     *  @brief Main movement function called per frame. Adjusts position based on
      *  current vector and speed.
      */
     void move();
 
     /**
-     *  Main drawing function called per frame.
+     *  @brief Main drawing function called per frame.
      */
     virtual void draw();
 
     /**
-     *  Function called in event of timer going off. Called automatically by alarm.
+     *  @brief Function called in event of timer going off. Called automatically by alarm.
      *  @param timerNum The number of the timer that went off.
      */
     virtual void alarm(int) {}
 
     /**
-     *  Returns the name of the object.
+     *  @brief Returns the name of the object.
      *  @return String containing the object's name.
      */
     std::string getName() { return name; }
 
     /**
-     *  Set the name of the particular instance.
+     *  @brief Set the name of the particular instance.
      *  @param name String containing the new name.
      */
     void setName(std::string name) { this->name = name; }
 
     /**
-     *  Returns the name of the object family. Secondary name for grouping objects.
+     *  @brief Returns the name of the object family. Secondary name for grouping objects.
      *  @return String containing the object family name.
      */
     std::string getFamily() { return family; }
 
     /**
-     *  Set the family name of the particular instance.
+     *  @brief Set the family name of the particular instance.
      *  @param family String containing the new family name.
      */
     void setFamily(std::string family) { this->family = family; }
 
     /**
-     *  Set entity to be solid or not.
+     *  @brief Set entity to be solid or not.
      *  @param solid Whether to set solid or not.
      */
     void setSolid(bool solid) { this->solid = solid; }
 
     /**
-     *  Returns whether entity is solid.
+     *  @brief Returns whether entity is solid.
      *  @return Whether entity is solid or not.
      */
     bool getSolid() { return solid; }
 
     /**
-     *  Returns current position in vector format.
+     *  @brief Returns current position in vector format.
      *  @return A vector containing positional information.
      */
     Vector2 getPosition() { return position; }
 
     /**
-     *  Set position using a vector.
+     *  @brief Set position using a vector.
      *  @param vector Vector to set position to.
      */
     void setPosition(Vector2 vector) { this->position = vector; }
 
     /**
-     *  Set position using X and Y integer coordinates.
+     *  @brief Set position using X and Y integer coordinates.
      *  @param x X position to set.
      *  @param y Y position to set.
      */
     void setPosition(double x, double y) { position.set(x - xOffset, y - yOffset); }
 
     /**
-     *  Return current X position.
+     *  @brief Return current X position.
      *  @return The current X position.
      */
     double getX() { return position.getX() + xOffset; }
 
     /**
-     *  Return current Y position.
+     *  @brief Return current Y position.
      *  @return The current Y position.
      */
     double getY() { return position.getY() + yOffset; }
 
     /**
-     *  Set the current X coordinate.
+     *  @brief Set the current X coordinate.
      *  @param x X position to set.
      */
     void setX(double x) { position.setX(x - xOffset); }
 
     /**
-     *  Set the current Y position.
+     *  @brief Set the current Y position.
      *  @param y Y position to set.
      */
     void setY(double y) { position.setY(y - yOffset); }
 
     /**
-     *  Return current X offset.
+     *  @brief Return current X offset.
      *  @return The current X offset.
      */
     int getXOffset() { return xOffset; }
 
     /**
-     *  Return current Y offset.
+     *  @brief Return current Y offset.
      *  @return The current Y offset.
      */
     int getYOffset() { return yOffset; }
 
     /**
-     *  Set the bounding box using the dimensions of a rect.
+     *  @brief Set the bounding box using the dimensions of a rect.
      *  @param bbox A SDL_Rect to use as the new bounding box.
      */
     void setBBox(SDL_Rect bbox) {
@@ -198,198 +198,198 @@ public:
     }
 
     /**
-     *  Return the X offset of the bounding box from the entity's top left corner.
+     *  @brief Return the X offset of the bounding box from the entity's top left corner.
      *  @return The current X offset.
      */
     int getBBoxXOffset() { return xBBox; }
 
     /**
-     *  Return the Y offset of the bounding box from the entity's top left corner.
+     *  @brief Return the Y offset of the bounding box from the entity's top left corner.
      *  @return The current Y offset.
      */
     int getBBoxYOffset() { return yBBox; }
 
     /**
-     *  Return the in-world X position of the bounding box.
+     *  @brief Return the in-world X position of the bounding box.
      *  @return The bounding box's X position.
      */
     int getXBBox() { return bbox.x; }
 
     /**
-     *  Return the in-world Y position of the bounding box.
+     *  @brief Return the in-world Y position of the bounding box.
      *  @return The bounding box's Y position.
      */
     int getYBBox() { return bbox.y; }
 
     /**
-     *  Return the width of the bounding box.
+     *  @brief Return the width of the bounding box.
      *  @return The bounding box's width.
      */
     int getWBBox() { return bbox.w; }
 
     /**
-     *  Return the height of the bounding box.
+     *  @brief Return the height of the bounding box.
      *  @return The bounding box's height.
      */
     int getHBBox() { return bbox.h; }
 
     /**
-     *  Return the bounding box as a whole rect.
+     *  @brief Return the bounding box as a whole rect.
      *  @return The bounding box itself.
      */
     SDL_Rect getBBox() { return bbox; }
 
     /**
-     *  Manually set the entity ID.
+     *  @brief Manually set the entity ID.
      *  @param id Int to set id to.
      */
     void setID(int id) { this->id = id; }
 
     /**
-     *  Returns current entity ID.
+     *  @brief Returns current entity ID.
      *  @return The current ID.
      */
     int getID() { return id; }
 
     /**
-     *  Returns whether entity is visible.
+     *  @brief Returns whether entity is visible.
      *  @return Bool specifying visibility.
      */
     bool getVisible() { return visible; }
 
     /**
-     *  Set whether entity is visible or not.
+     *  @brief Set whether entity is visible or not.
      *  @param visible Bool specifying visibility.
      */
     void setVisible(bool visible) { this->visible = visible; }
 
     /**
-     *  Returns whether entity is active or not.
+     *  @brief Returns whether entity is active or not.
      *  @return Bool specifiying if active.
      */
     bool getActive() { return active; }
 
     /**
-     *  Retrieve an int value from a loaded configuration file.
+     *  @brief Retrieve an int value from a loaded configuration file.
      *  @param active Bool specifying if active.
      */
     void setActive(bool active) { this->active = active; }
 
     /**
-     *  Return the current drawing depth.
+     *  @brief Return the current drawing depth.
      *  @return The current drawing depth.
      */
     int getDepth() { return depth; }
 
     /**
-     *  Sets the drawing depth. This sets the order in which this object is drawn. Lower numbers are drawn over higher numbers.
+     *  @brief Sets the drawing depth. This sets the order in which this object is drawn. Lower numbers are drawn over higher numbers.
      *  @param depth The drawing depth to set this object to.
      */
     void setDepth(int depth) { this->depth = depth; }
 
     /**
-     *  Return current velocity in vector format.
+     *  @brief Return current velocity in vector format.
      *  @return Vector containing current velocity.
      */
     Vector2 getVelocity(){ return velocity; }
 
     /**
-     *  Set current velocity using a vector.
+     *  @brief Set current velocity using a vector.
      *  @param v Vector containing velocity information.
      */
     void setVelocity(Vector2 v){ this->velocity = v; }
 
     /**
-     *  Set current velocity manually using X and Y coordinates.
+     *  @brief Set current velocity manually using X and Y coordinates.
      *  @param x X coordinate to set velocity to.
      *  @param y Y coordinate to set velocity to.
      */
     void setVelocity(double x, double y){ velocity.setX(x); velocity.setY(y); }
 
     /**
-     *  Set size by specifying width and height.
+     *  @brief Set size by specifying width and height.
      *  @param width Width to set.
      *  @param height Height to set.
      */
     void setSize(int width, int height) { this->width = width; this->height = height; }
 
     /**
-     *  Set size automatically using sprite dimensions.
+     *  @brief Set size automatically using sprite dimensions.
      */
     void setSizeToImageScale() { this->width = scale * image->getWidth(); this->height = scale * image->getHeight(); }
 
     /**
-     *  Returns width of entity.
+     *  @brief Returns width of entity.
      *  @return The current width.
      */
     int getWidth() { return this->width; }
 
     /**
-     *  Set width of entity.
+     *  @brief Set width of entity.
      *  @param width Int to set width to.
      */
     void setWidth(int width) { this->width = width; }
 
     /**
-     *  Returns height of entity.
+     *  @brief Returns height of entity.
      *  @return The current height.
      */
     int getHeight() { return this->height; }
 
     /**
-     *  Set height of entity.
+     *  @brief Set height of entity.
      *  @param height Int to set height to.
      */
     void setHeight(int height) { this->height = height; }
 
     /**
-     *  Set the object origin to the center of the entity in respect to current width and height.
+     *  @brief Set the object origin to the center of the entity in respect to current width and height.
      */
     void setOriginToCenter() { xOffset = width/2; yOffset = height/2; }
 
     /**
-     *  Sets the object origin to the center of the entity in respect to the center of the current sprite.
+     *  @brief Sets the object origin to the center of the entity in respect to the center of the current sprite.
      */
     void setOriginToImageCenter() { xOffset = image->getWidth()/2; yOffset = image->getHeight()/2; }
 
     /**
-     *  Returns image scale of entity.
+     *  @brief Returns image scale of entity.
      *  @return The current image scale.
      */
     double getScale() { return scale; }
 
     /**
-     *  Set the image scale of the entity.
+     *  @brief Set the image scale of the entity.
      *  @param scale Int to set scale to.
      */
     void setScale(double scale) { this->scale = scale; }
 
     /**
-     *  Returns the current direction entity is facing.
+     *  @brief Returns the current direction entity is facing.
      *  @return The current direction.
      */
     int getDirection() { return direction; }
 
     /**
-     *  Set the direction entity is to face.
+     *  @brief Set the direction entity is to face.
      *  @param direction Int to set direction to.
      */
     void setDirection(int direction) { this->direction = direction; }
 
     /**
-     *  Returns a pointer to the attached sprite.
+     *  @brief Returns a pointer to the attached sprite.
      *  @return A pointer to the attached sprite.
      */
     Sprite* getSprite(){ return image; }
 
     /**
-     *  Returns the current color as a SDL_Color.
+     *  @brief Returns the current color as a SDL_Color.
      *  @return The current SDL_Color.
      */
     SDL_Color getColor() { return color; }
 
     /**
-     *  Set color using RGB values. Accepts values from 0 - 255.
+     *  @brief Set color using RGB values. Accepts values from 0 - 255.
      *  @param r The red value.
      *  @param g The green value.
      *  @param b The blue value.
@@ -397,13 +397,13 @@ public:
     void setColor(Uint8 r, Uint8 g, Uint8 b) { color.r = r; color.g = g; color.b = b; }
 
     /**
-     *  Set the alpha. Accepts values from 0 - 255.
+     *  @brief Set the alpha. Accepts values from 0 - 255.
      *  @param a The alpha value.
      */
     void setAlpha(Uint8 a) { color.a = a; }
 
     /**
-     *  Sets the main properties from file using a configuration reader. Sets variables not found back to defaults.
+     *  @brief Sets the main properties from file using a configuration reader. Sets variables not found back to defaults.
      *  @param *reader The ConfigReader to request information from.
      *  @param name String containing name of object properties to request.
      *  @return Whether the request was successful or not. Mainly if the named section could be found.
@@ -429,85 +429,85 @@ public:
     virtual ~Tile();
 
     /**
-     *  Directly set a sprite as the attached sprite.
+     *  @brief Directly set a sprite as the attached sprite.
      *  @param *image Pointer to sprite to use.
      */
     virtual void setImage(Sprite* image);
 
     /**
-     *  Main drawing function called per frame.
+     *  @brief Main drawing function called per frame.
      */
     virtual void draw();
 
     /**
-     *  Returns the name of the object.
+     *  @brief Returns the name of the object.
      *  @return String containing the object's name.
      */
     std::string getName() { return name; }
 
     /**
-     *  Set the name of the particular instance.
+     *  @brief Set the name of the particular instance.
      *  @param name String containing the new name.
      */
     void setName(std::string name) { this->name = name; }
 
     /**
-     *  Returns current position in vector format.
+     *  @brief Returns current position in vector format.
      *  @return A vector containing positional information.
      */
     Vector2 getPosition() { return position; }
 
     /**
-     *  Set position using a vector.
+     *  @brief Set position using a vector.
      *  @param vector Vector to set position to.
      */
     void setPosition(Vector2 vector) { this->position = vector; }
 
     /**
-     *  Set position using X and Y integer coordinates.
+     *  @brief Set position using X and Y integer coordinates.
      *  @param x X position to set.
      *  @param y Y position to set.
      */
     void setPosition(double x, double y) { position.set(x, y); }
 
     /**
-     *  Return current X position.
+     *  @brief Return current X position.
      *  @return The current X position.
      */
     double getX() { return position.getX(); }
 
     /**
-     *  Return current Y position.
+     *  @brief Return current Y position.
      *  @return The current Y position.
      */
     double getY() { return position.getY(); }
 
     /**
-     *  Set the current X coordinate.
+     *  @brief Set the current X coordinate.
      *  @param x X position to set.
      */
     void setX(double x) { position.setX(x); }
 
     /**
-     *  Set the current Y position.
+     *  @brief Set the current Y position.
      *  @param y Y position to set.
      */
     void setY(double y) { position.setY(y); }
 
     /**
-     *  Return the current drawing depth.
+     *  @brief Return the current drawing depth.
      *  @return The current drawing depth.
      */
     int getDepth() { return depth; }
 
     /**
-     *  Sets the drawing depth. This sets the order in which this tile is drawn. Lower numbers are drawn over higher numbers.
+     *  @brief Sets the drawing depth. This sets the order in which this tile is drawn. Lower numbers are drawn over higher numbers.
      *  @param depth The drawing depth to set this tile to.
      */
     void setDepth(int depth) { this->depth = depth; }
 
     /**
-     *  Sets the main properties from file using a configuration reader. Sets variables not found back to defaults.
+     *  @brief Sets the main properties from file using a configuration reader. Sets variables not found back to defaults.
      *  @param *reader The ConfigReader to request information from.
      *  @param name String containing name of object properties to request.
      *  @return Whether the request was successful or not. Mainly if the named section could be found.

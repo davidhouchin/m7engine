@@ -37,10 +37,10 @@ std::string intToString(int num);
 int stringToInt(std::string text);
 
 /**
- * @brief Snaps the given int to the next lowest grid value.
- * @param num Int to snap.
- * @param grid Width of grid.
- * @return The next lowest grid value.
+ *  @brief Snaps the given int to the next lowest grid value.
+ *  @param num Int to snap.
+ *  @param grid Width of grid.
+ *  @return The next lowest grid value.
  */
 int snapToGrid(int num, int grid);
 
@@ -60,10 +60,10 @@ std::string& removeWhitespace(std::string &str);
 std::vector<std::string> split(const std::string& str, char delim);
 
 /**
- * @brief Split the given string into a vector of strings based on a delimeter.
- * @param str The string to split.
- * @param delim The character to treat as the delimiter.
- * @return A vector containing the individual strings.
+ *  @brief Split the given string into a vector of strings based on a delimeter.
+ *  @param str The string to split.
+ *  @param delim The character to treat as the delimiter.
+ *  @return A vector containing the individual strings.
  */
 std::vector<std::string> chunkify(const std::string& str, const char& delim);
 };

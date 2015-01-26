@@ -80,7 +80,7 @@ namespace M7engine {
 class Engine {
 public:
     /**
-     * Returns the static instance of the engine.
+     * @brief Returns the static instance of the engine.
      * @return Pointer to engine.
      */
     static Engine* getInstance();
@@ -88,7 +88,7 @@ public:
     virtual ~Engine();
 
     /**
-     *  Initialize engine with specified video mode. Returns true if successful.
+     *  @brief Initialize engine with specified video mode. Returns true if successful.
      *  @param width Width of display resolution.
      *  @param height Height of display resolution.
      *  @param mode Window mode. 0-Windowed. 1-Fullscreen. 2-Fullscreen Windowed.
@@ -96,106 +96,106 @@ public:
     bool init(int width, int height, int mode);
 
     /**
-     *  Main update function to be called every frame.
+     *  @brief Main update function to be called every frame.
      */
     bool update();
 
     /**
-     *  Call update function of all registered entities.
+     *  @brief Call update function of all registered entities.
      */
     void updateEntities();
 
     /**
-     *  Call draw routines of all registered entities.
+     *  @brief Call draw routines of all registered entities.
      */
     void drawEntities();
 
     /**
-     *  Cleans inactive entities.
+     *  @brief Cleans inactive entities.
      */
     void cleanEntities();
 
     /**
-     *  Register an entity and assigns an entity ID.
+     *  @brief Register an entity and assigns an entity ID.
      *  @param *entity Pointer to entity to register.
      */
     void addEntity(Entity *entity);
 
     /**
-     *  Deletes the entity with the passed entity ID.
+     *  @brief Deletes the entity with the passed entity ID.
      *  @param id ID of entity to remove.
      */
     void destroyEntity(int id);
 
     /**
-     *  Deletes all registered entities.
+     *  @brief Deletes all registered entities.
      */
     void destroyAllEntities();
 
     /**
-     *  Returns a pointer to a requested entity ID.
+     *  @brief Returns a pointer to a requested entity ID.
      *  @param id ID of entity to find.
      *  @return Pointer of entity, if found.
      */
     Entity *findEntity(int id);
 
     /**
-     *  Returns a pointer to the list of registered entities.
+     *  @brief Returns a pointer to the list of registered entities.
      *  @return A pointer to the list of registered entities.
      */
     std::vector<Entity*> getEntityList() { return entities; }
 
     /**
-     *  Return the number of registered entities.
+     *  @brief Return the number of registered entities.
      *  @return The number of registered entities.
      */
     long getEntityCount() { return (long)entities.size(); }
 
     /**
-     *  Sort all registered entities by their drawing depths.
+     *  @brief Sort all registered entities by their drawing depths.
      */
     void sortEntitiesByDepth();
 
     /**
-     *  Register a tile.
+     *  @brief Register a tile.
      *  @param *tile Pointer to tile to register.
      */
     void addTile(Tile *tile);
 
     /**
-     *  Deletes all registered tiles.
+     *  @brief Deletes all registered tiles.
      */
     void destroyAllTiles();
 
     /**
-     *  Returns a pointer to the list of registered tiles.
+     *  @brief Returns a pointer to the list of registered tiles.
      *  @return A pointer to the list of registered tiles.
      */
     std::vector<Tile*> getTileList() { return tiles; }
 
     /**
-     *  Return the number of registered tiles.
+     *  @brief Return the number of registered tiles.
      *  @return The number of registered tiles.
      */
     long getTileCount() { return (long)tiles.size(); }
 
     /**
-     *  Sort all registered tiles by their drawing depths.
+     *  @brief Sort all registered tiles by their drawing depths.
      */
     void sortTilesByDepth();
 
     /**
-     *  Call draw routines of all registered tiles.
+     *  @brief Call draw routines of all registered tiles.
      */
     void drawTiles();
 
     /**
-     *  Updates the collision states of all registered entities.
+     *  @brief Updates the collision states of all registered entities.
      */
     void updateCollisions();
 
     /**
-     *  Render a texture onto the display with default width and height.
+     *  @brief Render a texture onto the display with default width and height.
      *  @param *texture SDL_Texture to render.
      *  @param x The X position to render texture at.
      *  @param y The Y position to render texture at.
@@ -203,7 +203,7 @@ public:
     void renderTexture(SDL_Texture *texture, int x, int y);
 
     /**
-     *  Render a texture onto the display with default width and height.
+     *  @brief Render a texture onto the display with default width and height.
      *  @param *texture SDL_Texture to render.
      *  @param x The X position to render texture at.
      *  @param y The Y position to render texture at.
@@ -213,7 +213,7 @@ public:
     void renderTexture(SDL_Texture *texture, int x, int y, int w, int h);
 
     /**
-     *  Set the position of the viewport.
+     *  @brief Set the position of the viewport.
      *  @param x The X position of the viewport's top left corner.
      *  @param y The Y position of the viewport's top left corner.
      *  @param w The width of the viewport.
@@ -222,67 +222,67 @@ public:
     void setViewport(int x, int y, int w, int h);
 
     /**
-     *  Returns the X position of the viewport's top left corner.
+     *  @brief Returns the X position of the viewport's top left corner.
      *  @return X position of viewport.
      */
     int getViewportX() { return viewport.x; }
 
     /**
-     *  Returns the Y position of the viewport's top left corner.
+     *  @brief Returns the Y position of the viewport's top left corner.
      *  @return Y position of viewport.
      */
     int getViewportY() { return viewport.y; }
 
     /**
-     *  Returns the width of the viewport.
+     *  @brief Returns the width of the viewport.
      *  @return Width of viewport.
      */
     int getViewportW() { return viewport.w; }
 
     /**
-     *  Returns the height of the viewport.
+     *  @brief Returns the height of the viewport.
      *  @return Height of viewport.
      */
     int getViewportH() { return viewport.h; }
 
     /**
-     *  Returns a pointer to the current window rendered to.
+     *  @brief Returns a pointer to the current window rendered to.
      *  @return Pointer to currently used SDL_Window.
      */
     SDL_Window* getWindow() { return window; }
 
     /**
-     *  Returns a pointer to the current renderer.
+     *  @brief Returns a pointer to the current renderer.
      *  @return Pointer to currently used SDL_Renderer.
      */
     SDL_Renderer* getRenderer() { return renderer; }
 
     /**
-     *  Returns the currently set frame rate.
+     *  @brief Returns the currently set frame rate.
      *  @return An Int containing currently set frame rate.
      */
     int getFrameRate() { return this->frameRate; }
 
     /**
-     *  Returns the number of frames since engine start.
+     *  @brief Returns the number of frames since engine start.
      *  @return Int value of processed frames thus far.
      */
     int getFrameCount() { return this->frameCount; }
 
     /**
-     *  Returns the currently achieved frames per second.
+     *  @brief Returns the currently achieved frames per second.
      *  @return Float of current FPS.
      */
     int getFPS() { return this->fps; }
 
     /**
-     *  Sets the frame delay to used per engine cycle.
+     *  @brief Sets the frame delay to used per engine cycle.
      *  @param delay The target delay.
      */
     void setFrameDelay(int delay) { this->frameDelay = delay; }
 
     /**
-     *  Delays the engine to keep the engine at a set frame rate.
+     *  @brief Delays the engine to keep the engine at a set frame rate.
      */
     void delayFramerate();
 
@@ -292,73 +292,73 @@ public:
     int getDelta() { return this->currentFrameDelta; }
 
     /**
-     *  Returns the current screen width.
+     *  @brief Returns the current screen width.
      *  @return Int of current screen width.
      */
     int getScreenWidth() { return this->screenWidth; }
 
     /**
-     *  Set the screen width.
+     *  @brief Set the screen width.
      *  @param width Int to set screen width to.
      */
     void setScreenWidth(int width) { this->screenWidth = width; }
 
     /**
-     *  Returns the current screen height.
+     *  @brief Returns the current screen height.
      *  @param level Int of current screen height.
      */
     int getScreenHeight() { return this->screenHeight; }
 
     /**
-     *  Set the screen height.
+     *  @brief Set the screen height.
      *  @param height Int to set screen height to.
      */
     void setScreenHeight(int height) { this->screenHeight = height; }
 
     /**
-     *  Returns the currently used color depth.
+     *  @brief Returns the currently used color depth.
      *  @return Int of current color depth..
      */
     int getColorDepth() { return this->colorDepth; }
 
     /**
-     *  Set the color depth to use.
+     *  @brief Set the color depth to use.
      *  @param level Int to set color depth.
      */
     void setColorDepth(int value) { this->colorDepth = value; }
 
     /**
-     *  Returns the current window mode.
+     *  @brief Returns the current window mode.
      *  @returns Int specifying window mode. 0-Windowed. 1-Fullscreen. 2-Fullscreen Windowed.
      */
     int getWindowMode() { return this->windowMode; }
 
     /**
-     *  Set the window mode to use. Returns true if successful.
+     *  @brief Set the window mode to use. Returns true if successful.
      *  @param mode Window mode. 0-Windowed. 1-Fullscreen. 2-Fullscreen Windowed.
      */
     bool setWindowMode(int mode);
 
     /**
-     *  Returns the current display context.
+     *  @brief Returns the current display context.
      *  @return Int specifying display context. 0-DirectX. 1-OpenGL.
      */
     int getDisplayContext() { return this->displayContext; }
 
     /**
-     *  Set the display context to use. Returns true if successful.
+     *  @brief Set the display context to use. Returns true if successful.
      *  @param context Int specifying display context. 0-DirectX. 1-OpenGL.
      */
     bool setDisplayContext(int context);
 
     /**
-     *  Set the window title.
+     *  @brief Set the window title.
      *  @param title Char array containing window title to use.
      */
     void setWindowTitle(const char *title) { windowTitle = title; SDL_SetWindowTitle(window, title); }
 
     /**
-     *  Set the window icon to use. Returns true if successful.
+     *  @brief Set the window icon to use. Returns true if successful.
      *  @param *filename Filename of icon bitmap to use.
      */
     bool setWindowIcon(const char *filename) {
@@ -366,7 +366,7 @@ public:
     }
 
     /**
-     *  Render text onto the display.
+     *  @brief Render text onto the display.
      *  @param x The X position to render text at.
      *  @param y The Y position to render text at.
      *  @param *font The font to use.
@@ -375,7 +375,7 @@ public:
     void renderText(float x, float y, Font *font, char const *text);
 
     /**
-     *  Render text onto the display.
+     *  @brief Render text onto the display.
      *  @param x The X position to render text at.
      *  @param y The Y position to render text at.
      *  @param *font The font to use.
@@ -384,7 +384,7 @@ public:
     void renderTextF(float x, float y, Font *font, char const *text, ...);
 
     /**
-     *  Play the given sound.
+     *  @brief Play the given sound.
      *  @param *sound The sound to play.
      *  @param repeat The number of repeats to play sound, i.e. 0 means play once.
      *  @return Int of the channel sound was assigned to.
@@ -392,58 +392,58 @@ public:
     int playSound(Sound* sound, int repeat);
 
     /**
-     *  Pause sound on given channel.
+     *  @brief Pause sound on given channel.
      *  @param channel The channel to pause sound on.
      */
     void pauseSound(int channel);
 
     /**
-     *  Stop sound on given channel.
+     *  @brief Stop sound on given channel.
      *  @param channel The channel to stop sound on. Use -1 for all channels.
      */
     void stopSound(int channel);
 
     /**
-     *  Checks if given channel is playing a sound.
+     *  @brief Checks if given channel is playing a sound.
      *  @param channel The channel to check.
      *  @return Int of whether channel is playing sound.
      */
     int isPlaying(int channel);
 
     /**
-     *  Play the given music.
+     *  @brief Play the given music.
      *  @param *music The music to play.
      */
     void playMusic(Mix_Music* music);
 
     /**
-     *  Pause the currently playing music.
+     *  @brief Pause the currently playing music.
      */
     void pauseMusic();
 
     /**
-     *  Stop the current music.
+     *  @brief Stop the current music.
      */
     void stopMusic();
 
     /**
-     *  Set whether or not to draw entity bounding boxes.
+     *  @brief Set whether or not to draw entity bounding boxes.
      */
     void toggleDrawBoundingBoxes() { drawBoundingBoxes = !drawBoundingBoxes; }
 
     /**
-     *  Set whether to cap the framerate or not.
+     *  @brief Set whether to cap the framerate or not.
      */
     void toggleFrameCap() { fpsCap = !fpsCap; }
 
     /**
-      *  Returns pointer to collision manager.
+      *  @brief Returns pointer to collision manager.
       *  @return Pointer to collision manager.
       */
     CollisionManager* getCollisionManager() { return collisionManager; }
 
     /**
-      *  Returns pointer to configuration reader.
+      *  @brief Returns pointer to configuration reader.
       *  @return Pointer to configuration reader.
       */
     ConfigReader* getConfigReader() { return configReader; }

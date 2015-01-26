@@ -89,8 +89,8 @@ bool Game::initObjects()
     levelEditor = new LevelEditor(this,
                                   engine->getViewportX()+64,
                                   engine->getViewportY()+64,
-                                  200,
-                                  200);
+                                  275,
+                                  215);
     levelEditor->setVisible(false);
     wm->addWindow(levelEditor);
 

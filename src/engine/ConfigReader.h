@@ -36,7 +36,7 @@ public:
     virtual ~ConfigReader();
 
     /**
-     *  Load a configuration file into memory, and then parses
+     *  @brief Load a configuration file into memory, and then parses
      *  the contents into mappable values.
      *  @param *filename Path to the file to load.
      *  @return A bool if successful.
@@ -44,7 +44,7 @@ public:
     bool loadConfig(std::string filename);
 
     /**
-     *  Reloads configuration file. Same as calling loadConfig,
+     *  @brief Reloads configuration file. Same as calling loadConfig,
      *  but uses previous filename.
      *  @return A bool if successful.
      */
@@ -53,7 +53,7 @@ public:
     void clearConfig() { config.clear(); }
 
     /**
-     *  Check if a specific key exists.
+     *  @brief Check if a specific key exists.
      *  @param section The section to check for key.
      *  @param key The specific key to check the existence of.
      *  @return A bool if successful.
@@ -61,27 +61,27 @@ public:
     bool hasKey(std::string section, std::string key);
 
     /**
-     *  Check if a section exists.
+     *  @brief Check if a section exists.
      *  @param section The section to check for key.
      *  @return A bool if successful.
      */
     bool hasSection(std::string section);
 
     /**
-     *  Returns a string containing the first section stored.
+     *  @brief Returns a string containing the first section stored.
      *  @return A string containing the name of the first section.
      */
     std::string getFirstSection();
 
     /**
-     *  Returns a string of the section stored after the specified section.
+     *  @brief Returns a string of the section stored after the specified section.
      *  @param section The section to check after.
      *  @return A string containing the name of the next section.
      */
     std::string getNextSection();
 
     /**
-     *  Retrieve an int value from a loaded configuration file.
+     *  @brief Retrieve an int value from a loaded configuration file.
      *  @param section The section to retrieve value from.
      *  @param key The specific key to retrieve value from.
      *  @return An int containing the value of the key.
@@ -89,7 +89,7 @@ public:
     int getInt(std::string section, std::string key);
 
     /**
-     *  Retrieve an int value from a loaded configuration file.
+     *  @brief Retrieve an int value from a loaded configuration file.
      *  @param section The section to retrieve value from.
      *  @param key The specific key to retrieve value from.
      *  @param def The default value to return if the key is not found.
@@ -98,7 +98,7 @@ public:
     int getInt(std::string section, std::string key, int def);
 
     /**
-     *  Retrieve a bool value from a loaded configuration file.
+     *  @brief Retrieve a bool value from a loaded configuration file.
      *  @param section The section to retrieve value from.
      *  @param key The specific key to retrieve value from.
      *  @return An bool containing the value of the key.
@@ -106,7 +106,7 @@ public:
     bool getBool(std::string section, std::string key);
 
     /**
-     *  Retrieve a bool value from a loaded configuration file.
+     *  @brief Retrieve a bool value from a loaded configuration file.
      *  @param section The section to retrieve value from.
      *  @param key The specific key to retrieve value from.
      *  @param def The default value to return if the key is not found.
@@ -115,7 +115,7 @@ public:
     bool getBool(std::string section, std::string key, bool def);
 
     /**
-     *  Retrieve char value from a loaded configuration file.
+     *  @brief Retrieve char value from a loaded configuration file.
      *  @param section The section to retrieve value from.
      *  @param key The specific key to retrieve value from.
      *  @return A stringcontaining the value of the key.
@@ -123,7 +123,7 @@ public:
     std::string getString(std::string section, std::string key);
 
     /**
-     *  Retrieve char value from a loaded configuration file.
+     *  @brief Retrieve char value from a loaded configuration file.
      *  @param section The section to retrieve value from.
      *  @param key The specific key to retrieve value from.
      *  @param def The default value to return if the key is not found.

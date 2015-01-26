@@ -30,7 +30,7 @@ namespace M7engine {
 class Console {
 public:
     /**
-     *  Returns a pointer to the console.
+     *  @brief Returns a pointer to the console.
      *  @return Pointer to console.
      */
     static Console* getInstance();

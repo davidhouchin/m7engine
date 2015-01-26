@@ -89,7 +89,6 @@ bool Level::load(std::string filename)
             case eHeight: height = stringToInt(input[1]); break;
 
             case ePlayer: entity = new Player(game);
-
                 entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
             case eMonster_ghost: entity = new Monster_ghost(game);
                 entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;

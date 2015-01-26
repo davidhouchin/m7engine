@@ -27,32 +27,32 @@ public:
     virtual ~Sound();
 
     /**
-     *  Load a sound from the given filename.
+     *  @brief Load a sound from the given filename.
      *  @param *filename Char array containing filename.
      *  @return Whether load was successful.
      */
     bool loadSound(const char *filename);
 
     /**
-     *  Directly set sound using a Mix_Chunk.
+     *  @brief Directly set sound using a Mix_Chunk.
      *  @param *sound Mix_Chunk to use.
      */
     void setSound(Mix_Chunk* sound);
 
     /**
-     *  Returns the Mix_Chunk being used.
+     *  @brief Returns the Mix_Chunk being used.
      *  @return Mix_Chunk being used.
      */
     Mix_Chunk* getSound() { return sound; }
 
     /**
-     *  Returns the resource name of the font.
+     *  @brief Returns the resource name of the font.
      *  @return String containing name.
      */
     std::string getName(){ return this->name; }
 
     /**
-     *  Set the resource name of the font.
+     *  @brief Set the resource name of the font.
      *  @param name String containing name to set.
      */
     void setName(std::string name) { this->name = name; }

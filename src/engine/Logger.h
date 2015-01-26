@@ -28,7 +28,7 @@ namespace M7engine {
 class Logger {
 public:
     /**
-     *  Returns the static instance of the logger.
+     *  @brief Returns the static instance of the logger.
      *  @return Pointer to logger.
      */
     static Logger* getInstance();
@@ -36,26 +36,26 @@ public:
     virtual ~Logger();
 
     /**
-     *  Set the level determining amount of reporting.
+     *  @brief Set the level determining amount of reporting.
      *  @param level Int of reporting level. Lower value is less logging.
      */
     void setLoggingLevel(int level) { logLevel = level; }
 
     /**
-     *  Set file to use as log.
+     *  @brief Set file to use as log.
      *  @param *file Char array containing filename.
      */
     bool setLogFile(const char* file);
 
     /**
-     *  Log a message with default coloring. Accepts printf style variable arguments.
+     *  @brief Log a message with default coloring. Accepts printf style variable arguments.
      *  @param level Reporting level message is sent at.
      *  @param message String containing message.
      */
     void logMessage(int level, std::string message, ...);
 
     /**
-     *  Log an error with default coloring. Accepts printf style variable arguments.
+     *  @brief Log an error with default coloring. Accepts printf style variable arguments.
      *  @param level Reporting level error is sent at.
      *  @param message String containing error.
      */

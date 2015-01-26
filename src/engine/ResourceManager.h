@@ -31,7 +31,7 @@ namespace M7engine {
 class ResourceManager {
 public:
     /**
-     *  Returns the static instance of the resource manager.
+     *  @brief Returns the static instance of the resource manager.
      *  @return Pointer to resource manager.
      */
     static ResourceManager* getInstance();
@@ -39,42 +39,42 @@ public:
     virtual ~ResourceManager();
 
     /**
-     *  Load a resource configuration file.
+     *  @brief Load a resource configuration file.
      *  @return Char array containing filename to config file.
      */
     bool loadConfig(std::string filename);
 
     /**
-     *  Parse the contents of the loaded configuration file.
+     *  @brief Parse the contents of the loaded configuration file.
      */
     bool parseConfig();
 
     /**
-     *  Set the path to resolve resource names from.
+     *  @brief Set the path to resolve resource names from.
      *  @param path String to use as resource path.
      */
     void setPath(std::string path) {resolvePath = path; }
 
     /**
-     *  Get the path to resolve resource names from.
+     *  @brief Get the path to resolve resource names from.
      *  @return String being used as resource path.
      */
     std::string getPath() { return resolvePath; }
 
     /**
-     *  Returns a pointer to the requested sprite. Returns NULL if not found.
+     *  @brief Returns a pointer to the requested sprite. Returns NULL if not found.
      *  @return Pointer to requested sprite.
      */
     Sprite* getSprite(std::string name);
 
     /**
-     *  Returns a pointer to the requested sound. Returns NULL if not found.
+     *  @brief Returns a pointer to the requested sound. Returns NULL if not found.
      *  @return Pointer to requested sound.
      */
     Sound* getSound(std::string name);
 
     /**
-     *  Returns a pointer to the requested font. Returns NULL if not found.
+     *  @brief Returns a pointer to the requested font. Returns NULL if not found.
      *  @return Pointer to requested font.
      */
     Font* getFont(std::string name);
