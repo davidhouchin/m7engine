@@ -163,6 +163,12 @@ public:
     void addTile(Tile *tile);
 
     /**
+     *  @brief Deletes the tile that is passed.
+     *  @param *tile Pointer to tile to remove.
+     */
+    void destroyTile(Tile *deleteTile);
+
+    /**
      *  @brief Deletes all registered tiles.
      */
     void destroyAllTiles();

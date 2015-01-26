@@ -146,7 +146,6 @@ bool CollisionManager::getPlaceMeetingSolid(int x, int y, int id)
     rA.w = eA->getWBBox();
     rA.y = y;
     rA.h = eA->getHBBox();
-    //drawRectangle(rA.x, rA.y, rA.w, rA.h, 255, 0, 0, 255);
 
     std::vector<Entity*> entities = Engine::getInstance()->getEntityList();
     std::vector<Entity*>::iterator iter;
@@ -160,7 +159,6 @@ bool CollisionManager::getPlaceMeetingSolid(int x, int y, int id)
             rB.w = entity->getWBBox();
             rB.y = entity->getYBBox();
             rB.h = entity->getHBBox();
-            //drawRectangle(rB.x, rB.y, rB.w, rB.h, 255, 0, 0, 255);
 
             if (getIntersect(rA, rB)) {
                 return true;
@@ -192,5 +190,63 @@ bool CollisionManager::getPointMeetingInstance(int x, int y, int id)
     } else {
         return false;
     }
+}
+
+Entity* CollisionManager::getPointMeetingEntity(int x, int y)
+{
+    SDL_Rect rA, rB;
+    rA.x = x;
+    rA.w = 1;
+    rA.y = y;
+    rA.h = 1;
+
+    std::vector<Entity*> entities = Engine::getInstance()->getEntityList();
+    std::vector<Entity*>::iterator iter;
+    Entity *entity;
+    iter = entities.begin();
+
+    while (iter != entities.end()) {
+        entity = *iter;
+        rB.x = entity->getXBBox();
+        rB.w = entity->getWBBox();
+        rB.y = entity->getYBBox();
+        rB.h = entity->getHBBox();
+
+        if (getIntersect(rA, rB)) {
+            return entity;
+        }
+        iter++;
+    }
+
+    return NULL;
+}
+
+Tile* CollisionManager::getPointMeetingTile(int x, int y, int gridSize)
+{
+    SDL_Rect rA, rB;
+    rA.x = x;
+    rA.w = 1;
+    rA.y = y;
+    rA.h = 1;
+
+    std::vector<Tile*> tiles = Engine::getInstance()->getTileList();
+    std::vector<Tile*>::iterator iter;
+    Tile *tile;
+    iter = tiles.begin();
+
+    while (iter != tiles.end()) {
+        tile = *iter;
+        rB.x = tile->getX();
+        rB.w = gridSize;
+        rB.y = tile->getY();
+        rB.h = gridSize;
+
+        if (getIntersect(rA, rB)) {
+            return tile;
+        }
+        iter++;
+    }
+
+    return NULL;
 }
 }

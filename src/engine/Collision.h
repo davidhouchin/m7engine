@@ -80,6 +80,23 @@ public:
      */
     bool getPointMeetingInstance(int x, int y, int id);
 
+    /**
+     *  @brief Returns a pointer to the entity found at an XY position. Returns NULL if no entity is found.
+     *  @param x X coordinate to check.
+     *  @param y Y coordinate to check.
+     *  @return A pointer if an entity is found, otherwise NULL.
+     */
+    Entity* getPointMeetingEntity(int x, int y);
+
+    /**
+     *  @brief Returns a pointer to the tile found at an XY position, with gridSize determining the assumed width and height. Returns NULL if no tile is found.
+     *  @param x
+     *  @param y
+     *  @param gridSize
+     *  @return A pointer if a tile is found, otherwise NULL.
+     */
+    Tile* getPointMeetingTile(int x, int y, int gridSize);
+
 private:
 };
 }

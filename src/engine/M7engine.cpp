@@ -413,6 +413,23 @@ void Engine::addTile(Tile *tile)
     tiles.push_back(tile);
 }
 
+void Engine::destroyTile(Tile *deleteTile)
+{
+    std::vector<Tile*>::iterator iter;
+    Tile *tile;
+    iter = tiles.begin();
+
+    while (iter != tiles.end()) {
+        tile = *iter;
+        if (tile == deleteTile) {
+            tiles.erase(iter);
+            delete tile;
+        } else {
+            iter++;
+        }
+    }
+}
+
 void Engine::sortTilesByDepth()
 {
     std::sort(tiles.begin(), tiles.end(), tileDepthCompare());

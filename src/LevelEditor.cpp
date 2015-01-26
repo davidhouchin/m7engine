@@ -20,6 +20,7 @@ LevelEditor::LevelEditor(Game *game, int x, int y, int width, int height)
 {
     this->game         = game;
     drawSquare         = true;
+    hasDeletedEntity   = false;
     gridSize           = 32;
     title              = "Level Editor";
     sticky             = false;
@@ -293,67 +294,113 @@ void LevelEditor::update()
 
     //EDITING STUFF
     if (((mx < tx) || (mx > (tx+width)) || (my < ty) || (my > (ty+height))) && game->getInput()->getMouseReleased(MOUSE_LEFT)) {
-        switch (selectedObject) {
-        case ePlayer: newEntity = new Player(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eMonster_ghost: newEntity = new Monster_ghost(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eMonster_wraith: newEntity = new Monster_wraith(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eMonster_specter: newEntity = new Monster_specter(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eMonster_zombie: newEntity = new Monster_zombie(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eMonster_skeleton: newEntity = new Monster_skeleton(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eMonster_skeletonCaptain: newEntity = new Monster_skeletonCaptain(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eMonster_skeletonMage: newEntity = new Monster_skeletonMage(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eMonster_vampire: newEntity = new Monster_vampire(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+        if (selectedObject != eNone) {
+            bool isEntity = true;
+            //Figure out what objects are already in this spot and grab their pointers
+            deleteEntity = game->getCollisionManager()->getPointMeetingEntity(mx, my);
+            deleteTile = game->getCollisionManager()->getPointMeetingTile(mx, my, gridSize);
 
-        case eFloor_brick: newTile = new Floor_brick(game);
-            newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eFloor_brickVines: newTile = new Floor_brickVines(game);
-            newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eFloor_brickMold: newTile = new Floor_brickMold(game);
-            newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eFloor_dirt: newTile = new Floor_dirt(game);
-            newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eFloor_grass: newTile = new Floor_grass(game);
-            newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eFloor_water: newTile = new Floor_water(game);
-            newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eFloor_water2: newTile = new Floor_water2(game);
-            newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eFloor_lava: newTile = new Floor_lava(game);
-            newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eFloor_lava2: newTile = new Floor_lava2(game);
-            newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            //Place the new object depending on what user has selected
+            switch (selectedObject) {
+            case ePlayer: newEntity = new Player(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eMonster_ghost: newEntity = new Monster_ghost(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eMonster_wraith: newEntity = new Monster_wraith(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eMonster_specter: newEntity = new Monster_specter(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eMonster_zombie: newEntity = new Monster_zombie(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eMonster_skeleton: newEntity = new Monster_skeleton(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eMonster_skeletonCaptain: newEntity = new Monster_skeletonCaptain(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eMonster_skeletonMage: newEntity = new Monster_skeletonMage(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eMonster_vampire: newEntity = new Monster_vampire(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
 
-        case eWall_brick: newEntity = new Wall_brick(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eWall_brickVines: newEntity = new Wall_brickVines(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eWall_brickMold: newEntity = new Wall_brickMold(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eWall_brickStairsDown: newEntity = new Wall_brickStairsDown(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eWall_brickStairsUp: newEntity = new Wall_brickStairsUp(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eWall_brickDoorClosed: newEntity = new Wall_brickDoorClosed(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eWall_brickDoorOpen: newEntity = new Wall_brickDoorOpen(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eWall_brickGateClosed: newEntity = new Wall_brickGateClosed(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eWall_brickGateOpen: newEntity = new Wall_brickGateOpen(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        case eWall_brickGrate: newEntity = new Wall_brickGrate(game);
-            newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
-        default: break;
+            case eFloor_brick: newTile = new Floor_brick(game);
+                newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize));
+                isEntity = false; break;
+            case eFloor_brickVines: newTile = new Floor_brickVines(game);
+                newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize));
+                isEntity = false; break;
+            case eFloor_brickMold: newTile = new Floor_brickMold(game);
+                newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize));
+                isEntity = false; break;
+            case eFloor_dirt: newTile = new Floor_dirt(game);
+                newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize));
+                isEntity = false; break;
+            case eFloor_grass: newTile = new Floor_grass(game);
+                newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize));
+                isEntity = false; break;
+            case eFloor_water: newTile = new Floor_water(game);
+                newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize));
+                isEntity = false; break;
+            case eFloor_water2: newTile = new Floor_water2(game);
+                newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize));
+                isEntity = false; break;
+            case eFloor_lava: newTile = new Floor_lava(game);
+                newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize));
+                isEntity = false; break;
+            case eFloor_lava2: newTile = new Floor_lava2(game);
+                newTile->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize));
+                isEntity = false; break;
+
+            case eWall_brick: newEntity = new Wall_brick(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eWall_brickVines: newEntity = new Wall_brickVines(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eWall_brickMold: newEntity = new Wall_brickMold(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eWall_brickStairsDown: newEntity = new Wall_brickStairsDown(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eWall_brickStairsUp: newEntity = new Wall_brickStairsUp(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eWall_brickDoorClosed: newEntity = new Wall_brickDoorClosed(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eWall_brickDoorOpen: newEntity = new Wall_brickDoorOpen(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eWall_brickGateClosed: newEntity = new Wall_brickGateClosed(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eWall_brickGateOpen: newEntity = new Wall_brickGateOpen(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            case eWall_brickGrate: newEntity = new Wall_brickGrate(game);
+                newEntity->setPosition(snapToGrid(mx, gridSize), snapToGrid(my, gridSize)); break;
+            default: break;
+            }
+
+            //Now delete the old object
+            if (isEntity) {
+                if (deleteEntity != NULL) {
+                    game->getEngine()->destroyEntity(deleteEntity->getID());
+                }
+            } else {
+                if (deleteTile != NULL) {
+                    game->getEngine()->destroyTile(deleteTile);
+                }
+            }
         }
+    }
+
+    //Right click to remove old objects, deleting entities before tiles
+    if (((mx < tx) || (mx > (tx+width)) || (my < ty) || (my > (ty+height))) && game->getInput()->getMouseReleased(MOUSE_RIGHT)) {
+        deleteEntity = game->getCollisionManager()->getPointMeetingEntity(mx, my);
+        if (deleteEntity != NULL) {
+            game->getEngine()->destroyEntity(deleteEntity->getID());
+            hasDeletedEntity = true;
+        }
+
+        if (!hasDeletedEntity) {
+            deleteTile = game->getCollisionManager()->getPointMeetingTile(mx, my, gridSize);
+            if (deleteTile != NULL) {
+                game->getEngine()->destroyTile(deleteTile);
+            }
+        }
+
+        hasDeletedEntity = false;
     }
 }
 

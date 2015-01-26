@@ -29,13 +29,15 @@ private:
 
     int gridSize;
 
-    bool drawSquare;
+    bool drawSquare, hasDeletedEntity;
 
     std::ofstream saveFile;
     const char* filename;
 
     Entity *newEntity;
+    Entity *deleteEntity;
     Tile *newTile;
+    Tile *deleteTile;
 
     enum mapObject {
         eWidth, eHeight,
