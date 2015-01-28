@@ -157,10 +157,10 @@ void Player::update()
     if (engine->getViewportY() < 0) {
         engine->setViewport(engine->getViewportX(), 0, engine->getViewportW(), engine->getViewportH());
     }
-    if (engine->getViewportX() > engine->getScreenWidth() - engine->getViewportW()) {
+    if (engine->getViewportX() > game->getLevelWidth() - engine->getViewportW()) {
         engine->setViewport(engine->getScreenWidth() - engine->getViewportW(), engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
     }
-    if (engine->getViewportY() > engine->getScreenHeight() - engine->getViewportH()) {
+    if (engine->getViewportY() > game->getLevelHeight() - engine->getViewportH()) {
         engine->setViewport(engine->getViewportX(), engine->getScreenHeight() - engine->getViewportH(), engine->getViewportW(), engine->getViewportH());
     }
 }

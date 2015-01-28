@@ -108,6 +108,7 @@ void InputManager::update()
             switch (ev.button.button) {
             case SDL_BUTTON_LEFT: mouseKeys[MOUSE_LEFT] = true; break;
             case SDL_BUTTON_RIGHT: mouseKeys[MOUSE_RIGHT] = true; break;
+            case SDL_BUTTON_MIDDLE: mouseKeys[MOUSE_MIDDLE] = true; break;
             default: break;
             }
             break;

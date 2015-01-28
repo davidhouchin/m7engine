@@ -49,8 +49,8 @@ public:
     /**
      *  @brief Function to handle the input when a widget is interacted with through passing the widget's name. To be implemented by user-defined windows.
      */
-    virtual void handleInput(Button *button) {
-        Logger::getInstance()->logMessage(1, "Window %i recieved input from widget %s", this->id, button->getName().c_str());
+    virtual void handleInput(Widget *widget) {
+        Logger::getInstance()->logMessage(1, "Window %i recieved input from widget %s", this->id, widget->getName().c_str());
     }
 
     /**

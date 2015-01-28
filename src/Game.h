@@ -46,6 +46,8 @@ public:
     bool run();
 
     bool loadLevel(std::string filename);
+    int getLevelWidth();
+    int getLevelHeight();
 
     Engine* getEngine(){return this->engine;}
     Logger* getLogger(){return this->logger;}

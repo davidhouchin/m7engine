@@ -97,6 +97,16 @@ bool Game::initObjects()
     return true;
 }
 
+int Game::getLevelWidth()
+{
+    return level->getWidth();
+}
+
+int Game::getLevelHeight()
+{
+    return level->getHeight();
+}
+
 bool Game::loadLevel(std::string filename)
 {
     if (!level->load(filename)) {

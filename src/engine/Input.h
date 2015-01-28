@@ -119,6 +119,22 @@ public:
      */
     int getKeyLast() { return keyLast; }
 
+    void clearMouseState() {
+        for (int i = 0; i < MOUSE_MAX; ++i) {
+            mouseKeys[i] = false;
+            oldMouseKeys[i] = false;
+            mouseKeyStates[i] = KEY_OPEN;
+        }
+    }
+
+    void clearKeyboardState() {
+        for (int i = 0; i < KEYBOARD_SIZE; ++i) {
+            keys[i] = false;
+            oldKeys[i] = false;
+            keyStates[i] = KEY_OPEN;
+        }
+    }
+
     void startTextInput() { isWatchingText = true; }
     void stopTextInput() { isWatchingText = false; }
     std::string getTextString() { return textInput; }

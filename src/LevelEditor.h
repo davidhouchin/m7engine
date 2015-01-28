@@ -24,7 +24,8 @@ class LevelEditor : public Window {
 private:
     Game *game;
     Label *objLabel, *lvlLabel, *clearLabel;
-    TextBox *objTextBox, *lvlTextBox;
+    DropDownList *objDropDownList;
+    TextBox *lvlTextBox;
     Button *objButton, *saveButton, *loadButton, *clearButton;
 
     int gridSize;
@@ -56,10 +57,11 @@ private:
     mapObject selectedObject;
 
     LevelEditor::mapObject translateString(std::string const& str);
+    void addObjectsToDropDownList();
 
 public:
     LevelEditor(Game *game, int x, int y, int width, int height);
-    void handleInput(Button *button);
+    void handleInput(Widget *widget);
     void draw();
     void update();
 

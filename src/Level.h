@@ -49,7 +49,12 @@ private:
 
 public:
     Level(Game *game);
+
     bool load(std::string filename);
+
+    int getWidth() { return this->width; }
+
+    int getHeight() { return this->height; }
 };
 }
 

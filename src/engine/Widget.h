@@ -164,10 +164,46 @@ public:
      */
     std::string getName() { return this->name; }
 
+    /**
+     *  @brief Set the text to display in the label.
+     *  @param text The text to display.
+     */
+    void setText(std::string text) { this->text = text; }
+
+    /**
+     *  @brief Returns the text currently set to display in the label.
+     *  @return String containing current text to display.
+     */
+    std::string getText() { return this->text; }
+
+    /**
+     *  @brief Set the color of the text displayed in the widget.
+     *  @param r The red component.
+     *  @param g The green component.
+     *  @param b The blue component.
+     *  @param a The alpha component.
+     */
+    void setTextColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+    {textColor.r = r; textColor.g = g; textColor.b = b; textColor.a = a;}
+
+    /**
+     *  @brief Set the color of the body of the widget.
+     *  @param r The red component.
+     *  @param g The green component.
+     *  @param b The blue component.
+     *  @param a The alpha component.
+     */
+    void setBodyColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+    {bodyColor.r = r; bodyColor.g = g; bodyColor.b = b; bodyColor.a = a;}
+
 protected:
     int x, y, xOffset, yOffset, width, height, depth, id;
 
-    std::string name;
+    std::string name, text;
+
+    SDL_Color textColor, bodyColor;
+
+    Font *font;
 
     Window* parent;
 };
@@ -194,28 +230,6 @@ public:
     void setBody(bool useBody) { drawBody = useBody; }
 
     /**
-     *  @brief Set the text to display in the label.
-     *  @param text The text to display.
-     */
-    void setText(std::string text) { this->text = text; }
-
-    /**
-     *  @brief Returns the text currently set to display in the label.
-     *  @return String containing current text to display.
-     */
-    std::string getText() { return this->text; }
-
-    /**
-     * @brief Set the color of the text displayed in the label.
-     * @param r The red component.
-     * @param g The green component.
-     * @param b The blue component.
-     * @param a The alpha component.
-     */
-    void setTextColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-    {textColor.r = r; textColor.g = g; textColor.b = b; textColor.a = a;}
-
-    /**
      *  @brief Set the image to display in place of text. Will cause the widget to use the image by default.
      *  @param image Pointer to sprite to use for image.
      */
@@ -228,16 +242,11 @@ public:
     void setUseImage(bool useImage) { this->useImage = useImage; }
 
 protected:
-    std::string text;
-
     bool useImage, drawBorder, drawBody;
-
-    SDL_Color bodyColor, textColor;
 
     Sprite  *spriteTopLeft, *spriteTopRight, *spriteBottomLeft, *spriteBottomRight,
              *spriteTopCenter, *spriteBottomCenter, *spriteLeftCenter, *spriteRightCenter,
               *image;
-    Font* font;
 };
 
 class Button : public Widget {
@@ -260,28 +269,6 @@ public:
     void onClick();
 
     /**
-     *  @brief Set the text to display in the label.
-     *  @param text The text to display.
-     */
-    void setText(std::string text) { this->text = text; }
-
-    /**
-     *  @brief Returns the text currently set to display in the label.
-     *  @return String containing current text to display.
-     */
-    std::string getText() { return this->text; }
-
-    /**
-     * @brief Set the color of the text displayed in the label.
-     * @param r The red component.
-     * @param g The green component.
-     * @param b The blue component.
-     * @param a The alpha component.
-     */
-    void setTextColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-    {textColor.r = r; textColor.g = g; textColor.b = b; textColor.a = a;}
-
-    /**
      *  @brief Set the image to display in place of text. Will cause the widget to use the image by default.
      *  @param image Pointer to sprite to use for image.
      */
@@ -294,19 +281,13 @@ public:
     void setUseImage(bool useImage) { this->useImage = useImage; }
 
 protected:
-    std::string text;
-
     bool useImage;
 
     int state;
 
-    SDL_Color bodyColor, textColor;
-
     Sprite  *spriteTopLeft[2], *spriteTopRight[2], *spriteBottomLeft[2], *spriteBottomRight[2],
              *spriteTopCenter[2], *spriteBottomCenter[2], *spriteLeftCenter[2], *spriteRightCenter[2],
               *image;
-
-    Font* font;
 };
 
 class TextBox : public Widget {
@@ -332,43 +313,80 @@ public:
      */
     void setBody(bool useBody) { drawBody = useBody; }
 
-    /**
-     *  @brief Set the text to display in the label.
-     *  @param text The text to display.
-     */
-    void setText(std::string text) { this->text = text; }
-
-    /**
-     * @brief Set the color of the text displayed in the label.
-     * @param r The red component.
-     * @param g The green component.
-     * @param b The blue component.
-     * @param a The alpha component.
-     */
-    void setTextColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-    {textColor.r = r; textColor.g = g; textColor.b = b; textColor.a = a;}
-
-    /**
-     *  @brief Returns the text currently set to display in the label.
-     *  @return String containing current text to display.
-     */
-    std::string getText() { return this->text; }
-
 protected:
-    std::string text;
-
     bool selected, drawBorder, drawBody, cursorFlash, cursorIsFlashing;
 
     int cursorInterval, cursorTimer, cursorPosition, cursorX, cursorY;
 
     Sprite  *spriteTopLeft, *spriteTopRight, *spriteBottomLeft, *spriteBottomRight,
              *spriteTopCenter, *spriteBottomCenter, *spriteLeftCenter, *spriteRightCenter;
-
-    SDL_Color bodyColor, textColor;
-
-    Font* font;
 };
 
+class DropDownList : public Widget {
+public:
+    DropDownList(int x, int y, int width, int height);
+
+    void update();
+
+    /**
+     *  @brief Main drawing function called per frame.
+     */
+    void draw();
+
+    /**
+     *  @brief Function called when button is clicked.
+     */
+    void onClick();
+
+    /**
+     *  @brief Set whether to draw the borders around the bounds of the label.
+     *  @param useBorder Whether to draw a border or not.
+     */
+    void setBorder(bool useBorder) { drawBorder = useBorder; }
+
+    /**
+     *  @brief Set whether to draw a body for the widget.
+     *  @param useBody Whether to draw a body or not.
+     */
+    void setBody(bool useBody) { drawBody = useBody; }
+
+    /**
+     *  @brief Returns the current position selected in the drop down list.
+     *  @return Int signifying the current position selected.
+     */
+    int getPosition() { return this->position; }
+
+    /**
+     *  @brief Set the selected position of the drop down list.
+     *  @param position Position to set to.
+     */
+    void setPosition(int position) { this->position = position; text = getPositionText(); }
+
+    /**
+     *  @brief Get the text of the currently selected position.
+     *  @return String containing the text of the currently selected position.
+     */
+    std::string getPositionText() { return this->positions[position]; }
+
+    /**
+     *  @brief Add an item to the list of positions in the drop down list.
+     *  @param The text of the item to add.
+     */
+    void addItem(std::string text) { positions.push_back(text); }
+
+protected:
+    std::vector<std::string> positions;
+
+    bool drawBorder, drawBody, isOpen;
+
+    int position, spacing;
+
+    SDL_Color selectedColor;
+
+    Sprite  *spriteTopLeft, *spriteTopRight, *spriteBottomLeft, *spriteBottomRight,
+             *spriteTopCenter, *spriteBottomCenter, *spriteLeftCenter, *spriteRightCenter;
+
+};
 }
 
 #endif

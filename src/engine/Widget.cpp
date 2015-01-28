@@ -402,4 +402,144 @@ void TextBox::draw()
                                           font, text.c_str());
     }
 }
+
+DropDownList::DropDownList(int x, int y, int width, int height)
+{
+    this->x = x;
+    this->y = y;
+    this->width = width;
+    this->height = height;
+
+    isOpen = false;
+    position = 0;
+    spacing = 16;
+
+    name = "";
+    text = "";
+    parent = NULL;
+
+    ConfigReader* c = WindowManager::getInstance()->getConfig();
+
+    drawBorder = c->getBool("dropdownlist", "draw_border", false);
+    drawBody = c->getBool("dropdownlist", "draw_body", false);
+
+    textColor = { static_cast<Uint8>(c->getInt("dropdownlist", "text_r", 0)),
+                  static_cast<Uint8>(c->getInt("dropdownlist", "text_g", 0)),
+                  static_cast<Uint8>(c->getInt("dropdownlist", "text_b", 0)),
+                  static_cast<Uint8>(c->getInt("dropdownlist", "text_a", 255))};
+
+    bodyColor = { static_cast<Uint8>(c->getInt("dropdownlist", "body_r", 192)),
+                  static_cast<Uint8>(c->getInt("dropdownlist", "body_g", 192)),
+                  static_cast<Uint8>(c->getInt("dropdownlist", "body_b", 192)),
+                  static_cast<Uint8>(c->getInt("dropdownlist", "body_a", 255))};
+
+    selectedColor = { static_cast<Uint8>(c->getInt("dropdownlist", "selected_r", 192)),
+                  static_cast<Uint8>(c->getInt("dropdownlist", "selected_g", 192)),
+                  static_cast<Uint8>(c->getInt("dropdownlist", "selected_b", 192)),
+                  static_cast<Uint8>(c->getInt("dropdownlist", "selected_a", 255))};
+
+    spriteTopLeft = ResourceManager::getInstance()->getSprite(
+                c->getString("dropdownlist", "topleft"));
+    spriteTopRight = ResourceManager::getInstance()->getSprite(
+                c->getString("dropdownlist", "topright"));
+    spriteBottomLeft = ResourceManager::getInstance()->getSprite(
+                c->getString("dropdownlist", "bottomleft"));
+    spriteBottomRight = ResourceManager::getInstance()->getSprite(
+                c->getString("dropdownlist", "bottomright"));
+    spriteTopCenter = ResourceManager::getInstance()->getSprite(
+                c->getString("dropdownlist", "topcenter"));
+    spriteBottomCenter = ResourceManager::getInstance()->getSprite(
+                c->getString("dropdownlist", "bottomcenter"));
+    spriteLeftCenter = ResourceManager::getInstance()->getSprite(
+                c->getString("dropdownlist", "leftcenter"));
+    spriteRightCenter = ResourceManager::getInstance()->getSprite(
+                c->getString("dropdownlist", "rightcenter"));
+
+    font = ResourceManager::getInstance()->getFont(
+                c->getString("dropdownlist", "font"));
+}
+
+void DropDownList::update()
+{
+    int mx, my, tx, ty;
+    mx = InputManager::getInstance()->getMouseX();
+    my = InputManager::getInstance()->getMouseY();
+    tx = x - Engine::getInstance()->getViewportX();
+    ty = y - Engine::getInstance()->getViewportY();
+
+    //If user clicked inside closed dropdownlist:
+    if ((!isOpen) && ((mx > tx) && (mx < (tx+width)) && (my > ty) && (my < (ty+height)) && InputManager::getInstance()->getMouseReleased(MOUSE_LEFT))) {
+        isOpen = true;
+    }
+    //If dropdownlist is open:
+    else if ((isOpen) && ((mx > tx) && (mx < (tx+width)) && (my > ty) && (my < (ty+(positions.size() * spacing))))) {
+        position = std::floor((my - ty)/spacing);
+
+        //For now I set this to MousePressed(), as I can clear the mouse state and prevent any buttons or actions underneath the menu from taking place.
+        //MouseReleased() is usually too late to clear the state before it is registered by another widget.
+        if (InputManager::getInstance()->getMousePressed(MOUSE_LEFT)) {
+            isOpen = false;
+            text = positions[position];
+            onClick();
+            InputManager::getInstance()->clearMouseState();
+        }
+    }
+    //If user clicked outside dropdownlist:
+    else if ((isOpen) && ((mx < tx) || (mx > (tx+width)) || (my < ty) || (my > (ty+(positions.size() * spacing)))) && InputManager::getInstance()->getMouseReleased(MOUSE_LEFT)) {
+        isOpen = false;
+    }
+
+
+}
+
+void DropDownList::draw()
+{
+    //Draw borders, adjust position if clicked.
+    if (drawBorder) {
+        spriteTopLeft->draw(x, y);
+        spriteTopRight->draw(x + (width-3), y);
+        spriteBottomLeft->draw(x, y + (height-3));
+        spriteBottomRight->draw(x + (width-3), y + (height-3));
+
+        spriteTopCenter->setWidth(width - 6);
+        spriteTopCenter->draw(x + 3, y);
+        spriteBottomCenter->setWidth(width - 6);
+        spriteBottomCenter->draw(x + 3, y + (height-3));
+        spriteLeftCenter->setHeight(height - 6);
+        spriteLeftCenter->draw(x, y + 3);
+        spriteRightCenter->setHeight(height - 6);
+        spriteRightCenter->draw(x + (width-3), y + 3);
+    }
+
+    //Draw entire list if widget is open, otherwise just the widget itself with selected text.
+    if ((!isOpen) && (drawBody)) {
+        drawFilledRectangle(x + 1, y + 1, width-2, height-2, bodyColor.r, bodyColor.g, bodyColor.b, bodyColor.a);
+    } else if (isOpen) {
+        drawFilledRectangle(x + 1, y + 1, width-2, positions.size() * spacing, bodyColor.r, bodyColor.g, bodyColor.b, bodyColor.a);
+        drawFilledRectangle(x + 1, y + (position * spacing), width-2, spacing, selectedColor.r, selectedColor.g, selectedColor.b, selectedColor.a);
+    }
+
+    //Draw the text
+    if ((text != "") && (!isOpen)) {
+        font->setSDLColor(textColor);
+
+        Engine::getInstance()->renderText(x + (width/2) - font->getTextWidth(text.c_str())/2,
+                                          y + (height/2) - font->getTextHeight(text.c_str())/2,
+                                          font, text.c_str());
+    } else if (isOpen) {
+        Uint32 i = 0;
+        for (i=0; i<positions.size(); i++) {
+            Engine::getInstance()->renderText(x + (width/2) - font->getTextWidth(positions[i].c_str())/2,
+                                              y + (i * spacing),
+                                              font, positions[i].c_str());
+        }
+    }
+}
+
+void DropDownList::onClick()
+{
+    if (parent != NULL) {
+        parent->handleInput(this);
+    }
+}
 }

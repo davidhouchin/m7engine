@@ -267,6 +267,7 @@ enum MouseButton
 {
 	MOUSE_LEFT,
 	MOUSE_RIGHT,
+	MOUSE_MIDDLE,
 
 	MOUSE_MAX   // This defines array size.
 };
