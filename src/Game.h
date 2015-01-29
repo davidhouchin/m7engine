@@ -24,6 +24,7 @@ namespace SampleGame {
 
 class Level;
 class LevelEditor;
+class Monster;
 
 class Game {
 private:
@@ -37,6 +38,10 @@ private:
     Level *level;
     LevelEditor *levelEditor;
 
+    bool isEditorOpen;
+
+    std::vector<Monster*> monsters;
+
 public:
     Game(std::string configFile);
     virtual ~Game();
@@ -45,9 +50,17 @@ public:
 
     bool run();
 
+    void turn();
+
+    bool getEditorOpen() { return this->isEditorOpen; }
+
+    std::vector<Monster*> getMonsterList() { return this->monsters; }
+
     bool loadLevel(std::string filename);
     int getLevelWidth();
+    void setLevelWidth(int width);
     int getLevelHeight();
+    void setLevelHeight(int height);
 
     Engine* getEngine(){return this->engine;}
     Logger* getLogger(){return this->logger;}

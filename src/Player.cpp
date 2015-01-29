@@ -145,24 +145,28 @@ void Player::update()
     }
 
     //Move viewport along with character
-    engine->setViewport((getX() + getXOffset()) - (engine->getScreenWidth()/2),
-                        (getY() + getYOffset()) - (engine->getScreenHeight()/2),
-                        engine->getScreenWidth(),
-                        engine->getScreenHeight());
+    if (!game->getEditorOpen()) {
+        engine->setViewport((getX() + getXOffset()) - (engine->getScreenWidth()/2),
+                            (getY() + getYOffset()) - (engine->getScreenHeight()/2),
+                            engine->getScreenWidth(),
+                            engine->getScreenHeight());
 
-    //Stop viewport at edges of screen
-    if (engine->getViewportX() < 0) {
-        engine->setViewport(0, engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
+        //Stop viewport at edges of screen
+        if (engine->getViewportX() < 0) {
+            engine->setViewport(0, engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
+        }
+        if (engine->getViewportY() < 0) {
+            engine->setViewport(engine->getViewportX(), 0, engine->getViewportW(), engine->getViewportH());
+        }
+        if (engine->getViewportX() > game->getLevelWidth() - engine->getViewportW()) {
+            engine->setViewport(engine->getScreenWidth() - engine->getViewportW(), engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
+        }
+        if (engine->getViewportY() > game->getLevelHeight() - engine->getViewportH()) {
+            engine->setViewport(engine->getViewportX(), engine->getScreenHeight() - engine->getViewportH(), engine->getViewportW(), engine->getViewportH());
+        }
     }
-    if (engine->getViewportY() < 0) {
-        engine->setViewport(engine->getViewportX(), 0, engine->getViewportW(), engine->getViewportH());
-    }
-    if (engine->getViewportX() > game->getLevelWidth() - engine->getViewportW()) {
-        engine->setViewport(engine->getScreenWidth() - engine->getViewportW(), engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
-    }
-    if (engine->getViewportY() > game->getLevelHeight() - engine->getViewportH()) {
-        engine->setViewport(engine->getViewportX(), engine->getScreenHeight() - engine->getViewportH(), engine->getViewportW(), engine->getViewportH());
-    }
+
+    game->turn();
 }
 
 void Player::collision(Entity *other)

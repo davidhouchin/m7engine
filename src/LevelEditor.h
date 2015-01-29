@@ -23,20 +23,23 @@ namespace SampleGame {
 class LevelEditor : public Window {
 private:
     Game *game;
-    Label *objLabel, *lvlLabel, *clearLabel;
+    Label *objLabel, *lvlLabel, *clearLabel, *resLabel;
     DropDownList *objDropDownList;
-    TextBox *lvlTextBox;
-    Button *objButton, *saveButton, *loadButton, *clearButton;
+    TextBox *lvlTextBox, *widthTextBox, *heightTextBox;
+    Button *saveButton, *loadButton, *clearButton, *resButton;
 
     int gridSize;
 
-    bool drawSquare, hasDeletedEntity;
+    bool drawGrid, drawSquare, hasDeletedEntity;
+
+    SDL_Color gridColor, squareColor;
 
     std::ofstream saveFile;
     const char* filename;
 
     Entity *newEntity;
     Entity *deleteEntity;
+    Monster *newMonster;
     Tile *newTile;
     Tile *deleteTile;
 

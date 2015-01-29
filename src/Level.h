@@ -54,7 +54,11 @@ public:
 
     int getWidth() { return this->width; }
 
+    void setWidth(int width) { this->width = width; }
+
     int getHeight() { return this->height; }
+
+    void setHeight(int height) { this->height = height; }
 };
 }
 

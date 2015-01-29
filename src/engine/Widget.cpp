@@ -362,10 +362,7 @@ void TextBox::update()
 
     if (selected) {
         InputManager::getInstance()->startTextInput();
-
-        if (InputManager::getInstance()->getTextString() != "") {
-            text = InputManager::getInstance()->getTextString();
-        }
+        text = InputManager::getInstance()->getTextString();
     }
 }
 

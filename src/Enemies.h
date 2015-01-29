@@ -23,84 +23,78 @@ namespace SampleGame {
 
 class Game;
 
-class Monster_ghost : public Entity {
-private:
-    Game *game;
+class Monster : public Entity {
+public:
+    Monster() {}
+    virtual void update() {}
+    virtual void collision(Entity *other) {}
+    virtual void turn() {}
 
+    Game *game;
+};
+
+class Monster_ghost : public Monster {
 public:
     Monster_ghost(Game *game);
     void update();
     void collision(Entity *other);
+    void turn();
 };
 
-class Monster_wraith : public Entity {
-private:
-    Game *game;
-
+class Monster_wraith : public Monster {
 public:
     Monster_wraith(Game *game);
     void update();
     void collision(Entity *other);
+    void turn();
 };
 
-class Monster_specter : public Entity {
-private:
-    Game *game;
-
+class Monster_specter : public Monster {
 public:
     Monster_specter(Game *game);
     void update();
     void collision(Entity *other);
+    void turn();
 };
 
-class Monster_zombie : public Entity {
-private:
-    Game *game;
-
+class Monster_zombie : public Monster {
 public:
     Monster_zombie(Game *game);
     void update();
     void collision(Entity *other);
+    void turn();
 };
 
-class Monster_skeleton : public Entity {
-private:
-    Game *game;
-
+class Monster_skeleton : public Monster {
 public:
     Monster_skeleton(Game *game);
     void update();
     void collision(Entity *other);
+    void turn();
 };
 
-class Monster_skeletonCaptain : public Entity {
-private:
-    Game *game;
-
+class Monster_skeletonCaptain : public Monster {
 public:
     Monster_skeletonCaptain(Game *game);
     void update();
     void collision(Entity *other);
+    void turn();
 };
 
-class Monster_skeletonMage : public Entity {
-private:
-    Game *game;
-
+class Monster_skeletonMage : public Monster {
 public:
     Monster_skeletonMage(Game *game);
     void update();
     void collision(Entity *other);
+    void turn();
 };
 
-class Monster_vampire : public Entity {
-private:
-    Game *game;
-
+class Monster_vampire : public Monster {
 public:
     Monster_vampire(Game *game);
     void update();
     void collision(Entity *other);
+    void turn();
 };
 }
 

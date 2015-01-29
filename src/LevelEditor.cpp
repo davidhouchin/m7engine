@@ -19,6 +19,7 @@ namespace SampleGame {
 LevelEditor::LevelEditor(Game *game, int x, int y, int width, int height)
 {
     this->game         = game;
+    drawGrid           = true;
     drawSquare         = true;
     hasDeletedEntity   = false;
     selectedObject     = eFloor_brick;
@@ -42,6 +43,9 @@ LevelEditor::LevelEditor(Game *game, int x, int y, int width, int height)
 
     ConfigReader* c    = game->getWindowManager()->getConfig();
     titleHeight        = c->getInt("window", "title_height", 16);
+
+    gridColor          = { 200, 75, 75, 255 };
+    squareColor        = { 50, 100, 150, 255 };
 
     textColor          = { static_cast<Uint8>(c->getInt("window", "text_r", 0)),
                            static_cast<Uint8>(c->getInt("window", "text_g", 0)),
@@ -101,17 +105,9 @@ LevelEditor::LevelEditor(Game *game, int x, int y, int width, int height)
     addObjectsToDropDownList();
     objDropDownList->setPosition(0);
 
-    objButton = new Button(
-                getX()+225,
-                getY()+52,
-                40,
-                32);
-    objButton->setText("Set");
-    objButton->setName("objbutton");
-
     lvlLabel = new Label(
                 getX()+2,
-                getY()+86,
+                getY()+151,
                 55,
                 32);
     lvlLabel->setBorder(false);
@@ -119,14 +115,14 @@ LevelEditor::LevelEditor(Game *game, int x, int y, int width, int height)
 
     lvlTextBox = new TextBox(
                 getX()+2,
-                getY()+120,
+                getY()+185,
                 215,
                 32);
     lvlTextBox->setBorder(true);
 
     saveButton = new Button(
                 getX()+225,
-                getY()+110,
+                getY()+175,
                 40,
                 25);
     saveButton->setText("Save");
@@ -134,15 +130,47 @@ LevelEditor::LevelEditor(Game *game, int x, int y, int width, int height)
 
     loadButton = new Button(
                 getX()+225,
-                getY()+137,
+                getY()+202,
                 40,
                 25);
     loadButton->setText("Load");
     loadButton->setName("loadbutton");
 
+    resLabel = new Label(
+                getX()+2,
+                getY()+86,
+                95,
+                32);
+    resLabel->setBorder(false);
+    resLabel->setText("Level Dimensions:");
+
+    widthTextBox = new TextBox(
+                getX()+2,
+                getY()+120,
+                40,
+                32);
+    widthTextBox->setBorder(true);
+    widthTextBox->setText(intToString(game->getLevelWidth()));
+
+    heightTextBox = new TextBox(
+                getX()+50,
+                getY()+120,
+                40,
+                32);
+    heightTextBox->setBorder(true);
+    heightTextBox->setText(intToString(game->getLevelHeight()));
+
+    resButton = new Button(
+                getX()+225,
+                getY()+120,
+                40,
+                25);
+    resButton->setText("Set");
+    resButton->setName("resbutton");
+
     clearLabel = new Label(
                 getX()+2,
-                getY()+170,
+                getY()+250,
                 95,
                 32);
     clearLabel->setBorder(false);
@@ -151,20 +179,23 @@ LevelEditor::LevelEditor(Game *game, int x, int y, int width, int height)
 
     clearButton = new Button(
                 getX()+100,
-                getY()+170,
+                getY()+250,
                 80,
                 32);
     clearButton->setText("Clear Level");
     clearButton->setName("clearbutton");
 
     addWidget(objLabel);
-    addWidget(objButton);
     addWidget(lvlLabel);
     addWidget(lvlTextBox);
     addWidget(saveButton);
     addWidget(loadButton);
     addWidget(clearLabel);
     addWidget(clearButton);
+    addWidget(resLabel);
+    addWidget(widthTextBox);
+    addWidget(heightTextBox);
+    addWidget(resButton);
     addWidget(objDropDownList);
 }
 
@@ -183,6 +214,11 @@ void LevelEditor::handleInput(Widget *widget)
     } else if (widget->getName() == "clearbutton") {
         game->getEngine()->destroyAllEntities();
         game->getEngine()->destroyAllTiles();
+    } else if (widget->getName() == "resbutton") {
+        if ((widthTextBox->getText() != "") && (heightTextBox->getText() != "")) {
+            game->setLevelWidth(stringToInt(widthTextBox->getText()));
+            game->setLevelHeight(stringToInt(heightTextBox->getText()));
+        }
     }
 }
 
@@ -192,10 +228,37 @@ void LevelEditor::draw()
         return;
     }
 
+    //Draw the editing grid, if enabled.
+    if (drawGrid) {
+        int vLines, hLines, x1, y1, x2, y2;
+
+        vLines = std::ceil(game->getEngine()->getViewportW()/gridSize);
+        hLines = std::ceil(game->getEngine()->getViewportH()/gridSize);
+
+        for (int i = 0; i < vLines; i++) {
+            x1 = snapToGrid(i * gridSize + game->getEngine()->getViewportX(), gridSize);
+            y1 = snapToGrid(game->getEngine()->getViewportY(), gridSize);
+            x2 = x1;
+            y2 = snapToGrid(i * gridSize + game->getEngine()->getViewportY() + game->getEngine()->getViewportH(), gridSize);
+
+            drawLine(x1, y1, x2, y2, gridColor.r, gridColor.g, gridColor.b, gridColor.a);
+        }
+
+        for (int i = 0; i < hLines; i++) {
+            x1 = snapToGrid(game->getEngine()->getViewportX(), gridSize);
+            y1 = snapToGrid(i * gridSize + game->getEngine()->getViewportY(), gridSize);
+            x2 = snapToGrid(i * gridSize + game->getEngine()->getViewportX() + game->getEngine()->getViewportW(), gridSize);
+            y2 = y1;
+
+            drawLine(x1, y1, x2, y2, gridColor.r, gridColor.g, gridColor.b, gridColor.a);
+        }
+    }
+
+    //Draw a square at the cursor position aligned to the grid size, if enabled.
     if (drawSquare) {
         drawRectangle(snapToGrid(game->getInput()->getMouseX() + game->getEngine()->getViewportX(), gridSize),
                     snapToGrid(game->getInput()->getMouseY() + game->getEngine()->getViewportY(), gridSize),
-                    gridSize, gridSize, 50, 100, 150, 255);
+                    gridSize, gridSize, squareColor.r, squareColor.g, squareColor.b, squareColor.a);
     }
 
     //Draw body.
@@ -250,15 +313,19 @@ void LevelEditor::update()
         return;
     }
 
-    int mx, my, tx, ty, vx, vy, ex, ey;
+    int mx, my, tx, ty, vx, vy, vw, vh, ex, ey;
     mx = game->getInput()->getMouseX();
     my = game->getInput()->getMouseY();
     vx = game->getEngine()->getViewportX();
     vy = game->getEngine()->getViewportY();
+    vw = game->getEngine()->getViewportW();
+    vh = game->getEngine()->getViewportH();
     tx = x - vx;
     ty = y - vy;
     ex = mx + vx;
     ey = my + vy;
+
+    Engine *engine = game->getEngine();
 
     //If user clicked inside title:
     if ((!sticky) && (mx > tx) && (mx < (tx+width)) && (my > ty) && (my < (ty+titleHeight+2)) && game->getInput()->getMousePressed(MOUSE_LEFT)) {
@@ -302,6 +369,7 @@ void LevelEditor::update()
     if (((mx < tx) || (mx > (tx+width)) || (my < ty) || (my > (ty+height))) && game->getInput()->getMouseReleased(MOUSE_LEFT)) {
         if (selectedObject != eNone) {
             bool isEntity = true;
+            bool isMonster = false;
             //Figure out what objects are already in this spot and grab their pointers
             deleteEntity = game->getCollisionManager()->getPointMeetingEntity(ex, ey);
             deleteTile = game->getCollisionManager()->getPointMeetingTile(ex, ey, gridSize);
@@ -309,14 +377,14 @@ void LevelEditor::update()
             //Place the new object depending on what user has selected
             switch (selectedObject) {
             case ePlayer: newEntity = new Player(game); break;
-            case eMonster_ghost: newEntity = new Monster_ghost(game); break;
-            case eMonster_wraith: newEntity = new Monster_wraith(game); break;
-            case eMonster_specter: newEntity = new Monster_specter(game); break;
-            case eMonster_zombie: newEntity = new Monster_zombie(game); break;
-            case eMonster_skeleton: newEntity = new Monster_skeleton(game); break;
-            case eMonster_skeletonCaptain: newEntity = new Monster_skeletonCaptain(game); break;
-            case eMonster_skeletonMage: newEntity = new Monster_skeletonMage(game); break;
-            case eMonster_vampire: newEntity = new Monster_vampire(game); break;
+            case eMonster_ghost: newMonster = new Monster_ghost(game); isMonster = true; break;
+            case eMonster_wraith: newMonster = new Monster_wraith(game); isMonster = true; break;
+            case eMonster_specter: newMonster = new Monster_specter(game); isMonster = true; break;
+            case eMonster_zombie: newMonster = new Monster_zombie(game); isMonster = true; break;
+            case eMonster_skeleton: newMonster = new Monster_skeleton(game); isMonster = true; break;
+            case eMonster_skeletonCaptain: newMonster = new Monster_skeletonCaptain(game); isMonster = true; break;
+            case eMonster_skeletonMage: newMonster = new Monster_skeletonMage(game); isMonster = true; break;
+            case eMonster_vampire: newMonster = new Monster_vampire(game); isMonster = true; break;
 
             case eFloor_brick: newTile = new Floor_brick(game); isEntity = false; break;
             case eFloor_brickVines: newTile = new Floor_brickVines(game); isEntity = false; break;
@@ -346,13 +414,20 @@ void LevelEditor::update()
                 newEntity->setPosition(snapToGrid(ex, gridSize), snapToGrid(ey, gridSize));
 
                 if (deleteEntity != NULL) {
-                    game->getEngine()->destroyEntity(deleteEntity->getID());
+                    engine->destroyEntity(deleteEntity->getID());
+                }
+            } else if (isMonster) {
+                newMonster->setPosition(snapToGrid(ex, gridSize), snapToGrid(ey, gridSize));
+                game->getMonsterList().push_back(newMonster);
+
+                if (deleteEntity != NULL) {
+                    engine->destroyEntity(deleteEntity->getID());
                 }
             } else {
                 newTile->setPosition(snapToGrid(ex, gridSize), snapToGrid(ey, gridSize));
 
                 if (deleteTile != NULL) {
-                    game->getEngine()->destroyTile(deleteTile);
+                    engine->destroyTile(deleteTile);
                 }
             }
         }
@@ -362,18 +437,49 @@ void LevelEditor::update()
     if (((mx < tx) || (mx > (tx+width)) || (my < ty) || (my > (ty+height))) && game->getInput()->getMouseReleased(MOUSE_RIGHT)) {
         deleteEntity = game->getCollisionManager()->getPointMeetingEntity(ex, ey);
         if (deleteEntity != NULL) {
-            game->getEngine()->destroyEntity(deleteEntity->getID());
+            engine->destroyEntity(deleteEntity->getID());
             hasDeletedEntity = true;
         }
 
         if (!hasDeletedEntity) {
             deleteTile = game->getCollisionManager()->getPointMeetingTile(ex, ey, gridSize);
             if (deleteTile != NULL) {
-                game->getEngine()->destroyTile(deleteTile);
+                engine->destroyTile(deleteTile);
             }
         }
 
         hasDeletedEntity = false;
+    }
+
+    //We can't use vx, vy, ex, or ey shorthand here as each test needs the immediate current viewport values that could have been
+    //changed by the preceeding statement.
+
+    //Move viewport with cursor
+    if ((mx + engine->getViewportX()) > engine->getViewportX() + vw - (gridSize)) {
+        engine->setViewport(engine->getViewportX() + (gridSize/2), engine->getViewportY(), vw, vh);
+    }
+    if ((my + engine->getViewportY()) > engine->getViewportY() + vh - (gridSize)) {
+        engine->setViewport(engine->getViewportX(), engine->getViewportY() + (gridSize/2), vw, vh);
+    }
+    if ((mx + engine->getViewportX()) < engine->getViewportX() + (gridSize)) {
+        engine->setViewport(engine->getViewportX() - (gridSize/2), engine->getViewportY(), vw, vh);
+    }
+    if ((my + engine->getViewportY()) < engine->getViewportY() + (gridSize)) {
+        engine->setViewport(engine->getViewportX(), engine->getViewportY() - (gridSize/2), vw, vh);
+    }
+
+    //Stop viewport at edges of screen
+    if (engine->getViewportX() < 0) {
+        engine->setViewport(0, engine->getViewportY(), vw, vh);
+    }
+    if (engine->getViewportY() < 0) {
+        engine->setViewport(engine->getViewportX(), 0, vw, vh);
+    }
+    if (engine->getViewportX() > game->getLevelWidth() - vw) {
+        engine->setViewport(game->getLevelWidth() - vw, engine->getViewportY(), vw, vh);
+    }
+    if (engine->getViewportY() > game->getLevelHeight() - vh) {
+        engine->setViewport(engine->getViewportX(), game->getLevelHeight() - vh, vw, vh);
     }
 }
 

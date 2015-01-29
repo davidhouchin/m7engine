@@ -28,6 +28,8 @@ Game::Game(std::string configFile)
     this->wm = WindowManager::getInstance();
     this->oConfig = new ConfigReader;
 
+    isEditorOpen = false;
+
     //Start log
     logger->setLogFile("game.log");
     logger->logMessage(0, "Engine started");
@@ -90,7 +92,7 @@ bool Game::initObjects()
                                   engine->getViewportX()+64,
                                   engine->getViewportY()+64,
                                   275,
-                                  215);
+                                  300);
     levelEditor->setVisible(false);
     wm->addWindow(levelEditor);
 
@@ -102,9 +104,19 @@ int Game::getLevelWidth()
     return level->getWidth();
 }
 
+void Game::setLevelWidth(int width)
+{
+    level->setWidth(width);
+}
+
 int Game::getLevelHeight()
 {
     return level->getHeight();
+}
+
+void Game::setLevelHeight(int height)
+{
+    level->setHeight(height);
 }
 
 bool Game::loadLevel(std::string filename)
@@ -135,9 +147,29 @@ bool Game::run()
     }
 
     if ((input->getKeyHeld(KEY_LEFT_SHIFT)) && (input->getKeyReleased(KEY_E))) {
-        levelEditor->setVisible(!levelEditor->getVisible());
+        if (!levelEditor->getVisible()) {
+            levelEditor->setVisible(true);
+            isEditorOpen = true;
+        } else {
+            levelEditor->setVisible(false);
+            isEditorOpen = false;
+        }
     }
 
     return true;
 }
+
+void Game::turn()
+{
+    std::vector<Monster*>::iterator iterM;
+    Monster *monster;
+    iterM = monsters.begin();
+
+    while (iterM != monsters.end()) {
+        monster = *iterM;
+        monster->turn();
+        iterM++;
+    }
+}
+
 }
