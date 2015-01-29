@@ -368,7 +368,7 @@ void LevelEditor::update()
     //EDITING STUFF
     if (((mx < tx) || (mx > (tx+width)) || (my < ty) || (my > (ty+height))) && game->getInput()->getMouseReleased(MOUSE_LEFT)) {
         if (selectedObject != eNone) {
-            bool isEntity = true;
+            bool isTile = false;
             bool isMonster = false;
             //Figure out what objects are already in this spot and grab their pointers
             deleteEntity = game->getCollisionManager()->getPointMeetingEntity(ex, ey);
@@ -377,6 +377,7 @@ void LevelEditor::update()
             //Place the new object depending on what user has selected
             switch (selectedObject) {
             case ePlayer: newEntity = new Player(game); break;
+
             case eMonster_ghost: newMonster = new Monster_ghost(game); isMonster = true; break;
             case eMonster_wraith: newMonster = new Monster_wraith(game); isMonster = true; break;
             case eMonster_specter: newMonster = new Monster_specter(game); isMonster = true; break;
@@ -386,15 +387,15 @@ void LevelEditor::update()
             case eMonster_skeletonMage: newMonster = new Monster_skeletonMage(game); isMonster = true; break;
             case eMonster_vampire: newMonster = new Monster_vampire(game); isMonster = true; break;
 
-            case eFloor_brick: newTile = new Floor_brick(game); isEntity = false; break;
-            case eFloor_brickVines: newTile = new Floor_brickVines(game); isEntity = false; break;
-            case eFloor_brickMold: newTile = new Floor_brickMold(game); isEntity = false; break;
-            case eFloor_dirt: newTile = new Floor_dirt(game); isEntity = false; break;
-            case eFloor_grass: newTile = new Floor_grass(game); isEntity = false; break;
-            case eFloor_water: newTile = new Floor_water(game); isEntity = false; break;
-            case eFloor_water2: newTile = new Floor_water2(game); isEntity = false; break;
-            case eFloor_lava: newTile = new Floor_lava(game); isEntity = false; break;
-            case eFloor_lava2: newTile = new Floor_lava2(game); isEntity = false; break;
+            case eFloor_brick: newTile = new Floor_brick(game); isTile = true; break;
+            case eFloor_brickVines: newTile = new Floor_brickVines(game); isTile = true; break;
+            case eFloor_brickMold: newTile = new Floor_brickMold(game); isTile = true; break;
+            case eFloor_dirt: newTile = new Floor_dirt(game); isTile = true; break;
+            case eFloor_grass: newTile = new Floor_grass(game); isTile = true; break;
+            case eFloor_water: newTile = new Floor_water(game); isTile = true; break;
+            case eFloor_water2: newTile = new Floor_water2(game); isTile = true; break;
+            case eFloor_lava: newTile = new Floor_lava(game); isTile = true; break;
+            case eFloor_lava2: newTile = new Floor_lava2(game); isTile = true; break;
 
             case eWall_brick: newEntity = new Wall_brick(game); break;
             case eWall_brickVines: newEntity = new Wall_brickVines(game); break;
@@ -410,11 +411,11 @@ void LevelEditor::update()
             }
 
             //Now delete the old object
-            if (isEntity) {
-                newEntity->setPosition(snapToGrid(ex, gridSize), snapToGrid(ey, gridSize));
+            if (isTile) {
+                newTile->setPosition(snapToGrid(ex, gridSize), snapToGrid(ey, gridSize));
 
-                if (deleteEntity != NULL) {
-                    engine->destroyEntity(deleteEntity->getID());
+                if (deleteTile != NULL) {
+                    engine->destroyTile(deleteTile);
                 }
             } else if (isMonster) {
                 newMonster->setPosition(snapToGrid(ex, gridSize), snapToGrid(ey, gridSize));
@@ -424,10 +425,10 @@ void LevelEditor::update()
                     engine->destroyEntity(deleteEntity->getID());
                 }
             } else {
-                newTile->setPosition(snapToGrid(ex, gridSize), snapToGrid(ey, gridSize));
+                newEntity->setPosition(snapToGrid(ex, gridSize), snapToGrid(ey, gridSize));
 
-                if (deleteTile != NULL) {
-                    engine->destroyTile(deleteTile);
+                if (deleteEntity != NULL) {
+                    engine->destroyEntity(deleteEntity->getID());
                 }
             }
         }
