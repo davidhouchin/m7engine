@@ -34,6 +34,7 @@ Player::Player(Game *game)
 
     dead = false;
     notStarted = true;
+    moved = false;
 }
 
 void Player::update()
@@ -55,18 +56,22 @@ void Player::update()
         if (input->getKeyPressed(KEY_UP)) {
             if (!collision->getPlaceMeetingSolid(getXBBox(), getYBBox() - speed, this->id)) {
                 setY(getY() - 32);
+                moved = true;
             }
         } else if (input->getKeyPressed(KEY_DOWN)) {
             if (!collision->getPlaceMeetingSolid(getXBBox(), getYBBox() + speed, this->id)) {
                 setY(getY() + 32);
+                moved = true;
             }
         } else if (input->getKeyPressed(KEY_LEFT)) {
             if (!collision->getPlaceMeetingSolid(getXBBox() - speed, getYBBox(), this->id)) {
                 setX(getX() - 32);
+                moved = true;
             }
         } else if (input->getKeyPressed(KEY_RIGHT)) {
             if (!collision->getPlaceMeetingSolid(getXBBox() + speed, getYBBox(), this->id)) {
                 setX(getX() + 32);
+                moved = true;
             }
         }
 
@@ -91,6 +96,7 @@ void Player::update()
                 } else {
                     setY(getY() - 32);
                     runCounter = 0;
+                    moved = true;
                 }
             }
         } else if (input->getKeyHeld(KEY_DOWN)) {
@@ -107,6 +113,7 @@ void Player::update()
                 } else {
                     setY(getY() + 32);
                     runCounter = 0;
+                    moved = true;
                 }
             }
         } else if (input->getKeyHeld(KEY_LEFT)) {
@@ -123,6 +130,7 @@ void Player::update()
                 } else {
                     setX(getX() - 32);
                     runCounter = 0;
+                    moved = true;
                 }
             }
         } else if (input->getKeyHeld(KEY_RIGHT)) {
@@ -139,6 +147,7 @@ void Player::update()
                 } else {
                     setX(getX() + 32);
                     runCounter = 0;
+                    moved = true;
                 }
             }
         }
@@ -166,7 +175,10 @@ void Player::update()
         }
     }
 
-    game->turn();
+    if (moved) {
+        game->turn();
+        moved = false;
+    }
 }
 
 void Player::collision(Entity *other)

@@ -71,6 +71,9 @@ bool Level::load(std::string filename)
 
     Entity *entity;
     Tile *tile;
+    Monster *monster;
+
+    bool isMonster = false;
 
     while (!file.eof()) {
         std::vector<std::string> input;
@@ -90,22 +93,22 @@ bool Level::load(std::string filename)
 
             case ePlayer: entity = new Player(game);
                 entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
-            case eMonster_ghost: entity = new Monster_ghost(game);
-                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
-            case eMonster_wraith: entity = new Monster_wraith(game);
-                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
-            case eMonster_specter: entity = new Monster_specter(game);
-                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
-            case eMonster_zombie: entity = new Monster_zombie(game);
-                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
-            case eMonster_skeleton: entity = new Monster_skeleton(game);
-                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
-            case eMonster_skeletonCaptain: entity = new Monster_skeletonCaptain(game);
-                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
-            case eMonster_skeletonMage: entity = new Monster_skeletonMage(game);
-                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
-            case eMonster_vampire: entity = new Monster_vampire(game);
-                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_ghost: monster = new Monster_ghost(game); isMonster = true;
+                monster->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_wraith: monster = new Monster_wraith(game); isMonster = true;
+                monster->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_specter: monster = new Monster_specter(game); isMonster = true;
+                monster->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_zombie: monster = new Monster_zombie(game); isMonster = true;
+                monster->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_skeleton: monster = new Monster_skeleton(game); isMonster = true;
+                monster->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_skeletonCaptain: monster = new Monster_skeletonCaptain(game); isMonster = true;
+                monster->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_skeletonMage: monster = new Monster_skeletonMage(game); isMonster = true;
+                monster->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+            case eMonster_vampire: monster = new Monster_vampire(game); isMonster = true;
+                monster->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
 
             case eFloor_brick: tile = new Floor_brick(game);
                 tile->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
@@ -148,6 +151,11 @@ bool Level::load(std::string filename)
                 entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
             default: break;
             }
+        }
+
+        if (isMonster) {
+            game->getMonsterList().push_back(monster);
+            isMonster = false;
         }
 
         continue;

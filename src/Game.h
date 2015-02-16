@@ -54,7 +54,7 @@ public:
 
     bool getEditorOpen() { return this->isEditorOpen; }
 
-    std::vector<Monster*> getMonsterList() { return this->monsters; }
+    std::vector<Monster*>& getMonsterList() { return this->monsters; }
 
     bool loadLevel(std::string filename);
     int getLevelWidth();

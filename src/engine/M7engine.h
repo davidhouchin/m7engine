@@ -143,7 +143,7 @@ public:
      *  @brief Returns a pointer to the list of registered entities.
      *  @return A pointer to the list of registered entities.
      */
-    std::vector<Entity*> getEntityList() { return entities; }
+    std::vector<Entity*>& getEntityList() { return entities; }
 
     /**
      *  @brief Return the number of registered entities.
@@ -177,7 +177,7 @@ public:
      *  @brief Returns a pointer to the list of registered tiles.
      *  @return A pointer to the list of registered tiles.
      */
-    std::vector<Tile*> getTileList() { return tiles; }
+    std::vector<Tile*>& getTileList() { return tiles; }
 
     /**
      *  @brief Return the number of registered tiles.

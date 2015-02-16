@@ -26,7 +26,7 @@ class Game;
 class Player : public Entity {
 private:
     int speed, runSpeed, runDelay, runCounter, runDelayCounter;
-    bool dead, notStarted, running;
+    bool dead, notStarted, running, moved;
     int startx, starty, health;
 
     std::string name;
