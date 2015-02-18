@@ -24,6 +24,23 @@ Player::Player(Game *game)
     setName("player");
     setProperties(game->getObjectConfig(), getName());
     
+    name = "The Dude";
+
+    level = 1; //Player level
+    exp = 0; //Total experience
+
+    hp = 30; //Health
+    mp = 10; //Magic points
+
+    strength = 10; //Dictates melee attacks and carry capacity
+    intellect = 10; //Dictates magic damage
+    dexterity = 10; //Dictates ranged attacks and defense
+
+    attack = 5; //Physical base damage per attack
+    defense = 10; //Physical base armor
+    weight = 0; //Current weight being carried
+    weightCapacity = 100; //Total weight that can be carried
+
     speed = 32; //Interval which player snaps to
 
     runSpeed = 5; //Time between moving while running (holding down an arrow key)
@@ -32,9 +49,14 @@ Player::Player(Game *game)
     runDelayCounter = 0; //Utility variable to keep track of runDelay
     running = false; //Is player running?
 
+    moves = 0;
     dead = false;
     notStarted = true;
     moved = false;
+
+    Item_sword *sword = new Item_sword();
+    addItem(sword);
+    equipItem("sword");
 }
 
 void Player::update()
@@ -49,6 +71,10 @@ void Player::update()
         startx = getX();
         starty = getY();
         notStarted = false;
+    }
+
+    if (input->getKeyReleased(KEY_F1)) {
+        displayInventory();
     }
 
     //Key movement code
@@ -208,4 +234,164 @@ void Player::alarm(int timerNum)
         setAlpha(255);
     }
 }
+
+Item* Player::getInventoryItem(std::string name)
+{
+    std::vector<Item*>::iterator iterI;
+    Item *item;
+    iterI = inventory.begin();
+
+    while (iterI != inventory.end()) {
+        item = *iterI;
+        if (item->getName() == name) {
+            return item;
+        } else {
+            iterI++;
+        }
+    }
+
+    return NULL;
+}
+
+void Player::addItem(Item *item)
+{
+    if ((this->weight + item->getWeight()) <= (this->weightCapacity)) {
+        inventory.push_back(item);
+        game->getLogger()->logMessage(0, "Added %s to inventory", item->getName().c_str());
+    } else {
+        game->getLogger()->logMessage(0, "%s weights too much to add to inventory", item->getName().c_str());
+    }
+}
+
+void Player::removeItem(std::string name)
+{
+    std::vector<Item*>::iterator iterI;
+    Item *item;
+    iterI = inventory.begin();
+
+    while (iterI != inventory.end()) {
+        item = *iterI;
+        if (item->getName() == name) {
+            inventory.erase(iterI);
+        } else {
+            iterI++;
+        }
+    }
+}
+
+void Player::equipItem(std::string name)
+{
+    Item *item = getInventoryItem(name);
+
+    if (item != NULL) {
+        if (!item->getEquipped()) {
+            switch (item->getItemClass()) {
+            case Item::armor:
+                switch (item->getArmorClass()) {
+                case Item::head:
+                    if (headArmor != NULL) {
+                        unequipItem(headArmor->getName());
+                    }
+                    headArmor = item;
+                    defense += headArmor->getArmor();
+                    break;
+                case Item::torso:
+                    if (torsoArmor != NULL) {
+                        unequipItem(torsoArmor->getName());
+                    }
+                    torsoArmor = item;
+                    defense += torsoArmor->getArmor();
+                    break;
+                case Item::leg:
+                    if (legArmor != NULL) {
+                        unequipItem(legArmor->getName());
+                    }
+                    legArmor = item;
+                    defense += legArmor->getArmor();
+                    break;
+                case Item::foot:
+                    if (footArmor != NULL) {
+                        unequipItem(footArmor->getName());
+                    }
+                    footArmor = item;
+                    defense += footArmor->getArmor();
+                    break;
+                default: break;
+                }
+                item->setEquipped(true);
+                break;
+            case Item::weapon:
+                if (weapon != NULL) {
+                    unequipItem(weapon->getName());
+                }
+                weapon = item;
+                item->setEquipped(true);
+                attack += weapon->getDamage();
+                break;
+            default: break;
+            }
+            game->getLogger()->logMessage(0, "%s was equipped", name.c_str());
+        } else {
+            game->getLogger()->logMessage(0, "%s is already equipped", name.c_str());
+        }
+    } else {
+        game->getLogger()->logMessage(0, "%s is not in inventory", name.c_str());
+    }
+}
+
+void Player::unequipItem(std::string name)
+{
+    Item *item = getInventoryItem(name);
+
+    if (item != NULL) {
+        if (item->getEquipped()) {
+            switch (item->getItemClass()) {
+            case Item::armor:
+                switch (item->getArmorClass()) {
+                case Item::head:
+                    headArmor = NULL;
+                    break;
+                case Item::torso:
+                    torsoArmor = NULL;
+                    break;
+                case Item::leg:
+                    legArmor = NULL;
+                    break;
+                case Item::foot:
+                    footArmor = NULL;
+                    break;
+                default: break;
+                }
+                defense -= item->getArmor();
+                item->setEquipped(false);
+                break;
+            case Item::weapon:
+                weapon = NULL;
+                attack -= item->getDamage();
+                item->setEquipped(false);
+                break;
+            }
+        }
+    }
+}
+
+void Player::displayInventory()
+{
+    std::stringstream output;
+
+    output << "Player Inventory: ";
+
+    std::vector<Item*>::iterator iterI;
+    Item *item;
+    iterI = inventory.begin();
+
+    while (iterI != inventory.end()) {
+        item = *iterI;
+        output << item->getName() << ";";
+        iterI++;
+    }
+
+    game->getLogger()->logMessage(0, output.str().c_str());
+}
+
 }

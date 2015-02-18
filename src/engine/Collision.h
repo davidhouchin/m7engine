@@ -44,13 +44,20 @@ public:
     bool getCollisionBBox(Entity *a, Entity *b);
 
     /**
-     *  @brief Tests if any instance of passed object is colliding with point.
-     *  @param x X coordinate to check.
-     *  @param y Y coordinate to check.
-     *  @param *entity Type of entity to check.
-     *  @return A bool determining if the entity is at the position.
+     *  @brief Tests if any instance of passed name is colliding with instance of given ID.
+     *  @param id ID of instance to check from.
+     *  @param name Name of instance to check collision with.
+     *  @return A bool determining if the entity with given name is at the position.
      */
-    bool getPlaceMeetingObject(int x, int y, int id, std::string name);
+    bool getPlaceMeetingObject(int id, std::string name);
+
+    /**
+     *  @brief Tests if any instance of passed family is colliding with instance of given ID.
+     *  @param id ID of instance to check from.
+     *  @param *family Name of instance family to check collision with.
+     *  @return A bool determining if the entity with given family is at the position.
+     */
+    bool getPlaceMeetingFamily(int id, std::string family);
 
     /**
      *  @brief Tests if first entity is colliding with the second using an offset.

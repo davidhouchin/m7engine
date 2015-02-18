@@ -17,6 +17,7 @@
 #define PLAYER_H
 
 #include "engine/Entity.h"
+#include "Items.h"
 
 using namespace M7engine;
 namespace SampleGame {
@@ -27,7 +28,14 @@ class Player : public Entity {
 private:
     int speed, runSpeed, runDelay, runCounter, runDelayCounter;
     bool dead, notStarted, running, moved;
-    int startx, starty, health;
+    int startx, starty, moves;
+
+    int level, exp, hp, mp, strength, intellect, dexterity;
+    int attack, defense, weight, weightCapacity;
+
+    Item *headArmor, *torsoArmor, *legArmor, *footArmor, *weapon;
+
+    std::vector<Item*> inventory;
 
     std::string name;
 
@@ -39,6 +47,15 @@ public:
     void update();
     void collision(Entity *other);
     void alarm(int timerNum);
+
+    void addItem(Item *item);
+    void removeItem(std::string name);
+    void equipItem(std::string name);
+    void unequipItem(std::string name);
+    void displayInventory();
+
+    Item* getInventoryItem(std::string name);
+
 };
 }
 

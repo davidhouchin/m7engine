@@ -83,13 +83,13 @@ bool CollisionManager::getCollisionBBox(Entity *a, Entity *b)
     }
 }
 
-bool CollisionManager::getPlaceMeetingObject(int x, int y, int id, std::string name)
+bool CollisionManager::getPlaceMeetingObject(int id, std::string name)
 {
     SDL_Rect rA, rB;
     Entity *eA = Engine::getInstance()->findEntity(id);
-    rA.x = x;
+    rA.x = eA->getXBBox();
     rA.w = eA->getWBBox();
-    rA.y = y;
+    rA.y = eA->getYBBox();
     rA.h = eA->getHBBox();
 
     std::vector<Entity*> entities = Engine::getInstance()->getEntityList();
@@ -100,6 +100,38 @@ bool CollisionManager::getPlaceMeetingObject(int x, int y, int id, std::string n
     while (iter != entities.end()) {
         entity = *iter;
         if (entity->getName() == name) {
+            rB.x = entity->getXBBox();
+            rB.w = entity->getWBBox();
+            rB.y = entity->getYBBox();
+            rB.h = entity->getHBBox();
+
+            if (getIntersect(rA, rB)) {
+                return true;
+            }
+        }
+        iter++;
+    }
+
+    return false;
+}
+
+bool CollisionManager::getPlaceMeetingFamily(int id, std::string family)
+{
+    SDL_Rect rA, rB;
+    Entity *eA = Engine::getInstance()->findEntity(id);
+    rA.x = eA->getXBBox();
+    rA.w = eA->getWBBox();
+    rA.y = eA->getYBBox();
+    rA.h = eA->getHBBox();
+
+    std::vector<Entity*> entities = Engine::getInstance()->getEntityList();
+    std::vector<Entity*>::iterator iter;
+    Entity *entity;
+    iter = entities.begin();
+
+    while (iter != entities.end()) {
+        entity = *iter;
+        if (entity->getFamily() == family) {
             rB.x = entity->getXBBox();
             rB.w = entity->getWBBox();
             rB.y = entity->getYBBox();

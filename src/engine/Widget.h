@@ -205,7 +205,7 @@ protected:
 
     Font *font;
 
-    Window* parent;
+    Window *parent;
 };
 
 class Label : public Widget {
