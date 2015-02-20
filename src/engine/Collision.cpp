@@ -87,10 +87,7 @@ bool CollisionManager::getPlaceMeetingObject(int id, std::string name)
 {
     SDL_Rect rA, rB;
     Entity *eA = Engine::getInstance()->findEntity(id);
-    rA.x = eA->getXBBox();
-    rA.w = eA->getWBBox();
-    rA.y = eA->getYBBox();
-    rA.h = eA->getHBBox();
+    rA = eA->getBBox();
 
     std::vector<Entity*> entities = Engine::getInstance()->getEntityList();
     std::vector<Entity*>::iterator iter;
@@ -100,10 +97,7 @@ bool CollisionManager::getPlaceMeetingObject(int id, std::string name)
     while (iter != entities.end()) {
         entity = *iter;
         if (entity->getName() == name) {
-            rB.x = entity->getXBBox();
-            rB.w = entity->getWBBox();
-            rB.y = entity->getYBBox();
-            rB.h = entity->getHBBox();
+            rB = entity->getBBox();
 
             if (getIntersect(rA, rB)) {
                 return true;
@@ -158,10 +152,7 @@ bool CollisionManager::getPlaceMeetingInstance(int x, int y, int idA, int idB)
     rA.y = y;
     rA.h = eA->getHBBox();
 
-    rB.x = eB->getXBBox();
-    rB.w = eB->getWBBox();
-    rB.y = eB->getYBBox();
-    rB.h = eB->getHBBox();
+    rB = eB->getBBox();
 
     if (getIntersect(rA, rB)) {
         return true;
@@ -187,10 +178,7 @@ bool CollisionManager::getPlaceMeetingSolid(int x, int y, int id)
     while (iter != entities.end()) {
         entity = *iter;
         if (entity->getSolid()) {
-            rB.x = entity->getXBBox();
-            rB.w = entity->getWBBox();
-            rB.y = entity->getYBBox();
-            rB.h = entity->getHBBox();
+            rB = entity->getBBox();
 
             if (getIntersect(rA, rB)) {
                 return true;
@@ -207,10 +195,7 @@ bool CollisionManager::getPointMeetingInstance(int x, int y, int id)
     SDL_Rect rA, rB;
     Entity *e = Engine::getInstance()->findEntity(id);
 
-    rA.x = e->getXBBox();
-    rA.w = e->getWBBox();
-    rA.y = e->getYBBox();
-    rA.h = e->getHBBox();
+    rA = e->getBBox();
 
     rB.x = x;
     rB.w = 1;
@@ -239,10 +224,7 @@ Entity* CollisionManager::getPointMeetingEntity(int x, int y)
 
     while (iter != entities.end()) {
         entity = *iter;
-        rB.x = entity->getXBBox();
-        rB.w = entity->getWBBox();
-        rB.y = entity->getYBBox();
-        rB.h = entity->getHBBox();
+        rB = entity->getBBox();
 
         if (getIntersect(rA, rB)) {
             return entity;

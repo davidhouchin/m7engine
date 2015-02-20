@@ -419,7 +419,7 @@ void LevelEditor::update()
                 }
             } else if (isMonster) {
                 newMonster->setPosition(snapToGrid(ex, gridSize), snapToGrid(ey, gridSize));
-                game->getMonsterList().push_back(newMonster);
+                game->addMonster(newMonster);
 
                 if (deleteEntity != NULL) {
                     engine->destroyEntity(deleteEntity->getID());

@@ -159,6 +159,30 @@ bool Game::run()
     return true;
 }
 
+void Game::addMonster(Monster *monster)
+{
+    static int mId = 0;
+    monster->setMonsterID(mId);
+    monsters.push_back(monster);
+    mId++;
+}
+
+void Game::killMonster(int id)
+{
+    std::vector<Monster*>::iterator iterM;
+    Monster *monster;
+    iterM = monsters.begin();
+
+    while (iterM != monsters.end()) {
+        monster = *iterM;
+        if (monster->getMonsterID() == id) {
+            monsters.erase(iterM);
+            return;
+        }
+        iterM++;
+    }
+}
+
 void Game::turn()
 {
     std::vector<Monster*>::iterator iterM;

@@ -66,6 +66,8 @@ void Player::update()
     ResourceManager *resources = game->getResourceManager();
     Engine *engine = game->getEngine();
 
+    Entity *collide;
+
     //Do some startup work
     if (notStarted) {
         startx = getX();
@@ -80,22 +82,50 @@ void Player::update()
     //Key movement code
     if (!dead) {
         if (input->getKeyPressed(KEY_UP)) {
-            if (!collision->getPlaceMeetingSolid(getXBBox(), getYBBox() - speed, this->id)) {
+            collide = collision->getPointMeetingEntity(getXBBox(), getYBBox() - speed);
+            if (collide == NULL) {
+                setY(getY() - 32);
+                moved = true;
+            } else if (collide->getFamily() == "monster") {
+                collide->setColor(255,0,0);
+                moved = true;
+            } else if (collide->getFamily() != "wall") {
                 setY(getY() - 32);
                 moved = true;
             }
         } else if (input->getKeyPressed(KEY_DOWN)) {
-            if (!collision->getPlaceMeetingSolid(getXBBox(), getYBBox() + speed, this->id)) {
+            collide = collision->getPointMeetingEntity(getXBBox(), getYBBox() + speed);
+            if (collide == NULL) {
+                setY(getY() + 32);
+                moved = true;
+            } else if (collide->getFamily() == "monster") {
+                collide->setColor(255,0,0);
+                moved = true;
+            } else if (collide->getFamily() != "wall") {
                 setY(getY() + 32);
                 moved = true;
             }
         } else if (input->getKeyPressed(KEY_LEFT)) {
-            if (!collision->getPlaceMeetingSolid(getXBBox() - speed, getYBBox(), this->id)) {
+            collide = collision->getPointMeetingEntity(getXBBox() - speed, getYBBox());
+            if (collide == NULL) {
+                setX(getX() - 32);
+                moved = true;
+            } else if (collide->getFamily() == "monster") {
+                collide->setColor(255,0,0);
+                moved = true;
+            } else if (collide->getFamily() != "wall") {
                 setX(getX() - 32);
                 moved = true;
             }
         } else if (input->getKeyPressed(KEY_RIGHT)) {
-            if (!collision->getPlaceMeetingSolid(getXBBox() + speed, getYBBox(), this->id)) {
+            collide = collision->getPointMeetingEntity(getXBBox() + speed, getYBBox());
+            if (collide == NULL) {
+                setX(getX() + 32);
+                moved = true;
+            } else if (collide->getFamily() == "monster") {
+                collide->setColor(255,0,0);
+                moved = true;
+            } else if (collide->getFamily() != "wall") {
                 setX(getX() + 32);
                 moved = true;
             }
@@ -109,6 +139,7 @@ void Player::update()
         }
 
         if (input->getKeyHeld(KEY_UP)) {
+            collide = collision->getPointMeetingEntity(getXBBox(), getYBBox() - speed);
             if (!running) {
                 if (runDelayCounter < runDelay) {
                     runDelayCounter++;
@@ -116,7 +147,7 @@ void Player::update()
                     running = true;
                     runDelayCounter = 0;
                 }
-            } else if (!collision->getPlaceMeetingSolid(getXBBox(), getYBBox() - speed, this->id)) {
+            } else if ((collide == NULL) || ((collide != NULL) && ((collide->getFamily() != "wall") && (collide->getFamily() != "monster")))) {
                 if (runCounter < runSpeed) {
                     runCounter++;
                 } else {
@@ -126,6 +157,7 @@ void Player::update()
                 }
             }
         } else if (input->getKeyHeld(KEY_DOWN)) {
+            collide = collision->getPointMeetingEntity(getXBBox(), getYBBox() + speed);
             if (!running) {
                 if (runDelayCounter < runDelay) {
                      runDelayCounter++;
@@ -133,7 +165,7 @@ void Player::update()
                     running = true;
                     runDelayCounter = 0;
                 }
-            } else if (!collision->getPlaceMeetingSolid(getXBBox(), getYBBox() + speed, this->id)) {
+            } else if ((collide == NULL) || ((collide != NULL) && ((collide->getFamily() != "wall") && (collide->getFamily() != "monster")))) {
                 if (runCounter < runSpeed) {
                     runCounter++;
                 } else {
@@ -143,6 +175,7 @@ void Player::update()
                 }
             }
         } else if (input->getKeyHeld(KEY_LEFT)) {
+            collide = collision->getPointMeetingEntity(getXBBox() - speed, getYBBox());
             if (!running) {
                 if (runDelayCounter < runDelay) {
                     runDelayCounter++;
@@ -150,7 +183,7 @@ void Player::update()
                     running = true;
                     runDelayCounter = 0;
                 }
-            } else if (!collision->getPlaceMeetingSolid(getXBBox() - speed, getYBBox(), this->id)) {
+            } else if ((collide == NULL) || ((collide != NULL) && ((collide->getFamily() != "wall") && (collide->getFamily() != "monster")))) {
                 if (runCounter < runSpeed) {
                     runCounter++;
                 } else {
@@ -160,6 +193,7 @@ void Player::update()
                 }
             }
         } else if (input->getKeyHeld(KEY_RIGHT)) {
+            collide = collision->getPointMeetingEntity(getXBBox() + speed, getYBBox());
             if (!running) {
                 if (runDelayCounter < runDelay) {
                     runDelayCounter++;
@@ -167,7 +201,7 @@ void Player::update()
                     running = true;
                     runDelayCounter = 0;
                 }
-            } else if (!collision->getPlaceMeetingSolid(getXBBox() + speed, getYBBox(), this->id)) {
+            } else if ((collide == NULL) || ((collide != NULL) && ((collide->getFamily() != "wall") && (collide->getFamily() != "monster")))) {
                 if (runCounter < runSpeed) {
                     runCounter++;
                 } else {

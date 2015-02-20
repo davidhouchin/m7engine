@@ -24,11 +24,18 @@ namespace SampleGame {
 class Game;
 
 class Monster : public Entity {
+protected:
+    int mId;
+
 public:
     Monster() {}
+    ~Monster();
     virtual void update() {}
     virtual void collision(Entity *other) {}
     virtual void turn() {}
+
+    void setMonsterID(int id) { this->mId = id; }
+    int getMonsterID() { return this->mId; }
 
     Game *game;
 };

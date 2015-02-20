@@ -154,7 +154,7 @@ bool Level::load(std::string filename)
         }
 
         if (isMonster) {
-            game->getMonsterList().push_back(monster);
+            game->addMonster(monster);
             isMonster = false;
         }
 

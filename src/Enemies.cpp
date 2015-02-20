@@ -17,6 +17,11 @@
 #include "Game.h"
 
 namespace SampleGame {
+Monster::~Monster()
+{
+    game->killMonster(mId);
+}
+
 Monster_ghost::Monster_ghost(Game *game)
 {
     this->game = game;
