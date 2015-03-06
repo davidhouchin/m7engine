@@ -14,6 +14,24 @@
 
 #include "Utilities.h"
 
+int M7engine::randomRangeInt(int min, int max)
+{
+    std::random_device dev;
+    std::mt19937 gen(dev());
+    std::uniform_int_distribution<> dist(min, max);
+
+    return dist(gen);
+}
+
+float M7engine::randomRangeFloat(float min, float max)
+{
+    std::random_device dev;
+    std::mt19937 gen(dev());
+    std::uniform_real_distribution<> dist(min, max);
+
+    return dist(gen);
+}
+
 std::string M7engine::intToString(int num)
 {
     std::stringstream ss;
@@ -24,6 +42,18 @@ std::string M7engine::intToString(int num)
 int M7engine::stringToInt(std::string text)
 {
     return std::atoi(text.c_str());
+}
+
+std::string M7engine::floatToString(float num)
+{
+    std::stringstream ss;
+    ss << num;
+    return ss.str();
+}
+
+float M7engine::stringToFloat(std::string text)
+{
+    return std::atof(text.c_str());
 }
 
 int M7engine::snapToGrid(int num, int grid)

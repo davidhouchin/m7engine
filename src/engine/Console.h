@@ -80,6 +80,7 @@ private:
         eFps,
         eCap,
         eGrid,
+        eRand,
         eNone
     };
 

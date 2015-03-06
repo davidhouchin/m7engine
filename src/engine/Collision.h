@@ -104,6 +104,14 @@ public:
      */
     Tile* getPointMeetingTile(int x, int y, int gridSize);
 
+    /**
+     *  @brief Returns the distance between the vectors of two entities.
+     *  @param a The entity to check distance from.
+     *  @param b The entity to check distance to.
+     *  @return An int containing the distance between both entities.
+     */
+    int getDistanceBetweenEntities(Entity *a, Entity *b);
+
 private:
 };
 }

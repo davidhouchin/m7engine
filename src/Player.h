@@ -18,6 +18,7 @@
 
 #include "engine/Entity.h"
 #include "Items.h"
+#include "Enemies.h"
 
 using namespace M7engine;
 namespace SampleGame {
@@ -31,7 +32,7 @@ private:
     int startx, starty, moves;
 
     int level, exp, hp, mp, strength, intellect, dexterity;
-    int attack, defense, weight, weightCapacity;
+    int damage, defense, weight, weightCapacity;
 
     Item *headArmor, *torsoArmor, *legArmor, *footArmor, *weapon;
 
@@ -47,6 +48,8 @@ public:
     void update();
     void collision(Entity *other);
     void alarm(int timerNum);
+
+    void attack(Monster *target);
 
     void addItem(Item *item);
     void removeItem(std::string name);

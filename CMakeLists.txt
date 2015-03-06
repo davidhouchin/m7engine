@@ -1,7 +1,7 @@
 project(m7engine)
 cmake_minimum_required(VERSION 2.8)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wextra ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wextra -ggdb ${CMAKE_CXX_FLAGS}")
 
 aux_source_directory(./src GAME_SRC)
 aux_source_directory(./src/engine ENGINE_SRC)

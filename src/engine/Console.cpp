@@ -66,6 +66,7 @@ Console::command Console::translateString(std::string const& str)
     else if (str == "framedelay") return eFps;
     else if (str == "framecap") return eCap;
     else if (str == "grid") return eGrid;
+    else if (str == "rand") return eRand;
     else return eNone;
 }
 
@@ -86,6 +87,7 @@ void Console::parse(std::string text)
     case eFps: Engine::getInstance()->setFrameDelay(stringToInt(command[1])); break;
     case eCap: Engine::getInstance()->toggleFrameCap(); break;
     case eGrid: if (stringToInt(command[1]) != 0) {gridWidth = stringToInt(command[1]);} break;
+    case eRand: if ((stringToInt(command[1]) != 0) && (stringToInt(command[2]) != 0)) {lineToAdd = intToString(randomRangeInt(stringToInt(command[1]), stringToInt(command[2]))); } break;
     default: colorToAdd = errorColor; lineToAdd = "Unrecognized Command: " + text; break;
     }
 

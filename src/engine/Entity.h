@@ -408,7 +408,16 @@ public:
      *  @param name String containing name of object properties to request.
      *  @return Whether the request was successful or not. Mainly if the named section could be found.
      */
-    bool setProperties(ConfigReader *reader, std::string name);
+    virtual bool setProperties(ConfigReader *reader, std::string name);
+
+    /**
+     *  @brief Sets the specified timer to the specified time.
+     *  @param timer The timer number to adjust.
+     *  @param time The time to set the timer to.
+     */
+    void setTimer(int timer, int time) { this->timer[timer] = time; }
+
+    bool killMe = false;
 
 protected:
     int id, depth, width, height, xOffset, yOffset, direction, hSpeed, vSpeed, xBBox, yBBox;

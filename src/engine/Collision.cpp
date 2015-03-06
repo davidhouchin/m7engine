@@ -263,4 +263,12 @@ Tile* CollisionManager::getPointMeetingTile(int x, int y, int gridSize)
 
     return NULL;
 }
+
+int CollisionManager::getDistanceBetweenEntities(Entity *a, Entity *b)
+{
+    Vector2 posA = a->getPosition();
+    Vector2 posB = b->getPosition();
+
+    return posA.distance(posB);
+}
 }

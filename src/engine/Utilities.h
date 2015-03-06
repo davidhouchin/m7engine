@@ -20,8 +20,25 @@
 #include <sstream>
 #include <algorithm>
 #include <utility>
+#include <random>
 
 namespace M7engine {
+/**
+ *  @brief Return a random int between the given minimum and maximum values.
+ *  @param min The minimum possible value in the range.
+ *  @param max The maximum possible value in the range.
+ *  @return The random number generated.
+ */
+int randomRangeInt(int min, int max);
+
+/**
+ *  @brief Return a random float between the given minimum and maximum values.
+ *  @param min The minimum possible value in the range.
+ *  @param max The maximum possible value in the range.
+ *  @return The random number generated.
+ */
+float randomRangeFloat(float min, float max);
+
 /**
  *  @brief Convert the given int to a string.
  *  @param num Int to convert.
@@ -35,6 +52,20 @@ std::string intToString(int num);
  *  @return The converted int.
  */
 int stringToInt(std::string text);
+
+/**
+ *  @brief Convert the given float to a string.
+ *  @param num Float to convert.
+ *  @return The converted string.
+ */
+std::string floatToString(float num);
+
+/**
+ *  @brief Convert the given string to a float.
+ *  @param text String to convert.
+ *  @return The converted float.
+ */
+float stringToFloat(std::string text);
 
 /**
  *  @brief Snaps the given int to the next lowest grid value.

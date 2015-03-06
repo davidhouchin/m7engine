@@ -29,7 +29,8 @@ public:
     bool getEquipped() { return this->equipped; }
     void setEquipped(bool equipped) { this->equipped = equipped; }
     int getArmor() { return this->armorAmount; }
-    int getDamage() { return this->damageAmount; }
+    int getMinDamage() { return this->minDamage; }
+    int getMaxDamage() { return this->maxDamage; }
     int getWeight() { return this->weight; }
     int getCost() { return this->cost; }
 
@@ -52,7 +53,7 @@ public:
 protected:
     std::string name, description;
     bool equipped;
-    int armorAmount, damageAmount, weight, cost;
+    int armorAmount, minDamage, maxDamage, weight, cost;
 
     itemClass itemType;
     armorClass armorType;

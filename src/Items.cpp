@@ -22,7 +22,8 @@ Item_sword::Item_sword()
     description = "A rusty sword.";
     equipped = false;
     itemType = weapon;
-    damageAmount = 10;
+    minDamage = 10;
+    maxDamage = 25;
     weight = 10;
     cost = 5;
 }

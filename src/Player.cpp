@@ -36,7 +36,7 @@ Player::Player(Game *game)
     intellect = 10; //Dictates magic damage
     dexterity = 10; //Dictates ranged attacks and defense
 
-    attack = 5; //Physical base damage per attack
+    damage = 5; //Physical base damage per attack
     defense = 10; //Physical base armor
     weight = 0; //Current weight being carried
     weightCapacity = 100; //Total weight that can be carried
@@ -87,7 +87,7 @@ void Player::update()
                 setY(getY() - 32);
                 moved = true;
             } else if (collide->getFamily() == "monster") {
-                collide->setColor(255,0,0);
+                attack(dynamic_cast<Monster*>(collide));
                 moved = true;
             } else if (collide->getFamily() != "wall") {
                 setY(getY() - 32);
@@ -99,7 +99,7 @@ void Player::update()
                 setY(getY() + 32);
                 moved = true;
             } else if (collide->getFamily() == "monster") {
-                collide->setColor(255,0,0);
+                attack(dynamic_cast<Monster*>(collide));
                 moved = true;
             } else if (collide->getFamily() != "wall") {
                 setY(getY() + 32);
@@ -111,7 +111,7 @@ void Player::update()
                 setX(getX() - 32);
                 moved = true;
             } else if (collide->getFamily() == "monster") {
-                collide->setColor(255,0,0);
+                attack(dynamic_cast<Monster*>(collide));
                 moved = true;
             } else if (collide->getFamily() != "wall") {
                 setX(getX() - 32);
@@ -123,7 +123,7 @@ void Player::update()
                 setX(getX() + 32);
                 moved = true;
             } else if (collide->getFamily() == "monster") {
-                collide->setColor(255,0,0);
+                attack(dynamic_cast<Monster*>(collide));
                 moved = true;
             } else if (collide->getFamily() != "wall") {
                 setX(getX() + 32);
@@ -269,6 +269,31 @@ void Player::alarm(int timerNum)
     }
 }
 
+void Player::attack(Monster *target)
+{
+    int def = target->getDefense();
+    int wepDmg = randomRangeInt(weapon->getMinDamage(), weapon->getMaxDamage());
+    int dmg = (damage + wepDmg) - def;
+
+    if (dmg < 0) {
+        dmg = 0;
+    }
+
+    target->setHp(target->getHp() - dmg);
+
+    game->getLogger()->logMessage(0, "You hit the %s for %i damage.", target->getName().c_str(), dmg);
+
+    if (target->getHp() <= 0) {
+        int expGain = target->getExp();
+        exp += expGain;
+        target->die();
+        game->getLogger()->logMessage(0, "You gained %i experience.", expGain);
+    }
+
+    target->setAlpha(120);
+    target->setTimer(0, 30);
+}
+
 Item* Player::getInventoryItem(std::string name)
 {
     std::vector<Item*>::iterator iterI;
@@ -293,7 +318,7 @@ void Player::addItem(Item *item)
         inventory.push_back(item);
         game->getLogger()->logMessage(0, "Added %s to inventory", item->getName().c_str());
     } else {
-        game->getLogger()->logMessage(0, "%s weights too much to add to inventory", item->getName().c_str());
+        game->getLogger()->logMessage(0, "%s weighs too much to add to inventory", item->getName().c_str());
     }
 }
 
@@ -360,7 +385,7 @@ void Player::equipItem(std::string name)
                 }
                 weapon = item;
                 item->setEquipped(true);
-                attack += weapon->getDamage();
+                //damage += weapon->getDamage();
                 break;
             default: break;
             }
@@ -401,7 +426,7 @@ void Player::unequipItem(std::string name)
                 break;
             case Item::weapon:
                 weapon = NULL;
-                attack -= item->getDamage();
+                //damage -= item->getDamage();
                 item->setEquipped(false);
                 break;
             }

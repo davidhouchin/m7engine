@@ -277,12 +277,17 @@ void Engine::updateEntities()
 
     while (iter != entities.end()) {
         entity = *iter;
-        if (entity->getActive()) {
-            entity->updateTimers();
-            entity->update();
-            entity->move();
+        if (!entity->killMe) {
+            if (entity->getActive()) {
+                entity->updateTimers();
+                entity->update();
+                entity->move();
+            }
+            iter++;
+        } else {
+            iter = entities.erase(iter);
+            delete entity;
         }
-        iter++;
     }
 }
 
@@ -359,8 +364,10 @@ void Engine::destroyEntity(int id)
     while (iter != entities.end()) {
         entity = *iter;
         if (entity->getID() == id) {
-            entities.erase(iter);
-            delete entity;
+            //entities.erase(iter);
+            //delete entity;
+            entity->killMe = true;
+            return;
         } else {
             iter++;
         }

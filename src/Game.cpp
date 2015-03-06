@@ -191,7 +191,9 @@ void Game::turn()
 
     while (iterM != monsters.end()) {
         monster = *iterM;
-        monster->turn();
+        if (!monster->killMe) {
+            monster->turn();
+        }
         iterM++;
     }
 }
