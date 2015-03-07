@@ -153,6 +153,8 @@ bool Game::run()
         } else {
             levelEditor->setVisible(false);
             isEditorOpen = false;
+            engine->sortEntitiesByDepth();
+            engine->sortTilesByDepth();
         }
     }
 

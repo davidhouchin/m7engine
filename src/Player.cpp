@@ -54,6 +54,12 @@ Player::Player(Game *game)
     notStarted = true;
     moved = false;
 
+    footArmor = NULL;
+    torsoArmor = NULL;
+    handArmor = NULL;
+    headArmor = NULL;
+    weapon = NULL;
+
     Item_sword *sword = new Item_sword();
     addItem(sword);
     equipItem("sword");
@@ -255,6 +261,18 @@ void Player::collision(Entity *other)
             timer[0] = 60;
             setAlpha(120);
         }
+    } else if (other->getFamily() == "item") {
+        if (!dead) {
+            if (game->getInput()->getKeyReleased(KEY_SPACE)) {
+                ItemProp *pickup = (ItemProp *)other;
+                if (addItem(pickup->getItem())) {
+                    if (pickup->getItem()->getName() == "sword_flame") {
+                        equipItem("sword_flame");
+                    }
+                    game->getEngine()->destroyEntity(pickup->getID());
+                }
+            }
+        }
     }
 }
 
@@ -272,7 +290,13 @@ void Player::alarm(int timerNum)
 void Player::attack(Monster *target)
 {
     int def = target->getDefense();
-    int wepDmg = randomRangeInt(weapon->getMinDamage(), weapon->getMaxDamage());
+
+    int wepDmg;
+    if (weapon != NULL) {
+        wepDmg = randomRangeInt(weapon->getMinDamage(), weapon->getMaxDamage());
+    } else {
+        wepDmg = 0;
+    }
     int dmg = (damage + wepDmg) - def;
 
     if (dmg < 0) {
@@ -312,13 +336,16 @@ Item* Player::getInventoryItem(std::string name)
     return NULL;
 }
 
-void Player::addItem(Item *item)
+bool Player::addItem(Item *item)
 {
-    if ((this->weight + item->getWeight()) <= (this->weightCapacity)) {
+    if ((weight + item->getWeight()) <= (weightCapacity)) {
         inventory.push_back(item);
+        weight += item->getWeight();
         game->getLogger()->logMessage(0, "Added %s to inventory", item->getName().c_str());
+        return true;
     } else {
         game->getLogger()->logMessage(0, "%s weighs too much to add to inventory", item->getName().c_str());
+        return false;
     }
 }
 
@@ -361,12 +388,12 @@ void Player::equipItem(std::string name)
                     torsoArmor = item;
                     defense += torsoArmor->getArmor();
                     break;
-                case Item::leg:
-                    if (legArmor != NULL) {
-                        unequipItem(legArmor->getName());
+                case Item::hand:
+                    if (handArmor != NULL) {
+                        unequipItem(handArmor->getName());
                     }
-                    legArmor = item;
-                    defense += legArmor->getArmor();
+                    handArmor = item;
+                    defense += handArmor->getArmor();
                     break;
                 case Item::foot:
                     if (footArmor != NULL) {
@@ -413,8 +440,8 @@ void Player::unequipItem(std::string name)
                 case Item::torso:
                     torsoArmor = NULL;
                     break;
-                case Item::leg:
-                    legArmor = NULL;
+                case Item::hand:
+                    handArmor = NULL;
                     break;
                 case Item::foot:
                     footArmor = NULL;
@@ -446,9 +473,11 @@ void Player::displayInventory()
 
     while (iterI != inventory.end()) {
         item = *iterI;
-        output << item->getName() << ";";
+        output << item->getName() << "; ";
         iterI++;
     }
+
+    output << "Weight: " << weight << "/" << weightCapacity;
 
     game->getLogger()->logMessage(0, output.str().c_str());
 }

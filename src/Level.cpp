@@ -28,6 +28,7 @@ Level::mapObject Level::translateString(std::string const& str)
     if (str == "width") return eWidth;
     else if (str == "height") return eHeight;
     else if (str == "player") return ePlayer;
+    else if (str == "itemprop") return eItem;
     else if (str == "monster_ghost") return eMonster_ghost;
     else if (str == "monster_wraith") return eMonster_wraith;
     else if (str == "monster_specter") return eMonster_specter;
@@ -93,6 +94,10 @@ bool Level::load(std::string filename)
 
             case ePlayer: entity = new Player(game);
                 entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+
+            case eItem: entity = new ItemProp(game, input[3]);
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+
             case eMonster_ghost: monster = new Monster_ghost(game); isMonster = true;
                 monster->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
             case eMonster_wraith: monster = new Monster_wraith(game); isMonster = true;

@@ -17,11 +17,32 @@
 #define PROPS_H
 
 #include "engine/Entity.h"
+#include "Items.h"
 
 using namespace M7engine;
 namespace SampleGame {
 
 class Game;
+
+class ItemProp : public Entity {
+private:
+    Item *item;
+
+    enum itemObject {
+        eSword, eSword2,
+        eArmorBoots, eArmorChest, eArmorGloves, eArmorHelm,
+        eCoins, eKey, ePotion,
+        eNone
+    };
+
+    ItemProp::itemObject translateString(std::string const& str);
+
+public:
+    ItemProp(Game *game);
+    ItemProp(Game *game, std::string name);
+
+    Item* getItem() { return item; }
+};
 
 class Floor_brick : public Tile {
 private:

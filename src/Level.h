@@ -34,6 +34,7 @@ private:
     enum mapObject {
         eWidth, eHeight,
         ePlayer,
+        eItem,
         eMonster_ghost, eMonster_wraith, eMonster_specter, eMonster_zombie,
         eMonster_skeleton, eMonster_skeletonCaptain, eMonster_skeletonMage,
         eMonster_vampire,

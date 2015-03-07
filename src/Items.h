@@ -39,7 +39,7 @@ public:
     };
 
     enum armorClass {
-        head, torso, leg, foot
+        head, torso, hand, foot
     };
 
     enum weaponClass {
@@ -64,6 +64,46 @@ protected:
 class Item_sword : public Item {
 public:
     Item_sword();
+};
+
+class Item_sword2 : public Item {
+public:
+    Item_sword2();
+};
+
+class Item_armorBoots : public Item {
+public:
+    Item_armorBoots();
+};
+
+class Item_armorChest : public Item {
+public:
+    Item_armorChest();
+};
+
+class Item_armorGloves : public Item {
+public:
+    Item_armorGloves();
+};
+
+class Item_armorHelm : public Item {
+public:
+    Item_armorHelm();
+};
+
+class Item_coins : public Item {
+public:
+    Item_coins();
+};
+
+class Item_key : public Item {
+public:
+    Item_key();
+};
+
+class Item_potion : public Item {
+public:
+    Item_potion();
 };
 
 }

@@ -19,6 +19,7 @@
 #include "engine/Entity.h"
 #include "Items.h"
 #include "Enemies.h"
+#include "Props.h"
 
 using namespace M7engine;
 namespace SampleGame {
@@ -34,7 +35,7 @@ private:
     int level, exp, hp, mp, strength, intellect, dexterity;
     int damage, defense, weight, weightCapacity;
 
-    Item *headArmor, *torsoArmor, *legArmor, *footArmor, *weapon;
+    Item *headArmor, *torsoArmor, *handArmor, *footArmor, *weapon;
 
     std::vector<Item*> inventory;
 
@@ -51,7 +52,7 @@ public:
 
     void attack(Monster *target);
 
-    void addItem(Item *item);
+    bool addItem(Item *item);
     void removeItem(std::string name);
     void equipItem(std::string name);
     void unequipItem(std::string name);

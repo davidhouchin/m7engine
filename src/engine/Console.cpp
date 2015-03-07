@@ -80,7 +80,7 @@ void Console::parse(std::string text)
     switch (translateString(command[0])) {
     case eVersion: lineToAdd = Engine::getInstance()->getVersion(); break;
     case eQuit: InputManager::getInstance()->setQuit(); break;
-    case eHelp: lineToAdd = "version,quit,help,drawbbox,showdebug,log,framedelay,framecap,grid"; break;
+    case eHelp: lineToAdd = "version,quit,help,drawbbox,showdebug,log,framedelay,framecap,grid,rand"; break;
     case eDrawBBox: Engine::getInstance()->toggleDrawBoundingBoxes(); break;
     case eDebug: toggleDebug(); break;
     case eLog: Logger::getInstance()->setLoggingLevel(stringToInt(command[1])); break;

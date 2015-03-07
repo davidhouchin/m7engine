@@ -378,6 +378,8 @@ void LevelEditor::update()
             switch (selectedObject) {
             case ePlayer: newEntity = new Player(game); break;
 
+            case eItem: newEntity = new ItemProp(game); break;
+
             case eMonster_ghost: newMonster = new Monster_ghost(game); isMonster = true; break;
             case eMonster_wraith: newMonster = new Monster_wraith(game); isMonster = true; break;
             case eMonster_specter: newMonster = new Monster_specter(game); isMonster = true; break;
@@ -505,7 +507,15 @@ bool LevelEditor::save(const char* file)
 
     while (iterE != entities.end()) {
         entity = *iterE;
-        saveFile << entity->getName() << " " << entity->getX() << " " << entity->getY() << "\n";
+
+        if (entity->getName() == "itemprop") {
+            //If this is an item, we want to save the actual item alongside the item prop
+            ItemProp *saveItem = (ItemProp *)entity;
+            saveFile << saveItem->getName() << " " << saveItem->getX() << " " << saveItem->getY() << " " << saveItem->getItem()->getName() << "\n";
+        } else {
+            saveFile << entity->getName() << " " << entity->getX() << " " << entity->getY() << "\n";
+        }
+
         iterE++;
     }
 
@@ -531,6 +541,7 @@ LevelEditor::mapObject LevelEditor::translateString(std::string const& str)
     if (str == "width") return eWidth;
     else if (str == "height") return eHeight;
     else if (str == "player") return ePlayer;
+    else if (str == "item") return eItem;
     else if (str == "monster_ghost") return eMonster_ghost;
     else if (str == "monster_wraith") return eMonster_wraith;
     else if (str == "monster_specter") return eMonster_specter;
@@ -589,5 +600,6 @@ void LevelEditor::addObjectsToDropDownList()
     objDropDownList->addItem("monster_skeletonMage");
     objDropDownList->addItem("monster_vampire");
     objDropDownList->addItem("player");
+    objDropDownList->addItem("item");
 }
 }
