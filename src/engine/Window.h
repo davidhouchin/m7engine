@@ -141,13 +141,13 @@ public:
      *  @brief Set the current X coordinate.
      *  @param x X position to set.
      */
-    void setX(int x) { this->x = x; }
+    void setX(int x);
 
     /**
      *  @brief Set the current Y position.
      *  @param y Y position to set.
      */
-    void setY(int y) { this->y = y; }
+    void setY(int y);
 
     /**
      *  @brief Returns width of widget.
@@ -209,6 +209,8 @@ public:
      */
     bool getSticky() { return this->sticky; }
 
+    bool killMe = false;
+
 protected:
     int x, y, xOffset, yOffset, xMouseOffset, yMouseOffset, width, height, titleHeight, depth, id, idCount;
 
@@ -241,6 +243,12 @@ public:
      *  @param window Pointer to the window to be added.
      */
     void addWindow(Window* window);
+
+    /**
+     *  @brief Destroy the window with the given window ID.
+     *  @param id ID of window to destroy.
+     */
+    void destroyWindow(int id);
 
     /**
      *  @brief Loads widget definitions from a file, specifying colors, sprites, etc.

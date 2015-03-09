@@ -16,6 +16,7 @@
 #include "Game.h"
 #include "Level.h"
 #include "LevelEditor.h"
+#include "CommonDialogs.h"
 
 namespace SampleGame {
 Game::Game(std::string configFile)
@@ -144,6 +145,11 @@ bool Game::run()
         case 1: engine->setWindowMode(2); break;
         case 2: engine->setWindowMode(0); break;
         }
+    }
+
+    if (input->getKeyReleased(KEY_F5)) {
+        MessageBox *msgBox = new MessageBox(this, "Test", "This is a test: 1234567890!@#$%^&*()-=_+");
+        wm->addWindow(msgBox);
     }
 
     if ((input->getKeyHeld(KEY_LEFT_SHIFT)) && (input->getKeyReleased(KEY_E))) {

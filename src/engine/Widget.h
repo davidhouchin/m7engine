@@ -196,6 +196,8 @@ public:
     void setBodyColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     {bodyColor.r = r; bodyColor.g = g; bodyColor.b = b; bodyColor.a = a;}
 
+    Font* getFont() { return this->font; }
+
 protected:
     int x, y, xOffset, yOffset, width, height, depth, id;
 

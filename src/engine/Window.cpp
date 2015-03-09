@@ -62,9 +62,15 @@ void WindowManager::update()
     iter = windows.begin();
     while (iter != windows.end()) {
         window = *iter;
-        window->update();
-        window->draw();
-        iter++;
+        if (!window->killMe) {
+            window->update();
+            window->draw();
+            iter++;
+        } else {
+            std::cout << "got here" << std::endl;
+            iter = windows.erase(iter);
+            delete window;
+        }
     }
 }
 
@@ -75,6 +81,22 @@ void WindowManager::addWindow(Window *window)
     windows.push_back(window);
     Logger::getInstance()->logMessage(1, "WM added window id: %i", id);
     id++;
+}
+
+void WindowManager::destroyWindow(int id)
+{
+    std::vector<Window*>::iterator iter;
+    Window *window;
+    iter = windows.begin();
+    while (iter != windows.end()) {
+        window = *iter;
+        if (window->getID() == id) {
+            window->killMe = true;
+            return;
+        } else {
+            iter++;
+        }
+    }
 }
 
 Window::Window()
@@ -152,6 +174,18 @@ Window::~Window()
     }
 
     children.clear();
+}
+
+void Window::setX(int x)
+{
+    this->x = x;
+    xOffset = x - Engine::getInstance()->getViewportX();
+}
+
+void Window::setY(int y)
+{
+    this->y = y;
+    yOffset = y - Engine::getInstance()->getViewportY();
 }
 
 void Window::update()
