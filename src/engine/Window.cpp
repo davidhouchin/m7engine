@@ -67,7 +67,6 @@ void WindowManager::update()
             window->draw();
             iter++;
         } else {
-            std::cout << "got here" << std::endl;
             iter = windows.erase(iter);
             delete window;
         }

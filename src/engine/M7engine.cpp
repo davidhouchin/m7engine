@@ -364,8 +364,6 @@ void Engine::destroyEntity(int id)
     while (iter != entities.end()) {
         entity = *iter;
         if (entity->getID() == id) {
-            //entities.erase(iter);
-            //delete entity;
             entity->killMe = true;
             return;
         } else {

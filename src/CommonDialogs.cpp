@@ -79,35 +79,35 @@ MessageBox::MessageBox(Game *game, std::string titleText, std::string messageTex
                          c->getString("window", "font"));
 
     msgLabel = new Label(
-                getX()+2,
-                getY()+18,
+                x+2,
+                y+18,
                 40,
                 32);
     msgLabel->setBorder(false);
     msgLabel->setText(messageText);
 
     okButton = new Button(
-                getX()+100,
-                getY()+70,
+                x+100,
+                y+70,
                 80,
                 32);
     okButton->setText("Ok");
     okButton->setName("okbutton");
 
+    //Set window size to be a little larger than the string size
+    width = msgLabel->getFont()->getTextWidth(msgLabel->getText().c_str()) + 50;
+
+    //Expand label width to size of window and center button
+    msgLabel->setWidth(width - 4);
+    okButton->setX(x + (width/2) - (okButton->getWidth()/2));
+
     addWidget(msgLabel);
     addWidget(okButton);
-
-    width = msgLabel->getFont()->getTextWidth(msgLabel->getText().c_str()) + 50;
 
     x = Engine::getInstance()->getViewportW() - (width/2);
     y = Engine::getInstance()->getViewportH() - (height/2);
     xOffset = x - Engine::getInstance()->getViewportW()/2;
     yOffset = y - Engine::getInstance()->getViewportH()/2;
-
-    //TODO: Fix positioning
-    msgLabel->setWidth(width - 4);
-    okButton->setX(getX()+(width/2)-(okButton->getWidth()/2));
-    //okButton->setXOffset(okButton->getX() - (width/2));
 }
 
 void MessageBox::handleInput(Widget *widget)
