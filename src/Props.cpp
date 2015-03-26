@@ -25,16 +25,18 @@ ItemProp::ItemProp(Game *game)
     int rand = randomRangeInt(0, 8);
 
     switch (rand) {
-        case 0: item = new Item_sword(); image = game->getResourceManager()->getSprite("item_sword"); break;
-        case 1: item = new Item_armorBoots(); image = game->getResourceManager()->getSprite("item_armorboots"); break;
-        case 2: item = new Item_armorChest(); image = game->getResourceManager()->getSprite("item_armorchest"); break;
-        case 3: item = new Item_armorGloves(); image = game->getResourceManager()->getSprite("item_armorgloves"); break;
-        case 4: item = new Item_armorHelm(); image = game->getResourceManager()->getSprite("item_armorhelm"); break;
-        case 5: item = new Item_coins(); image = game->getResourceManager()->getSprite("item_coins"); break;
-        case 6: item = new Item_key(); image = game->getResourceManager()->getSprite("item_key"); break;
-        case 7: item = new Item_potion(); image = game->getResourceManager()->getSprite("item_potion"); break;
-        case 8: item = new Item_sword2(); image = game->getResourceManager()->getSprite("item_sword2"); break;
+        case 0: item = new Item_sword(); break;
+        case 1: item = new Item_armorBoots(); break;
+        case 2: item = new Item_armorChest(); break;
+        case 3: item = new Item_armorGloves(); break;
+        case 4: item = new Item_armorHelm(); break;
+        case 5: item = new Item_coins(); break;
+        case 6: item = new Item_key(); break;
+        case 7: item = new Item_potion(); break;
+        case 8: item = new Item_sword2(); break;
     }
+
+    image = game->getResourceManager()->getSprite(item->getImageName());
 }
 
 ItemProp::ItemProp(Game *game, std::string name)
@@ -43,16 +45,18 @@ ItemProp::ItemProp(Game *game, std::string name)
     setProperties(game->getObjectConfig(), getName());
 
     switch (translateString(name)) {
-        case eSword: item = new Item_sword(); image = game->getResourceManager()->getSprite("item_sword"); break;
-        case eArmorBoots: item = new Item_armorBoots(); image = game->getResourceManager()->getSprite("item_armorboots"); break;
-        case eArmorChest: item = new Item_armorChest(); image = game->getResourceManager()->getSprite("item_armorchest"); break;
-        case eArmorGloves: item = new Item_armorGloves(); image = game->getResourceManager()->getSprite("item_armorgloves"); break;
-        case eArmorHelm: item = new Item_armorHelm(); image = game->getResourceManager()->getSprite("item_armorhelm"); break;
-        case eCoins: item = new Item_coins(); image = game->getResourceManager()->getSprite("item_coins"); break;
-        case eKey: item = new Item_key(); image = game->getResourceManager()->getSprite("item_key"); break;
-        case ePotion: item = new Item_potion(); image = game->getResourceManager()->getSprite("item_potion"); break;
-        case eSword2: item = new Item_sword2(); image = game->getResourceManager()->getSprite("item_sword2"); break;
+        case eSword: item = new Item_sword(); break;
+        case eArmorBoots: item = new Item_armorBoots(); break;
+        case eArmorChest: item = new Item_armorChest(); break;
+        case eArmorGloves: item = new Item_armorGloves(); break;
+        case eArmorHelm: item = new Item_armorHelm(); break;
+        case eCoins: item = new Item_coins(); break;
+        case eKey: item = new Item_key(); break;
+        case ePotion: item = new Item_potion(); break;
+        case eSword2: item = new Item_sword2(); break;
     }
+
+    image = game->getResourceManager()->getSprite(item->getImageName());
 }
 
 ItemProp::itemObject ItemProp::translateString(std::string const& str)

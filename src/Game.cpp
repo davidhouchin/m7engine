@@ -17,6 +17,7 @@
 #include "Level.h"
 #include "LevelEditor.h"
 #include "CommonDialogs.h"
+#include "Interface.h"
 
 namespace SampleGame {
 Game::Game(std::string configFile)
@@ -29,6 +30,7 @@ Game::Game(std::string configFile)
     this->wm = WindowManager::getInstance();
     this->oConfig = new ConfigReader;
 
+    hasQuit = false;
     isEditorOpen = false;
 
     //Start log
@@ -131,7 +133,7 @@ bool Game::loadLevel(std::string filename)
 
 bool Game::run()
 {
-    if (!engine->update()) {
+    if ((!engine->update()) || (hasQuit)) {
         return false;
     }
 
@@ -206,4 +208,14 @@ void Game::turn()
     }
 }
 
+void Game::setEditorOpen(bool open)
+{
+    if (open) {
+        isEditorOpen = true;
+        levelEditor->setVisible(true);
+    } else {
+        isEditorOpen = false;
+        levelEditor->setVisible(false);
+    }
+}
 }

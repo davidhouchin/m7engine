@@ -185,6 +185,14 @@ LevelEditor::LevelEditor(Game *game, int x, int y, int width, int height)
     clearButton->setText("Clear Level");
     clearButton->setName("clearbutton");
 
+    closeButton = new Button(
+                getX()+200,
+                getY()+250,
+                60,
+                32);
+    closeButton->setText("Close");
+    closeButton->setName("closebutton");
+
     addWidget(objLabel);
     addWidget(lvlLabel);
     addWidget(lvlTextBox);
@@ -192,6 +200,7 @@ LevelEditor::LevelEditor(Game *game, int x, int y, int width, int height)
     addWidget(loadButton);
     addWidget(clearLabel);
     addWidget(clearButton);
+    addWidget(closeButton);
     addWidget(resLabel);
     addWidget(widthTextBox);
     addWidget(heightTextBox);
@@ -219,6 +228,8 @@ void LevelEditor::handleInput(Widget *widget)
             game->setLevelWidth(stringToInt(widthTextBox->getText()));
             game->setLevelHeight(stringToInt(heightTextBox->getText()));
         }
+    } else if (widget->getName() == "closebutton") {
+        game->setEditorOpen(false);
     }
 }
 

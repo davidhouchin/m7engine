@@ -26,7 +26,7 @@ private:
     Label *objLabel, *lvlLabel, *clearLabel, *resLabel;
     DropDownList *objDropDownList;
     TextBox *lvlTextBox, *widthTextBox, *heightTextBox;
-    Button *saveButton, *loadButton, *clearButton, *resButton;
+    Button *saveButton, *loadButton, *clearButton, *resButton, *closeButton;
 
     int gridSize;
 

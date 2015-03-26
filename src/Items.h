@@ -26,6 +26,7 @@ public:
 
     std::string getName() { return this->name; }
     std::string getDescription() { return this->description; }
+    std::string getImageName() { return this->imageName; }
     bool getEquipped() { return this->equipped; }
     void setEquipped(bool equipped) { this->equipped = equipped; }
     int getArmor() { return this->armorAmount; }
@@ -51,7 +52,7 @@ public:
     weaponClass getWeaponClass() { return this->weaponType; }
 
 protected:
-    std::string name, description;
+    std::string name, description, imageName;
     bool equipped;
     int armorAmount, minDamage, maxDamage, weight, cost;
 

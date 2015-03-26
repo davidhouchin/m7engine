@@ -243,8 +243,14 @@ public:
      */
     void setUseImage(bool useImage) { this->useImage = useImage; }
 
+    /**
+     *  @brief Set whether to center the text in the center of the label.
+     *  @param centerText Whether to center text or not.
+     */
+    void setCenterText(bool centerText) { this->centerText = centerText; }
+
 protected:
-    bool useImage, drawBorder, drawBody;
+    bool useImage, drawBorder, drawBody, centerText;
 
     Sprite  *spriteTopLeft, *spriteTopRight, *spriteBottomLeft, *spriteBottomRight,
              *spriteTopCenter, *spriteBottomCenter, *spriteLeftCenter, *spriteRightCenter,
@@ -375,6 +381,11 @@ public:
      *  @param The text of the item to add.
      */
     void addItem(std::string text) { positions.push_back(text); }
+
+    /**
+     *  @brief Clear out every position currently stored in the drop down list.
+     */
+    void clearItems() { positions.clear(); }
 
 protected:
     std::vector<std::string> positions;

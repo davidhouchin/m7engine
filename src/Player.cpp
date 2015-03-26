@@ -15,6 +15,8 @@
 
 #include "Player.h"
 #include "Game.h"
+#include "Interface.h"
+#include "Props.h"
 
 namespace SampleGame {
 Player::Player(Game *game)
@@ -60,9 +62,20 @@ Player::Player(Game *game)
     headArmor = NULL;
     weapon = NULL;
 
+    statusBar = new StatusBar(game, this);
+
     Item_sword *sword = new Item_sword();
     addItem(sword);
     equipItem("sword");
+
+    game->getWindowManager()->addWindow(statusBar);
+
+    statusBar->message("You step from the stairs into a dank corridor.");
+}
+
+Player::~Player()
+{
+    game->getWindowManager()->destroyWindow(statusBar->getID());
 }
 
 void Player::update()
@@ -221,23 +234,29 @@ void Player::update()
 
     //Move viewport along with character
     if (!game->getEditorOpen()) {
+        int statusHeight = 64;
+
         engine->setViewport((getX() + getXOffset()) - (engine->getScreenWidth()/2),
                             (getY() + getYOffset()) - (engine->getScreenHeight()/2),
                             engine->getScreenWidth(),
                             engine->getScreenHeight());
 
         //Stop viewport at edges of screen
+        //Stop at left side of screen
         if (engine->getViewportX() < 0) {
             engine->setViewport(0, engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
         }
+        //Stop at top of screen
         if (engine->getViewportY() < 0) {
             engine->setViewport(engine->getViewportX(), 0, engine->getViewportW(), engine->getViewportH());
         }
+        //Stop at rightmost side of level
         if (engine->getViewportX() > game->getLevelWidth() - engine->getViewportW()) {
             engine->setViewport(engine->getScreenWidth() - engine->getViewportW(), engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
         }
-        if (engine->getViewportY() > game->getLevelHeight() - engine->getViewportH()) {
-            engine->setViewport(engine->getViewportX(), engine->getScreenHeight() - engine->getViewportH(), engine->getViewportW(), engine->getViewportH());
+        //Stop at bottom of level
+        if (engine->getViewportY() > game->getLevelHeight() - engine->getViewportH() + statusHeight) {
+            engine->setViewport(engine->getViewportX(), engine->getScreenHeight() - engine->getViewportH() + statusHeight, engine->getViewportW(), engine->getViewportH());
         }
     }
 
@@ -266,9 +285,32 @@ void Player::collision(Entity *other)
             if (game->getInput()->getKeyReleased(KEY_SPACE)) {
                 ItemProp *pickup = (ItemProp *)other;
                 if (addItem(pickup->getItem())) {
-                    if (pickup->getItem()->getName() == "sword_flame") {
-                        equipItem("sword_flame");
+                    //If this item is better than what we currently have, equip it
+                    if (pickup->getItem()->getItemClass() == Item::armor) {
+                        switch (pickup->getItem()->getArmorClass()) {
+                        case Item::head:
+                            if ((headArmor == NULL) || (pickup->getItem()->getArmor() > headArmor->getArmor()))
+                                equipItem(pickup->getItem()->getName());
+                            break;
+                        case Item::torso:
+                            if ((torsoArmor == NULL) || (pickup->getItem()->getArmor() > torsoArmor->getArmor()))
+                                equipItem(pickup->getItem()->getName());
+                            break;
+                        case Item::hand:
+                            if ((handArmor == NULL) || (pickup->getItem()->getArmor() > handArmor->getArmor()))
+                                equipItem(pickup->getItem()->getName());
+                            break;
+                        case Item::foot:
+                            if ((footArmor == NULL) || (pickup->getItem()->getArmor() > footArmor->getArmor()))
+                                equipItem(pickup->getItem()->getName());
+                            break;
+                        }
+                    } else if (pickup->getItem()->getItemClass() == Item::weapon) {
+                        if ((weapon == NULL) || (pickup->getItem()->getMinDamage() > weapon->getMinDamage()))
+                            equipItem(pickup->getItem()->getName());
                     }
+
+                    //Destroy the item prop
                     game->getEngine()->destroyEntity(pickup->getID());
                 }
             }
@@ -305,13 +347,13 @@ void Player::attack(Monster *target)
 
     target->setHp(target->getHp() - dmg);
 
-    game->getLogger()->logMessage(0, "You hit the %s for %i damage.", target->getName().c_str(), dmg);
+    statusBar->message("You hit the %s for %i damage.", target->getName().c_str(), dmg);
 
     if (target->getHp() <= 0) {
         int expGain = target->getExp();
         exp += expGain;
         target->die();
-        game->getLogger()->logMessage(0, "You gained %i experience.", expGain);
+        statusBar->message("You gained %i experience.", expGain);
     }
 
     target->setAlpha(120);
@@ -341,10 +383,10 @@ bool Player::addItem(Item *item)
     if ((weight + item->getWeight()) <= (weightCapacity)) {
         inventory.push_back(item);
         weight += item->getWeight();
-        game->getLogger()->logMessage(0, "Added %s to inventory", item->getName().c_str());
+        statusBar->message("Added %s to inventory", item->getName().c_str());
         return true;
     } else {
-        game->getLogger()->logMessage(0, "%s weighs too much to add to inventory", item->getName().c_str());
+        statusBar->message("%s weighs too much to add to inventory", item->getName().c_str());
         return false;
     }
 }
@@ -353,11 +395,17 @@ void Player::removeItem(std::string name)
 {
     std::vector<Item*>::iterator iterI;
     Item *item;
+    ItemProp *prop;
     iterI = inventory.begin();
 
     while (iterI != inventory.end()) {
         item = *iterI;
         if (item->getName() == name) {
+            prop = new ItemProp(game, item->getName());
+            prop->setX(this->getX());
+            prop->setY(this->getY());
+            game->getEngine()->sortEntitiesByDepth();
+            weight -= item->getWeight();
             inventory.erase(iterI);
         } else {
             iterI++;
@@ -416,12 +464,12 @@ void Player::equipItem(std::string name)
                 break;
             default: break;
             }
-            game->getLogger()->logMessage(0, "%s was equipped", name.c_str());
+            statusBar->message("%s was equipped", name.c_str());
         } else {
-            game->getLogger()->logMessage(0, "%s is already equipped", name.c_str());
+            statusBar->message("%s is already equipped", name.c_str());
         }
     } else {
-        game->getLogger()->logMessage(0, "%s is not in inventory", name.c_str());
+        statusBar->message("%s is not in inventory", name.c_str());
     }
 }
 
@@ -453,7 +501,6 @@ void Player::unequipItem(std::string name)
                 break;
             case Item::weapon:
                 weapon = NULL;
-                //damage -= item->getDamage();
                 item->setEquipped(false);
                 break;
             }

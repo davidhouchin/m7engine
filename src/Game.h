@@ -38,7 +38,7 @@ private:
     Level *level;
     LevelEditor *levelEditor;
 
-    bool isEditorOpen;
+    bool hasQuit, isEditorOpen;
 
     std::vector<Monster*> monsters;
 
@@ -50,9 +50,12 @@ public:
 
     bool run();
 
+    void quit() { hasQuit = true; }
+
     void turn();
 
     bool getEditorOpen() { return this->isEditorOpen; }
+    void setEditorOpen(bool open);
 
     void addMonster(Monster *monster);
     void killMonster(int id);

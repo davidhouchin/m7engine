@@ -112,9 +112,14 @@ void Label::draw()
     if ((!useImage) && (text != "")) {
         font->setSDLColor(textColor);
 
-        Engine::getInstance()->renderText(x + (width/2) - font->getTextWidth(text.c_str())/2,
-                                          y + (height/2) - font->getTextHeight(text.c_str())/2,
-                                          font, text.c_str());
+        if (centerText) {
+            Engine::getInstance()->renderText(x + (width/2) - font->getTextWidth(text.c_str())/2,
+                                                y + (height/2) - font->getTextHeight(text.c_str())/2,
+                                                font, text.c_str());
+        } else {
+            Engine::getInstance()->renderText(x + 2, y + (height/2) - font->getTextHeight(text.c_str())/2,
+                                              font, text.c_str());
+        }
     } else {
         if (image != NULL) {
             image->draw(x + (width/2) - image->getWidth()/2,

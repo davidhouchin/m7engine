@@ -1,5 +1,13 @@
 width 640
 height 480
+itemprop 576 416 sword_flame
+itemprop 32 32 armor_chest
+itemprop 32 96 armor_gloves
+itemprop 64 96 armor_helm
+itemprop 160 224 key
+itemprop 384 224 potion
+itemprop 448 288 coins
+itemprop 480 288 coins
 wall_brick 288 224
 wall_brick 192 288
 wall_brick 192 256

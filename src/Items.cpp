@@ -20,6 +20,7 @@ Item_sword::Item_sword()
 {
     this->name = "sword";
     description = "A rusty sword.";
+    imageName = "item_sword";
     equipped = false;
     itemType = weapon;
     weaponType = sword;
@@ -33,6 +34,7 @@ Item_sword2::Item_sword2()
 {
     this->name = "sword_flame";
     description = "A flaming sword. Cool.";
+    imageName = "item_sword2";
     equipped = false;
     itemType = weapon;
     weaponType = sword;
@@ -46,6 +48,7 @@ Item_armorBoots::Item_armorBoots()
 {
     this->name = "armor_boots";
     description = "A set of iron boots.";
+    imageName = "item_armorboots";
     equipped = false;
     itemType = armor;
     armorType = foot;
@@ -58,6 +61,7 @@ Item_armorChest::Item_armorChest()
 {
     this->name = "armor_chest";
     description = "An iron breastplate.";
+    imageName = "item_armorchest";
     equipped = false;
     itemType = armor;
     armorType = torso;
@@ -70,6 +74,7 @@ Item_armorGloves::Item_armorGloves()
 {
     this->name = "armor_gloves";
     description = "A pair of iron gauntlets.";
+    imageName = "item_armorgloves";
     equipped = false;
     itemType = armor;
     armorType = hand;
@@ -82,6 +87,7 @@ Item_armorHelm::Item_armorHelm()
 {
     this->name = "armor_helm";
     description = "An iron helmet.";
+    imageName = "item_armorhelm";
     equipped = false;
     itemType = armor;
     armorType = head;
@@ -94,6 +100,7 @@ Item_coins::Item_coins()
 {
     this->name = "coins";
     description = "A bunch of gold coins.";
+    imageName = "item_coins";
     equipped = false;
     itemType = item;
     weight = 0;
@@ -104,6 +111,7 @@ Item_key::Item_key()
 {
     this->name = "key";
     description = "A hefty metal key.";
+    imageName = "item_key";
     equipped = false;
     itemType = item;
     weight = 1;
@@ -114,6 +122,7 @@ Item_potion::Item_potion()
 {
     this->name = "potion";
     description = "A strange red liquid.";
+    imageName = "item_potion";
     equipped = false;
     itemType = item;
     weight = 3;

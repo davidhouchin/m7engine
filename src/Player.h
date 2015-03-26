@@ -25,8 +25,12 @@ using namespace M7engine;
 namespace SampleGame {
 
 class Game;
+class StatusBar;
 
 class Player : public Entity {
+friend class StatusBar;
+friend class InventoryWindow;
+
 private:
     int speed, runSpeed, runDelay, runCounter, runDelayCounter;
     bool dead, notStarted, running, moved;
@@ -41,10 +45,13 @@ private:
 
     std::string name;
 
+    StatusBar *statusBar;
+
     Game *game;
     
 public:
     Player(Game *game);
+    virtual ~Player();
     
     void update();
     void collision(Entity *other);
@@ -59,6 +66,8 @@ public:
     void displayInventory();
 
     Item* getInventoryItem(std::string name);
+
+    StatusBar* getStatusBar() { return this->statusBar; }
 
 };
 }
