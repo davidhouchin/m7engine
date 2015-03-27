@@ -57,7 +57,7 @@ wall_brickDoorClosed 128 256
 wall_brickDoorOpen 128 64
 wall_brickDoorOpen 64 352
 wall_brickGateClosed 416 352
-wall_brickDoorClosed 576 384
+wall_brickDoorClosed 576 384 locked
 wall_brickDoorOpen 576 320
 wall_brickDoorOpen 288 64
 wall_brick 448 320

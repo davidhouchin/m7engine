@@ -37,7 +37,6 @@ private:
     Item *selectedItem;
 
     void populateItemList();
-    void showItem();
 
 public:
     InventoryWindow(Game *game, Player *player);

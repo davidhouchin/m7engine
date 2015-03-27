@@ -468,6 +468,9 @@ void LevelEditor::update()
     //We can't use vx, vy, ex, or ey shorthand here as each test needs the immediate current viewport values that could have been
     //changed by the preceeding statement.
 
+    //Height of status bar, used to make sure the viewport can see the bottom chunk of the map
+    int statusHeight = 64;
+
     //Move viewport with cursor
     if ((mx + engine->getViewportX()) > engine->getViewportX() + vw - (gridSize)) {
         engine->setViewport(engine->getViewportX() + (gridSize/2), engine->getViewportY(), vw, vh);
@@ -492,8 +495,8 @@ void LevelEditor::update()
     if (engine->getViewportX() > game->getLevelWidth() - vw) {
         engine->setViewport(game->getLevelWidth() - vw, engine->getViewportY(), vw, vh);
     }
-    if (engine->getViewportY() > game->getLevelHeight() - vh) {
-        engine->setViewport(engine->getViewportX(), game->getLevelHeight() - vh, vw, vh);
+    if (engine->getViewportY() > game->getLevelHeight() - vh + statusHeight) {
+        engine->setViewport(engine->getViewportX(), game->getLevelHeight() - vh + statusHeight, vw, vh);
     }
 }
 
@@ -523,6 +526,12 @@ bool LevelEditor::save(const char* file)
             //If this is an item, we want to save the actual item alongside the item prop
             ItemProp *saveItem = (ItemProp *)entity;
             saveFile << saveItem->getName() << " " << saveItem->getX() << " " << saveItem->getY() << " " << saveItem->getItem()->getName() << "\n";
+        } else if (entity->getName() == "wall_brickDoorClosed") {
+            if (static_cast<Wall_brickDoorClosed*>(entity)->getLocked()) {
+                saveFile << entity->getName() << " " << entity->getX() << " " << entity->getY() << " locked" << "\n";
+            } else {
+                saveFile << entity->getName() << " " << entity->getX() << " " << entity->getY() << "\n";
+            }
         } else {
             saveFile << entity->getName() << " " << entity->getX() << " " << entity->getY() << "\n";
         }

@@ -130,8 +130,11 @@ public:
 
 class Wall_brickDoorClosed : public Entity {
 private:
+    bool locked;
 public:
     Wall_brickDoorClosed(Game *game);
+    bool getLocked() { return locked; }
+    void setLocked(bool lock) { this->locked = lock; }
 };
 
 class Wall_brickDoorOpen : public Entity {
@@ -142,8 +145,11 @@ public:
 
 class Wall_brickGateClosed : public Entity {
 private:
+    bool locked;
 public:
     Wall_brickGateClosed(Game *game);
+    bool getLocked() { return locked; }
+    void setLocked(bool lock) { this->locked = lock; }
 };
 
 class Wall_brickGateOpen : public Entity {

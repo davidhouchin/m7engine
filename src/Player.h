@@ -36,7 +36,7 @@ private:
     bool dead, notStarted, running, moved;
     int startx, starty, moves;
 
-    int level, exp, hp, mp, strength, intellect, dexterity;
+    int level, exp, hp, hpMax, mp, mpMax, strength, intellect, dexterity;
     int damage, defense, weight, weightCapacity;
 
     Item *headArmor, *torsoArmor, *handArmor, *footArmor, *weapon;
@@ -58,11 +58,14 @@ public:
     void alarm(int timerNum);
 
     void attack(Monster *target);
+    void open(Entity *door);
 
     bool addItem(Item *item);
-    void removeItem(std::string name);
+    void dropItem(std::string name);
+    void removeItem(std::string name, int number);
     void equipItem(std::string name);
     void unequipItem(std::string name);
+    void useItem(std::string name);
     void displayInventory();
 
     Item* getInventoryItem(std::string name);

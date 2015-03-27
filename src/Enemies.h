@@ -25,6 +25,7 @@ class Game;
 
 class Monster : public Entity {
 protected:
+    std::string longName;
     int mId;
     int exp, hp, mp;
     int minDamage, maxDamage, defense;
@@ -49,6 +50,8 @@ public:
 
     void setMonsterID(int id) { this->mId = id; }
     int getMonsterID() { return this->mId; }
+
+    std::string getLongName() { return this->longName; }
 
     Game *game;
 };
@@ -86,6 +89,7 @@ public:
     Monster_skeleton(Game *game);
     void update();
     void collision(Entity *other);
+    void turn();
 };
 
 class Monster_skeletonCaptain : public Monster {

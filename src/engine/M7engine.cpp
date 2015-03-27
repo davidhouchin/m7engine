@@ -173,6 +173,8 @@ bool Engine::update()
     SDL_RenderPresent(renderer);
 
     cleanEntities();
+    sortEntitiesByDepth();
+    sortTilesByDepth();
 
     delayFramerate();
 

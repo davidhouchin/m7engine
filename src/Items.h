@@ -25,6 +25,7 @@ public:
     Item() {}
 
     std::string getName() { return this->name; }
+    std::string getLongName() { return this->longName; }
     std::string getDescription() { return this->description; }
     std::string getImageName() { return this->imageName; }
     bool getEquipped() { return this->equipped; }
@@ -34,6 +35,8 @@ public:
     int getMaxDamage() { return this->maxDamage; }
     int getWeight() { return this->weight; }
     int getCost() { return this->cost; }
+    int getCount() { return this->count; }
+    void setCount(int count) { this->count = count; if (count < 0) { count = 0; }}
 
     enum itemClass {
         item, armor, weapon
@@ -52,9 +55,10 @@ public:
     weaponClass getWeaponClass() { return this->weaponType; }
 
 protected:
-    std::string name, description, imageName;
+    std::string name, longName, description, imageName;
     bool equipped;
     int armorAmount, minDamage, maxDamage, weight, cost;
+    int count = 1;
 
     itemClass itemType;
     armorClass armorType;

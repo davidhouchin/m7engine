@@ -19,6 +19,7 @@ namespace SampleGame {
 Item_sword::Item_sword()
 {
     this->name = "sword";
+    longName = "Rusty Sword";
     description = "A rusty sword.";
     imageName = "item_sword";
     equipped = false;
@@ -33,6 +34,7 @@ Item_sword::Item_sword()
 Item_sword2::Item_sword2()
 {
     this->name = "sword_flame";
+    longName = "Flaming Sword";
     description = "A flaming sword. Cool.";
     imageName = "item_sword2";
     equipped = false;
@@ -47,6 +49,7 @@ Item_sword2::Item_sword2()
 Item_armorBoots::Item_armorBoots()
 {
     this->name = "armor_boots";
+    longName = "Iron Boots";
     description = "A set of iron boots.";
     imageName = "item_armorboots";
     equipped = false;
@@ -60,6 +63,7 @@ Item_armorBoots::Item_armorBoots()
 Item_armorChest::Item_armorChest()
 {
     this->name = "armor_chest";
+    longName = "Iron Breastplate";
     description = "An iron breastplate.";
     imageName = "item_armorchest";
     equipped = false;
@@ -73,6 +77,7 @@ Item_armorChest::Item_armorChest()
 Item_armorGloves::Item_armorGloves()
 {
     this->name = "armor_gloves";
+    longName = "Iron Gauntlets";
     description = "A pair of iron gauntlets.";
     imageName = "item_armorgloves";
     equipped = false;
@@ -86,6 +91,7 @@ Item_armorGloves::Item_armorGloves()
 Item_armorHelm::Item_armorHelm()
 {
     this->name = "armor_helm";
+    longName = "Iron Helm";
     description = "An iron helmet.";
     imageName = "item_armorhelm";
     equipped = false;
@@ -99,6 +105,7 @@ Item_armorHelm::Item_armorHelm()
 Item_coins::Item_coins()
 {
     this->name = "coins";
+    longName = "Stack of coins";
     description = "A bunch of gold coins.";
     imageName = "item_coins";
     equipped = false;
@@ -110,6 +117,7 @@ Item_coins::Item_coins()
 Item_key::Item_key()
 {
     this->name = "key";
+    longName = "Iron Key";
     description = "A hefty metal key.";
     imageName = "item_key";
     equipped = false;
@@ -121,6 +129,7 @@ Item_key::Item_key()
 Item_potion::Item_potion()
 {
     this->name = "potion";
+    longName = "Red Potion";
     description = "A strange red liquid.";
     imageName = "item_potion";
     equipped = false;

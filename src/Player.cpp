@@ -32,7 +32,9 @@ Player::Player(Game *game)
     exp = 0; //Total experience
 
     hp = 30; //Health
+    hpMax = 30;
     mp = 10; //Magic points
+    mpMax = 10;
 
     strength = 10; //Dictates melee attacks and carry capacity
     intellect = 10; //Dictates magic damage
@@ -108,6 +110,9 @@ void Player::update()
             } else if (collide->getFamily() == "monster") {
                 attack(dynamic_cast<Monster*>(collide));
                 moved = true;
+            } else if (collide->getFamily() == "door") {
+                open(collide);
+                moved = true;
             } else if (collide->getFamily() != "wall") {
                 setY(getY() - 32);
                 moved = true;
@@ -119,6 +124,9 @@ void Player::update()
                 moved = true;
             } else if (collide->getFamily() == "monster") {
                 attack(dynamic_cast<Monster*>(collide));
+                moved = true;
+            } else if (collide->getFamily() == "door") {
+                open(collide);
                 moved = true;
             } else if (collide->getFamily() != "wall") {
                 setY(getY() + 32);
@@ -132,6 +140,9 @@ void Player::update()
             } else if (collide->getFamily() == "monster") {
                 attack(dynamic_cast<Monster*>(collide));
                 moved = true;
+            } else if (collide->getFamily() == "door") {
+                open(collide);
+                moved = true;
             } else if (collide->getFamily() != "wall") {
                 setX(getX() - 32);
                 moved = true;
@@ -143,6 +154,9 @@ void Player::update()
                 moved = true;
             } else if (collide->getFamily() == "monster") {
                 attack(dynamic_cast<Monster*>(collide));
+                moved = true;
+            } else if (collide->getFamily() == "door") {
+                open(collide);
                 moved = true;
             } else if (collide->getFamily() != "wall") {
                 setX(getX() + 32);
@@ -234,7 +248,7 @@ void Player::update()
 
     //Move viewport along with character
     if (!game->getEditorOpen()) {
-        int statusHeight = 64;
+        int statusHeight = statusBar->getHeight();
 
         engine->setViewport((getX() + getXOffset()) - (engine->getScreenWidth()/2),
                             (getY() + getYOffset()) - (engine->getScreenHeight()/2),
@@ -255,8 +269,14 @@ void Player::update()
             engine->setViewport(engine->getScreenWidth() - engine->getViewportW(), engine->getViewportY(), engine->getViewportW(), engine->getViewportH());
         }
         //Stop at bottom of level
-        if (engine->getViewportY() > game->getLevelHeight() - engine->getViewportH() + statusHeight) {
-            engine->setViewport(engine->getViewportX(), engine->getScreenHeight() - engine->getViewportH() + statusHeight, engine->getViewportW(), engine->getViewportH());
+        if (engine->getViewportH() < game->getLevelHeight() + statusHeight) {
+            if (engine->getViewportY() > game->getLevelHeight() - engine->getViewportH() + statusHeight) {
+                engine->setViewport(engine->getViewportX(), engine->getScreenHeight() - engine->getViewportH() + statusHeight, engine->getViewportW(), engine->getViewportH());
+            }
+        } else {
+            if (engine->getViewportY() > game->getLevelHeight() - engine->getViewportH()) {
+                engine->setViewport(engine->getViewportX(), engine->getScreenHeight() - engine->getViewportH(), engine->getViewportW(), engine->getViewportH());
+            }
         }
     }
 
@@ -347,17 +367,41 @@ void Player::attack(Monster *target)
 
     target->setHp(target->getHp() - dmg);
 
-    statusBar->message("You hit the %s for %i damage.", target->getName().c_str(), dmg);
+    statusBar->message("You hit the %s for %i damage.", target->getLongName().c_str(), dmg);
 
     if (target->getHp() <= 0) {
         int expGain = target->getExp();
         exp += expGain;
         target->die();
+        statusBar->message("You killed the %s.", target->getLongName().c_str());
         statusBar->message("You gained %i experience.", expGain);
     }
 
     target->setAlpha(120);
     target->setTimer(0, 30);
+}
+
+void Player::open(Entity *door)
+{
+    Wall_brickDoorClosed *closedDoor = static_cast<Wall_brickDoorClosed*>(door);
+
+    if (closedDoor->getLocked()) {
+        if (getInventoryItem("key") != NULL) {
+            removeItem("key", 1);
+            statusBar->message("You unlock the door.");
+        } else {
+            statusBar->message("The door is locked. You need a key.");
+            return;
+        }
+    }
+
+    statusBar->message("You open the door.");
+
+    Wall_brickDoorOpen *openDoor = new Wall_brickDoorOpen(game);
+    openDoor->setX(door->getX());
+    openDoor->setY(door->getY());
+
+    game->getEngine()->destroyEntity(door->getID());
 }
 
 Item* Player::getInventoryItem(std::string name)
@@ -381,17 +425,24 @@ Item* Player::getInventoryItem(std::string name)
 bool Player::addItem(Item *item)
 {
     if ((weight + item->getWeight()) <= (weightCapacity)) {
-        inventory.push_back(item);
+        Item *dup = getInventoryItem(item->getName());
+
+        if (dup != NULL) {
+            dup->setCount(dup->getCount() + 1);
+        } else {
+            inventory.push_back(item);
+        }
+
         weight += item->getWeight();
-        statusBar->message("Added %s to inventory", item->getName().c_str());
+        statusBar->message("Added %s to inventory", item->getLongName().c_str());
         return true;
     } else {
-        statusBar->message("%s weighs too much to add to inventory", item->getName().c_str());
+        statusBar->message("%s weighs too much to add to inventory", item->getLongName().c_str());
         return false;
     }
 }
 
-void Player::removeItem(std::string name)
+void Player::dropItem(std::string name)
 {
     std::vector<Item*>::iterator iterI;
     Item *item;
@@ -401,12 +452,42 @@ void Player::removeItem(std::string name)
     while (iterI != inventory.end()) {
         item = *iterI;
         if (item->getName() == name) {
-            prop = new ItemProp(game, item->getName());
-            prop->setX(this->getX());
-            prop->setY(this->getY());
-            game->getEngine()->sortEntitiesByDepth();
-            weight -= item->getWeight();
-            inventory.erase(iterI);
+            Entity *collide = game->getCollisionManager()->getPointMeetingEntity(getXBBox(), getYBBox());
+            if ((collide == NULL) || (collide->getFamily() != "item")) {
+                prop = new ItemProp(game, item->getName());
+                prop->setX(this->getX());
+                prop->setY(this->getY());
+                removeItem(name, 1);
+            } else {
+                statusBar->message("Can't drop. There is already something on the ground here.");
+            }
+            return;
+        } else {
+            iterI++;
+        }
+    }
+}
+
+void Player::removeItem(std::string name, int number)
+{
+    std::vector<Item*>::iterator iterI;
+    Item *item;
+    iterI = inventory.begin();
+
+    while (iterI != inventory.end()) {
+        item = *iterI;
+        if (item->getName() == name) {
+            if (number > item->getCount())
+                number = item->getCount();
+
+            item->setCount(item->getCount() - number);
+
+            weight -= (item->getWeight() * number);
+
+            if (item->getCount() <= 0)
+                inventory.erase(iterI);
+
+            return;
         } else {
             iterI++;
         }
@@ -460,13 +541,14 @@ void Player::equipItem(std::string name)
                 }
                 weapon = item;
                 item->setEquipped(true);
-                //damage += weapon->getDamage();
                 break;
-            default: break;
+            default:
+                statusBar->message("%s cannot be equipped.", item->getLongName().c_str());
+                return; break;
             }
-            statusBar->message("%s was equipped", name.c_str());
+            statusBar->message("%s was equipped", item->getLongName().c_str());
         } else {
-            statusBar->message("%s is already equipped", name.c_str());
+            statusBar->message("%s is already equipped", item->getLongName().c_str());
         }
     } else {
         statusBar->message("%s is not in inventory", name.c_str());
@@ -504,6 +586,21 @@ void Player::unequipItem(std::string name)
                 item->setEquipped(false);
                 break;
             }
+        }
+    }
+}
+
+void Player::useItem(std::string name)
+{
+    Item *item = getInventoryItem(name);
+
+    if (item != NULL) {
+        if (name == "potion") {
+            statusBar->message("You drink the red potion.");
+            hp += 10;
+            if (hp > hpMax)
+                hp = hpMax;
+            removeItem("potion", 1);
         }
     }
 }

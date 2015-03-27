@@ -28,6 +28,8 @@ bool Monster::setProperties(ConfigReader *reader, std::string name)
         return false;
     }
 
+    longName = reader->getString(name, "longname", name);
+
     family = reader->getString(name, "family", "");
 
     resourceName = reader->getString(name, "sprite", "");
@@ -79,14 +81,14 @@ void Monster::alarm(int timerNum)
 void Monster::turn()
 {
     if (this->hp <= 0) {
-        game->getLogger()->logMessage(0, "%s is dead.", name.c_str());
+        game->getLogger()->logMessage(0, "%s is dead.", longName.c_str());
         game->getEngine()->destroyEntity(this->getID());
     }
 }
 
 void Monster::die()
 {
-    game->getLogger()->logMessage(0, "%s is dead.", name.c_str());
+    game->getLogger()->logMessage(0, "%s is dead.", longName.c_str());
     game->getEngine()->destroyEntity(this->getID());
 }
 
@@ -162,6 +164,10 @@ void Monster_skeleton::update()
 }
 
 void Monster_skeleton::collision(Entity *other)
+{
+}
+
+void Monster_skeleton::turn()
 {
 }
 

@@ -145,11 +145,17 @@ bool Level::load(std::string filename)
             case eWall_brickStairsUp: entity = new Wall_brickStairsUp(game);
                 entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
             case eWall_brickDoorClosed: entity = new Wall_brickDoorClosed(game);
-                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2]));
+                if ((input.size() > 3) && (input[3] == "locked"))
+                    static_cast<Wall_brickDoorClosed*>(entity)->setLocked(true);
+                break;
             case eWall_brickDoorOpen: entity = new Wall_brickDoorOpen(game);
                 entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
             case eWall_brickGateClosed: entity = new Wall_brickGateClosed(game);
-                entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
+                entity->setPosition(stringToInt(input[1]), stringToInt(input[2]));
+                if ((input.size() > 3) && (input[3] == "locked"))
+                    static_cast<Wall_brickGateClosed*>(entity)->setLocked(true);
+                break;
             case eWall_brickGateOpen: entity = new Wall_brickGateOpen(game);
                 entity->setPosition(stringToInt(input[1]), stringToInt(input[2])); break;
             case eWall_brickGrate: entity = new Wall_brickGrate(game);

@@ -85,60 +85,60 @@ StatusBar::StatusBar(Game *game, Player *player)
     nameLabel = new Label(
                 x+2,
                 y+2,
-                120,
+                100,
                 24);
     nameLabel->setBorder(true);
     nameLabel->setText("Name: " + player->name);
 
     hpLabel = new Label(
-                x+130,
+                x+110,
                 y+2,
-                60,
+                70,
                 24);
     hpLabel->setBorder(true);
-    hpLabel->setText("HP: " + intToString(player->hp));
+    hpLabel->setText("HP: " + intToString(player->hp) + "/" + intToString(player->hpMax));
     hpLabel->setTextColor(255, 80, 80, 255);
 
     mpLabel = new Label(
-                x+200,
+                x+190,
                 y+2,
-                60,
+                70,
                 24);
     mpLabel->setBorder(true);
-    mpLabel->setText("MP: " + intToString(player->mp));
+    mpLabel->setText("MP: " + intToString(player->mp) + "/" + intToString(player->mpMax));
     mpLabel->setTextColor(80, 80, 255, 255);
 
     messageBox = new Label(
-                x+340,
+                x+280,
                 y+2,
-                290,
+                350,
                 60);
     messageBox->setBorder(true);
     messageBox->setBody(true);
     messageBox->setBodyColor(0, 0, 0, 255);
 
     message1Label = new Label(
-                x+344,
+                x+284,
                 y+42,
-                280,
+                340,
                 20);
     message1Label->setBorder(false);
     message1Label->setTextColor(255, 255, 255, 255);
     message1Label->setText("");
 
     message2Label = new Label(
-                x+344,
+                x+284,
                 y+24,
-                280,
+                340,
                 20);
     message2Label->setBorder(false);
     message2Label->setTextColor(255, 255, 255, 255);
     message2Label->setText("");
 
     message3Label = new Label(
-                x+344,
+                x+284,
                 y+6,
-                280,
+                340,
                 20);
     message3Label->setBorder(false);
     message3Label->setTextColor(255, 255, 255, 255);
@@ -436,7 +436,6 @@ InventoryWindow::InventoryWindow(Game *game, Player *player)
     itemList->setBorder(true);
     itemList->setName("itemlist");
     populateItemList();
-    //itemList->setPosition(0);
 
     borderLabel = new Label(
                 x+2,
@@ -473,7 +472,7 @@ InventoryWindow::InventoryWindow(Game *game, Player *player)
                 y+264,
                 80,
                 32);
-    equipButton->setText("Un/Equip");
+    equipButton->setText("Use");
     equipButton->setName("equipbutton");
 
     dropButton = new Button(
@@ -526,22 +525,27 @@ void InventoryWindow::handleInput(Widget *widget)
     if (widget->getName() == "closebutton") {
         setVisible(false);
     } else if (widget->getName() == "itemlist") {
-        selectedItem = player->getInventoryItem(itemList->getPositionText());
+        std::vector<std::string> selectItem = split(itemList->getPositionText(), ' ');
+        selectedItem = player->getInventoryItem(selectItem[0]);
     } else if (widget->getName() == "equipbutton") {
         if (selectedItem == NULL)
             return;
-        if (selectedItem->getEquipped()) {
-            player->unequipItem(selectedItem->getName());
+        if ((selectedItem->getItemClass() == Item::armor) || (selectedItem->getItemClass() == Item::weapon)) {
+            if (selectedItem->getEquipped()) {
+                player->unequipItem(selectedItem->getName());
+            } else {
+                player->equipItem(selectedItem->getName());
+            }
         } else {
-            player->equipItem(selectedItem->getName());
+            player->useItem(selectedItem->getName());
         }
     } else if (widget->getName() == "dropbutton") {
         if (selectedItem == NULL)
             return;
-        if (selectedItem->getEquipped()) {
+        if ((selectedItem->getEquipped()) && (selectedItem->getCount() == 1)) {
             player->unequipItem(selectedItem->getName());
         }
-        player->removeItem(selectedItem->getName());
+        player->dropItem(selectedItem->getName());
         selectedItem = NULL;
         itemList->setText("");
     }
@@ -609,27 +613,27 @@ void InventoryWindow::update()
 
     //Update all the images and text shown in the inventory window
     if (player->headArmor != NULL)
-        headLabel->setText("Head: " + player->headArmor->getName());
+        headLabel->setText("Head: " + player->headArmor->getLongName());
     else
         headLabel->setText("Head: None");
 
     if (player->torsoArmor != NULL)
-        torsoLabel->setText("Torso: " + player->torsoArmor->getName());
+        torsoLabel->setText("Torso: " + player->torsoArmor->getLongName());
     else
         torsoLabel->setText("Torso: None");
 
     if (player->handArmor != NULL)
-        handLabel->setText("Hand: " + player->handArmor->getName());
+        handLabel->setText("Hand: " + player->handArmor->getLongName());
     else
         handLabel->setText("Hand: None");
 
     if (player->footArmor != NULL)
-        footLabel->setText("Foot: " + player->footArmor->getName());
+        footLabel->setText("Foot: " + player->footArmor->getLongName());
     else
         footLabel->setText("Foot: None");
 
     if (player->weapon != NULL)
-        weaponLabel->setText("Weapon: " + player->weapon->getName());
+        weaponLabel->setText("Weapon: " + player->weapon->getLongName());
     else
         weaponLabel->setText("Weapon: None");
 
@@ -655,7 +659,7 @@ void InventoryWindow::update()
 
     if (player->weapon != NULL) {
         weaponImageLabel->setImage(ResourceManager::getInstance()->getSprite(player->weapon->getImageName()));
-        attackLabel->setText("Attack: " + intToString(player->damage) + " + " + intToString(player->weapon->getMinDamage()) + "-" + intToString(player->weapon->getMaxDamage()));
+        attackLabel->setText("Attack: " + intToString(player->damage + player->weapon->getMinDamage()) + "-" + intToString(player->weapon->getMaxDamage()));
     } else {
         weaponImageLabel->setImage(NULL);
         attackLabel->setText("Attack: " + intToString(player->damage));
@@ -666,7 +670,7 @@ void InventoryWindow::update()
     defenseLabel->setText("Defense: " + intToString(player->defense));
 
     if (selectedItem != NULL) {
-        itemLabel->setText(selectedItem->getName());
+        itemLabel->setText(selectedItem->getLongName());
         itemDescriptionLabel->setText(selectedItem->getDescription());
         itemImageLabel->setImage(ResourceManager::getInstance()->getSprite(selectedItem->getImageName()));
     } else {
@@ -674,6 +678,9 @@ void InventoryWindow::update()
         itemDescriptionLabel->setText("");
         itemImageLabel->setImage(NULL);
     }
+
+    if ((selectedItem != NULL) && (player->getInventoryItem(selectedItem->getName()) == NULL))
+        selectedItem = NULL;
 
     populateItemList();
 }
@@ -690,13 +697,8 @@ void InventoryWindow::populateItemList()
 
     while (iter != inventory.end()) {
         item = *iter;
-        itemList->addItem(item->getName());
+        itemList->addItem(item->getName() + " x" + intToString(item->getCount()));
         iter++;
     }
-}
-
-void InventoryWindow::showItem()
-{
-
 }
 }
