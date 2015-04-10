@@ -19,3 +19,10 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	include_directories(/usr/include/sdl2)
 	target_link_libraries(${PROJECT_NAME} SDL2 SDL2_image SDL2_ttf SDL2_mixer)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+
+#Check if Windows, expects MinGW installed SDL2
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	include_directories(C:/MinGW/include/SDL2)
+	target_link_libraries(${PROJECT_NAME} mingw32 SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer)
+	set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wextra -ggdb -Wl,-subsystem,windows ${CMAKE_CXX_FLAGS}")
+endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
