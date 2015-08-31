@@ -41,7 +41,13 @@ Game::Game(std::string configFile)
     int resX, resY, fs;
     ConfigReader *config = engine->getConfigReader();
 
-    config->loadConfig(configFile);
+	if (!config->loadConfig(configFile)) {
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+			"Load Failed",
+			"Failed to open configuration file. Please ensure all resources are present.",
+			NULL);
+		exit(EXIT_FAILURE);
+	}
 
     logger->setLoggingLevel(config->getInt("debug", "log", 0));
 
