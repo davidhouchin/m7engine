@@ -1,17 +1,19 @@
 width 640
 height 480
-wall_brick 288 32
-wall_brickVines 512 192
-wall_brickVines 544 192
-wall_brickVines 512 224
-wall_brickVines 352 0
-wall_brickVines 384 0
-wall_brickVines 416 0
-wall_brickVines 320 0
+itemprop 576 416 sword_flame
+itemprop 32 32 armor_chest
+itemprop 32 96 armor_gloves
+itemprop 64 96 armor_helm
+itemprop 160 224 key
+itemprop 384 224 potion
+itemprop 448 288 coins
+itemprop 480 288 coins
 wall_brick 288 224
 wall_brick 192 288
 wall_brick 192 256
 wall_brick 192 224
+wall_brick 32 352
+wall_brick 96 352
 wall_brick 288 288
 wall_brick 288 256
 wall_brick 192 320
@@ -19,6 +21,7 @@ wall_brick 288 192
 wall_brick 288 160
 wall_brick 288 128
 wall_brick 288 96
+wall_brick 288 32
 wall_brick 352 384
 wall_brick 384 384
 wall_brick 192 160
@@ -38,7 +41,8 @@ wall_brick 128 192
 wall_brick 128 224
 wall_brick 128 288
 wall_brick 128 320
-wall_brickVines 384 32
+wall_brick 128 352
+wall_brick 160 352
 wall_brick 192 352
 wall_brick 512 256
 wall_brick 384 64
@@ -77,6 +81,7 @@ wall_brick 544 0
 wall_brick 576 0
 wall_brick 608 0
 wall_brick 0 32
+wall_brick 512 0
 wall_brick 0 224
 wall_brick 0 256
 wall_brick 0 288
@@ -95,6 +100,7 @@ wall_brick 192 0
 wall_brick 224 0
 wall_brick 576 448
 wall_brick 288 0
+wall_brick 448 0
 wall_brick 64 448
 wall_brick 96 448
 wall_brick 128 448
@@ -124,12 +130,25 @@ wall_brick 608 384
 wall_brick 608 416
 wall_brick 32 448
 wall_brick 608 224
+monster_skeleton 64 192
+monster_skeleton 64 288
+monster_ghost 92 384
+monster_wraith 256 320
+monster_wraith 256 128
+monster_skeletonMage 448 64
+monster_skeletonMage 448 128
+monster_specter 544 288
+monster_zombie 160 320
+monster_vampire 352 320
+player 64 64
+wall_brick 480 0
 wall_brick 480 320
 wall_brick 384 256
 wall_brick 352 256
 wall_brick 320 256
 wall_brick 480 448
 wall_brick 480 384
+monster_skeletonCaptain 480 96
 wall_brickMold 288 352
 wall_brickMold 288 384
 wall_brickMold 320 384
@@ -142,15 +161,14 @@ wall_brickVines 0 160
 wall_brickVines 32 128
 wall_brickVines 0 96
 wall_brickVines 0 64
-wall_brickMold 160 352
-wall_brickMold 128 352
-wall_brickMold 96 352
-wall_brickMold 32 352
-wall_brickMold 448 0
-wall_brickMold 480 0
-wall_brickMold 512 0
-itemprop 160 224 key
-player 64 64
+wall_brickVines 512 192
+wall_brickVines 544 192
+wall_brickVines 512 224
+wall_brickVines 352 0
+wall_brickVines 384 0
+wall_brickVines 416 0
+wall_brickVines 320 0
+wall_brickVines 384 32
 floor_brick 288 288
 floor_brick 608 288
 floor_brick 576 288
@@ -260,6 +278,7 @@ floor_brick 256 448
 floor_brick 224 448
 floor_brick 192 448
 floor_brick 160 448
+floor_brick 128 448
 floor_brick 96 448
 floor_brick 64 448
 floor_brick 32 448
@@ -304,6 +323,8 @@ floor_brick 288 64
 floor_brick 608 64
 floor_brick 576 64
 floor_brick 544 64
+floor_brick 512 64
+floor_brick 448 64
 floor_brick 416 64
 floor_brick 384 64
 floor_brick 352 64
@@ -359,6 +380,8 @@ floor_brick 288 32
 floor_brick 608 32
 floor_brick 576 32
 floor_brick 544 32
+floor_brick 512 32
+floor_brick 448 32
 floor_brick 384 32
 floor_brick 320 32
 floor_brick 0 128
@@ -447,6 +470,9 @@ floor_brick 96 160
 floor_brick 64 160
 floor_brick 32 160
 floor_brick 480 0
+floor_brick 480 32
+floor_brick 480 64
+floor_brick 480 96
 floor_brick 480 128
 floor_brick 480 160
 floor_brick 480 192
@@ -462,11 +488,3 @@ floor_brickMold 320 352
 floor_brickMold 288 416
 floor_brickVines 352 32
 floor_brickVines 416 32
-floor_brick 128 448
-floor_brickMold 448 32
-floor_brickMold 480 32
-floor_brickMold 512 32
-floor_brickMold 480 64
-floor_brickMold 448 64
-floor_brickMold 512 64
-floor_brickMold 480 96
